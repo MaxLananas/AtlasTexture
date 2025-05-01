@@ -1917,11 +1917,14 @@
       background: #3a425a;
     }
     .palette-preview img {
-      width: 48px;
-      height: 48px;
-      object-fit: cover;
-      border-radius: 6px;
-    }
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 6px;
+  image-rendering: pixelated; /* déjà là */
+  image-rendering: crisp-edges;
+  image-rendering: -moz-crisp-edges;
+}
     .palette-content {
       padding: 16px;
     }
