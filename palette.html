@@ -29,6 +29,54 @@
   firebase.initializeApp(firebaseConfig);
   const database = firebase.database();
 </script>
+
+    <script>
+  // Publier une palette dans la base de données
+  function publishPalette(palette) {
+    const newPaletteRef = database.ref("palettes").push();
+    newPaletteRef.set({
+      ...palette,
+      votes: 0
+    });
+  }
+
+  // Charger les palettes de la communauté
+  function loadPublicPalettes() {
+    const palettesRef = database.ref("palettes");
+    palettesRef.once("value", snapshot => {
+      const data = snapshot.val();
+      if (data) {
+        displayCommunityPalettes(data);
+      }
+    });
+  }
+
+  // Voter pour une palette
+  function votePalette(paletteId) {
+    const paletteRef = database.ref(`palettes/${paletteId}/votes`);
+    paletteRef.transaction(currentVotes => (currentVotes || 0) + 1);
+  }
+
+  // Afficher les palettes de la communauté
+  function displayCommunityPalettes(palettes) {
+    const container = document.getElementById("community-palettes");
+    container.innerHTML = "";
+    for (const id in palettes) {
+      const palette = palettes[id];
+      const div = document.createElement("div");
+      div.innerHTML = `
+        <h3>${palette.name || "Palette"}</h3>
+        <div style="display: flex; gap: 5px;">
+          ${palette.colors.map(c => `<div style="width: 30px; height: 30px; background: ${c};"></div>`).join("")}
+        </div>
+        <p>Votes : ${palette.votes || 0}</p>
+        <button onclick="votePalette('${id}')">👍 Voter</button>
+      `;
+      container.appendChild(div);
+    }
+  }
+</script>
+
     <style>
         :root {
             /* Couleurs principales */
