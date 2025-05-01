@@ -1944,17 +1944,19 @@
 
 <body>
     <nav class="main-nav">
-        <div class="nav-container">
-            <a href="index.html" class="nav-brand">
-                <div class="nav-logo"><i class="fas fa-cube"></i></div>
-                Minecraft Atlas
-            </a>
-            <div class="nav-links">
-                <a href="index.html" class="nav-link">Textures</a>
-                <a href="palette.html" class="nav-link active">Palettes</a>
-            </div>
-        </div>
-    </nav>
+  <div class="nav-container">
+    <a href="index.html" class="nav-brand" aria-label="Accueil Minecraft Atlas">
+      <div class="nav-logo"><i class="fas fa-cube"></i></div>
+      Minecraft Atlas
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Textures</a>
+      <a href="palette.html" class="nav-link active">Palettes</a>
+      <button class="nav-link" onclick="loadPublicPalettes()" aria-label="Voir les palettes communautaires">🌍 Communauté</button>
+    </div>
+  </div>
+</nav>
+
     
     <header class="header">
         <div class="stars" id="stars"></div>
