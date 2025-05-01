@@ -12,6 +12,23 @@
     <link rel="shortcut icon" href="./max.jpg" type="image/x-icon">
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+    <script>
+  // ✅ Ta configuration Firebase ici
+  const firebaseConfig = {
+    apiKey: "AIzaSyC8zgWyFgE0QUAByCJ_bVP9_uvd_YFW2v8",
+    authDomain: "atlastextire.firebaseapp.com",
+    projectId: "atlastextire",
+    storageBucket: "atlastextire.firebasestorage.app",
+    messagingSenderId: "918701465163",
+    appId: "1:918701465163:web:c9be6f1050870e8fb6b7ce",
+    measurementId: "G-KTQ45RF7XJ"
+  };
+
+  // ✅ Initialisation Firebase
+  firebase.initializeApp(firebaseConfig);
+  const database = firebase.database();
+</script>
     <style>
         :root {
             /* Couleurs principales */
