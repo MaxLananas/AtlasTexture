@@ -1,0 +1,3908 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Palette Explorer | Combinaisons & Harmonies</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="./max.jpg" type="image/x-icon">
+    <link rel="shortcut icon" href="./max.jpg" type="image/x-icon">
+    <style>
+        :root {
+            /* Couleurs principales */
+            --primary: #5D87FF;
+            --primary-light: #A0BDFF;
+            --primary-dark: #3D57FF;
+            --accent: #FF9D5C;
+            --accent-dark: #FF7321;
+            
+            /* Surface et arrière-plans */
+            --surface-1: #1A1E2E;
+            --surface-2: #252B3D;
+            --surface-3: #2F364A;
+            --surface-4: #3A425A;
+            
+            /* Éléments UI */
+            --card-bg: rgba(50, 58, 83, 0.5);
+            --card-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            --hover-effect: rgba(93, 135, 255, 0.1);
+            
+            /* Texte */
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-tertiary: rgba(255, 255, 255, 0.5);
+            
+            /* Bordures et séparateurs */
+            --border: rgba(255, 255, 255, 0.1);
+            --border-hover: rgba(255, 255, 255, 0.2);
+            
+            /* Effets visuels */
+            --glass-blur: blur(12px);
+            --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-medium: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+            
+            /* Espacements */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-xxl: 48px;
+            
+            /* Coins arrondis */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --radius-full: 9999px;
+        }
+
+        /* Réinitialisation de base */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--surface-1);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        button {
+            font-family: inherit;
+            cursor: pointer;
+            background: none;
+            border: none;
+            outline: none;
+        }
+        
+        /* Scrollbar personnalisée */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--surface-2);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: var(--radius-full);
+            transition: var(--transition-fast);
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-light);
+        }
+        
+        /* Navigation principale */
+        .main-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 30, 46, 0.8);
+            backdrop-filter: var(--glass-blur);
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 15px var(--space-lg);
+        }
+        
+        .nav-brand {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        
+        .nav-logo {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-sm);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: var(--space-lg);
+        }
+        
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: var(--radius-md);
+            transition: var(--transition-fast);
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: var(--text-primary);
+            background: var(--hover-effect);
+        }
+        
+        .nav-link.active {
+            color: var(--text-primary);
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            height: 3px;
+            width: 20px;
+            background: var(--primary);
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: var(--radius-full);
+        }
+        
+        /* Header */
+        .header {
+            position: relative;
+            overflow: hidden;
+            min-height: 350px;
+            background: radial-gradient(ellipse at bottom, var(--surface-2) 0%, var(--surface-1) 80%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 70px;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1000px;
+            padding: var(--space-lg);
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: var(--space-md);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .hero-title::before {
+            content: "";
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: var(--accent);
+            border-radius: var(--radius-md);
+            top: -18px;
+            left: -25px;
+            z-index: -1;
+            opacity: 0.5;
+            transform: rotate(20deg);
+            filter: blur(5px);
+        }
+        
+        .hero-title::after {
+            content: "";
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: var(--radius-md);
+            bottom: -10px;
+            right: -15px;
+            z-index: -1;
+            opacity: 0.5;
+            transform: rotate(-15deg);
+            filter: blur(5px);
+        }
+        
+        .hero-title .highlight {
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto var(--space-xl);
+        }
+        
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0;
+            animation: twinkle var(--transition-slow) infinite;
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        
+        /* Navigation des catégories */
+        .category-nav {
+            max-width: 1200px;
+            margin: -25px auto 40px;
+            padding: 0 var(--space-lg);
+            position: relative;
+            z-index: 5;
+        }
+        
+        .category-list {
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            border-radius: var(--radius-full);
+            display: flex;
+            overflow-x: auto;
+            gap: var(--space-xs);
+            padding: 6px;
+            border: 1px solid var(--border);
+            box-shadow: var(--card-shadow);
+        }
+        
+        .category-item {
+            padding: 10px 20px;
+            white-space: nowrap;
+            color: var(--text-secondary);
+            border-radius: var(--radius-full);
+            transition: var(--transition-fast);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        
+        .category-item:hover {
+            color: var(--text-primary);
+            background: var(--hover-effect);
+        }
+        
+        .category-item.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Info bar */
+        .info-bar {
+            max-width: 1400px;
+            margin: 0 auto var(--space-xl);
+            padding: 0 var(--space-lg);
+        }
+        
+        .info-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--space-md);
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+            margin-bottom: var(--space-sm);
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            height: 4px;
+            width: 60px;
+            background: var(--accent);
+            bottom: -8px;
+            left: 0;
+            border-radius: var(--radius-full);
+        }
+        
+        .count-badge {
+            background: rgba(255, 157, 92, 0.15);
+            color: var(--accent);
+            padding: 6px 15px;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 157, 92, 0.2);
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            height: 36px;
+        }
+        
+        .count-badge i {
+            font-size: 0.8rem;
+        }
+        
+        .view-options {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            margin-left: auto;
+        }
+        
+        .sort-select {
+            background: var(--surface-3);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 8px 12px;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            outline: none;
+            transition: var(--transition-fast);
+        }
+        
+        .sort-select:focus {
+            border-color: var(--primary);
+        }
+        
+        .sort-select option {
+            background: var(--surface-2);
+        }
+        
+        .view-switcher {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            background: var(--surface-2);
+            border-radius: var(--radius-full);
+            padding: 5px;
+        }
+        
+        .view-mode {
+            padding: 7px 14px;
+            border-radius: var(--radius-full);
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition-fast);
+        }
+        
+        .view-mode:hover {
+            color: var(--text-secondary);
+        }
+        
+        .view-mode.active {
+            background: var(--accent);
+            color: white;
+        }
+        
+        /* Palette grid */
+        .palette-container {
+            max-width: 1400px;
+            margin: 0 auto var(--space-xxl);
+            padding: 0 var(--space-lg);
+        }
+        
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: var(--space-lg);
+        }
+        
+        .palette-grid.list-view {
+            grid-template-columns: 1fr;
+        }
+        
+        .palette-card {
+            position: relative;
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border);
+            transition: var(--transition-medium);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: cardAppear 0.5s forwards;
+        }
+        
+        @keyframes cardAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .palette-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--border-hover);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35);
+            z-index: 1;
+        }
+        
+        .palette-grid.list-view .palette-card {
+            flex-direction: row;
+            align-items: center;
+        }
+        
+        .palette-preview {
+            position: relative;
+            overflow: hidden;
+            padding: var(--space-lg);
+            background: var(--surface-3);
+        }
+        
+        .palette-blocks {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-sm);
+        }
+        
+        .palette-grid.list-view .palette-preview {
+            width: 40%;
+            flex-shrink: 0;
+        }
+        
+        .palette-grid.list-view .palette-blocks {
+            grid-template-columns: repeat(4, 1fr);
+        }
+        
+        .palette-block {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: var(--transition-medium);
+        }
+        
+        .palette-card:hover .palette-block {
+            transform: scale(1.05);
+        }
+        
+        .palette-block img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            image-rendering: pixelated;
+        }
+        
+        .palette-content {
+            display: flex;
+            flex-direction: column;
+            padding: var(--space-lg);
+            flex-grow: 1;
+            border-top: 1px solid var(--border);
+        }
+        
+        .palette-grid.list-view .palette-content {
+            border-top: none;
+            border-left: 1px solid var(--border);
+        }
+        
+        .palette-favorite {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 36px;
+            height: 36px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            z-index: 5;
+        }
+        
+        .palette-favorite:hover {
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        .palette-favorite.active {
+            color: #f1c40f;
+        }
+        
+        .palette-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: var(--space-sm);
+        }
+        
+        .palette-grid.list-view .palette-name {
+            font-size: 1.3rem;
+        }
+        
+        .palette-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: var(--space-md);
+        }
+        
+        .palette-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+        
+        .palette-tag {
+            background: rgba(93, 135, 255, 0.15);
+            color: var(--primary-light);
+            padding: 3px 8px;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .palette-actions {
+            display: flex;
+            gap: var(--space-sm);
+            margin-top: auto;
+        }
+        
+        .palette-actions-row {
+            display: flex;
+            gap: var(--space-sm);
+            margin-top: var(--space-sm);
+        }
+        
+        .action-btn {
+            flex-grow: 1;
+            padding: 10px 12px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-xs);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .action-btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            color: white;
+        }
+        
+        .action-btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: var(--transition-medium);
+        }
+        
+        .action-btn-primary:hover::before {
+            left: 100%;
+        }
+        
+        .action-btn-primary:hover {
+            transform: translateY(-3px);
+        }
+        
+        .action-btn-secondary {
+            background: var(--surface-4);
+            color: var(--text-secondary);
+        }
+        
+        .action-btn-secondary:hover {
+            background: var(--hover-effect);
+            transform: translateY(-3px);
+        }
+        
+        .action-btn-icon {
+            flex-grow: 0;
+            width: 42px;
+        }
+        
+        /* Palette Creator Section */
+        .creator-section {
+            max-width: 1200px;
+            margin: 0 auto var(--space-xl);
+            padding: var(--space-xl) var(--space-lg);
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            box-shadow: var(--card-shadow);
+        }
+        
+        .creator-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: var(--space-md);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        
+        .creator-title i {
+            color: var(--accent);
+        }
+        
+        .creator-info {
+            color: var(--text-secondary);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .creator-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .creator-slot {
+            aspect-ratio: 1;
+            background: var(--surface-3);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed var(--border);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            position: relative;
+        }
+        
+        .creator-slot:hover {
+            border-color: var(--primary);
+            background: var(--surface-4);
+        }
+        
+        .creator-slot.filled {
+            border-style: solid;
+            border-color: var(--primary);
+        }
+        
+        .creator-slot img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+            image-rendering: pixelated;
+        }
+        
+        .creator-slot .remove-block {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 22px;
+            height: 22px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            opacity: 0;
+            transition: var(--transition-fast);
+            transform: scale(0.8);
+        }
+        
+        .creator-slot.filled:hover .remove-block {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .creator-actions {
+            display: flex;
+            gap: var(--space-md);
+            margin-top: var(--space-lg);
+        }
+        
+        .creator-btn {
+            padding: 12px 24px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            transition: var(--transition-fast);
+        }
+        
+        .creator-btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            color: white;
+        }
+        
+        .creator-btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 157, 92, 0.3);
+        }
+        
+        .creator-btn-secondary {
+            background: var(--surface-4);
+            color: var(--text-secondary);
+        }
+        
+        .creator-btn-secondary:hover {
+            background: var(--hover-effect);
+            transform: translateY(-3px);
+        }
+        
+        .inspiration-btn {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .inspiration-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        /* 3D Preview Section */
+        .preview3d-container {
+            position: relative;
+            height: 200px;
+            width: 100%;
+            margin-top: var(--space-md);
+            margin-bottom: var(--space-lg);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: var(--surface-2);
+            display: none;
+        }
+        
+        .preview3d-container.active {
+            display: block;
+        }
+        
+        .preview3d-scene {
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            position: relative;
+        }
+        
+        .palette-example {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            z-index: 5;
+        }
+        
+        .palette-example:hover {
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Block picker modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 18, 25, 0.9);
+            backdrop-filter: var(--glass-blur);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-medium);
+        }
+        
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            background: var(--surface-2);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            position: relative;
+            transform: scale(0.9);
+            transition: var(--transition-medium);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+        
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-lg) var(--space-xl);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .modal-close {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--surface-3);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: var(--transition-fast);
+        }
+        
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+        
+        .modal-body {
+            padding: var(--space-lg);
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        
+        .modal-search {
+            margin-bottom: var(--space-lg);
+            position: relative;
+        }
+        
+        .modal-search-input {
+            width: 100%;
+            padding: 12px 20px;
+            padding-left: 45px;
+            background: var(--surface-3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: var(--transition-fast);
+        }
+        
+        .modal-search-input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+        
+        .modal-search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-tertiary);
+            pointer-events: none;
+        }
+        
+        .block-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: var(--space-md);
+        }
+        
+        .block-item {
+            aspect-ratio: 1;
+            background: var(--surface-3);
+            border-radius: var(--radius-md);
+            padding: var(--space-sm);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+        
+        .block-item:hover {
+            background: var(--surface-4);
+            transform: translateY(-3px);
+            border-color: var(--border-hover);
+        }
+        
+        .block-item img {
+            width: 80%;
+            height: 80%;
+            object-fit: cover;
+            image-rendering: pixelated;
+            margin-bottom: var(--space-xs);
+        }
+        
+        .block-name {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+        
+        /* Fenêtre modale d'exemple */
+        .example-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 18, 25, 0.9);
+            backdrop-filter: var(--glass-blur);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-medium);
+        }
+        
+        .example-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .example-content {
+            width: 90%;
+            max-width: 1000px;
+            height: 85vh;
+            background: var(--surface-2);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            position: relative;
+            transform: scale(0.9);
+            transition: var(--transition-medium);
+            border: 1px solid var(--border);
+        }
+        
+        .example-modal.active .example-content {
+            transform: scale(1);
+        }
+        
+        .example-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-lg) var(--space-xl);
+            border-bottom: 1px solid var(--border);
+            background: var(--surface-3);
+        }
+        
+        .example-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .example-close {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.2);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: var(--transition-fast);
+        }
+        
+        .example-close:hover {
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--text-primary);
+        }
+        
+        .example-image {
+            width: 100%;
+            height: calc(85vh - 70px);
+            object-fit: cover;
+        }
+        
+        /* Favoris section */
+        .favorites-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: var(--transition-medium);
+            z-index: 90;
+        }
+        
+        .favorites-toggle:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .favorites-toggle:active {
+            transform: translateY(0);
+        }
+        
+        .favorites-drawer {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            max-width: 400px;
+            height: 80vh;
+            background: var(--surface-2);
+            border-top-left-radius: var(--radius-lg);
+            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.3);
+            z-index: 95;
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid var(--border);
+        }
+        
+        .favorites-drawer.active {
+            transform: translateX(0);
+        }
+        
+        .favorites-header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .favorites-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        
+        .favorites-title i {
+            color: #f1c40f;
+        }
+        
+        .favorites-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--surface-3);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: var(--transition-fast);
+        }
+        
+        .favorites-close:hover {
+            background: var(--hover-effect);
+            color: var(--text-primary);
+        }
+        
+        .favorites-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--space-md);
+        }
+        
+        .favorites-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+        
+        .favorite-item {
+            display: flex;
+            gap: var(--space-md);
+            background: var(--surface-3);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: var(--transition-fast);
+        }
+        
+        .favorite-item:hover {
+            transform: translateY(-3px);
+        }
+        
+        .favorite-preview {
+            width: 80px;
+            height: 80px;
+            flex-shrink: 0;
+            background: var(--surface-4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .favorite-preview img {
+            width: 70%;
+            height: 70%;
+            object-fit: contain;
+            image-rendering: pixelated;
+        }
+        
+        .favorite-content {
+            padding: var(--space-sm) var(--space-sm) var(--space-sm) 0;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .favorite-name {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 2px;
+        }
+        
+        .favorite-category {
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .favorite-actions {
+            display: flex;
+            gap: var(--space-xs);
+            margin-top: auto;
+        }
+        
+        .favorite-btn {
+            font-size: 0.8rem;
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            background: var(--surface-2);
+            color: var(--text-secondary);
+            transition: var(--transition-fast);
+        }
+        
+        .favorite-btn:hover {
+            background: var(--hover-effect);
+        }
+        
+        .favorite-btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .favorite-btn-primary:hover {
+            background: var(--primary-dark);
+        }
+        
+        .favorites-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--text-tertiary);
+            text-align: center;
+            padding: var(--space-lg);
+        }
+        
+        .favorites-empty i {
+            font-size: 3rem;
+            margin-bottom: var(--space-md);
+            opacity: 0.3;
+        }
+        
+        .favorites-empty p {
+            max-width: 250px;
+            margin: 0 auto;
+        }
+        
+        /* Presentoir caroussel */
+        .showcase-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 18, 25, 0.95);
+            backdrop-filter: var(--glass-blur);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-medium);
+        }
+        
+        .showcase-container.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .showcase-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-lg) var(--space-xl);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .showcase-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .showcase-close {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--surface-3);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: var(--transition-fast);
+        }
+        
+        .showcase-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+        
+        .showcase-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .showcase-slide {
+            position: absolute;
+            width: 100%;
+            max-width: 1000px;
+            padding: 0 var(--space-lg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transform: scale(0.9) translateX(-50px);
+            transition: all 0.5s ease;
+        }
+        
+        .showcase-slide.active {
+            opacity: 1;
+            transform: scale(1) translateX(0);
+            z-index: 2;
+        }
+        
+        .showcase-palette {
+            background: var(--surface-2);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            padding: var(--space-xl);
+            margin-bottom: var(--space-xl);
+            box-shadow: var(--card-shadow);
+        }
+        
+        .showcase-palette-name {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: var(--space-md);
+            text-align: center;
+        }
+        
+        .showcase-palette-desc {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xl);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .showcase-blocks {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: var(--space-lg);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .showcase-block {
+            aspect-ratio: 1;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .showcase-block:hover {
+            transform: scale(1.1) translateY(-10px);
+        }
+        
+        .showcase-block img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            image-rendering: pixelated;
+        }
+        
+        .showcase-controls {
+            position: absolute;
+            bottom: var(--space-xl);
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: var(--space-md);
+            z-index: 5;
+        }
+        
+        .showcase-arrow {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .showcase-arrow:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+        }
+        
+        .showcase-dots {
+            position: absolute;
+            bottom: var(--space-lg);
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: var(--space-xs);
+        }
+        
+        .showcase-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--surface-4);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+        
+        .showcase-dot.active {
+            background: var(--primary);
+        }
+        
+        .showcase-actions {
+            display: flex;
+            gap: var(--space-md);
+            margin-top: var(--space-lg);
+        }
+        
+        .showcase-btn {
+            padding: 12px 24px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            transition: var(--transition-fast);
+        }
+        
+        .showcase-btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .showcase-btn-primary:hover {
+            background: var(--accent-dark);
+            transform: translateY(-3px);
+        }
+        
+        .showcase-btn-secondary {
+            background: var(--surface-3);
+            color: var(--text-secondary);
+        }
+        
+        .showcase-btn-secondary:hover {
+            background: var(--surface-4);
+            transform: translateY(-3px);
+        }
+        
+        /* Toast notifications */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+            pointer-events: none;
+        }
+        
+        .toast {
+            background: var(--surface-2);
+            border-left: 4px solid var(--primary);
+            padding: 16px 20px;
+            border-radius: var(--radius-md);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            transform: translateX(100%);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            max-width: 350px;
+            pointer-events: auto;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .toast.success {
+            border-left-color: #4CAF50;
+        }
+        
+        .toast.info {
+            border-left-color: var(--primary);
+        }
+        
+        .toast.warning {
+            border-left-color: #FFC107;
+        }
+        
+        .toast.error {
+            border-left-color: #F44336;
+        }
+        
+        .toast-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .toast.success .toast-icon {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+        }
+        
+        .toast.info .toast-icon {
+            background: rgba(93, 135, 255, 0.2);
+            color: var(--primary);
+        }
+        
+        .toast.warning .toast-icon {
+            background: rgba(255, 193, 7, 0.2);
+            color: #FFC107;
+        }
+        
+        .toast.error .toast-icon {
+            background: rgba(244, 67, 54, 0.2);
+            color: #F44336;
+        }
+        
+        .toast-content {
+            flex-grow: 1;
+        }
+        
+        .toast-title {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 2px;
+        }
+        
+        .toast-message {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        
+        .toast-close {
+            color: var(--text-tertiary);
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            transition: var(--transition-fast);
+            flex-shrink: 0;
+        }
+        
+        .toast-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+        
+        /* Loader */
+        .loader {
+            display: none;
+            text-align: center;
+            padding: var(--space-xxl) 0;
+        }
+        
+        .loader-spinner {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto var(--space-lg);
+            position: relative;
+        }
+        
+        .loader-spinner::before,
+        .loader-spinner::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: transparent;
+            border: 5px solid transparent;
+            border-top-color: var(--accent);
+        }
+        
+        .loader-spinner::before {
+            z-index: 10;
+            animation: spin 1s infinite;
+        }
+        
+        .loader-spinner::after {
+            border: 5px solid rgba(255, 157, 92, 0.2);
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loader-text {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        /* No results */
+        .no-results {
+            display: none;
+            text-align: center;
+            padding: var(--space-xxl) 0;
+        }
+        
+        .no-results-icon {
+            font-size: 4rem;
+            color: var(--surface-4);
+            margin-bottom: var(--space-md);
+        }
+        
+        .no-results-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: var(--space-sm);
+            color: var(--text-secondary);
+        }
+        
+        .no-results-text {
+            color: var(--text-tertiary);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: auto;
+            background: var(--surface-2);
+            border-top: 1px solid var(--border);
+            padding: var(--space-xxl) 0 var(--space-lg);
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+            text-align: center;
+        }
+        
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: var(--space-md);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+        }
+        
+        .footer-text {
+            color: var(--text-tertiary);
+            max-width: 600px;
+            margin: 0 auto var(--space-lg);
+        }
+        
+        .footer-copyright {
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .palette-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: var(--space-md);
+            }
+            
+            .creator-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .palette-grid.list-view .palette-card {
+                flex-direction: column;
+            }
+            
+            .palette-grid.list-view .palette-preview {
+                width: 100%;
+            }
+            
+            .palette-grid.list-view .palette-content {
+                border-left: none;
+                border-top: 1px solid var(--border);
+            }
+            
+            .showcase-blocks {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .palette-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .creator-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .creator-actions {
+                flex-direction: column;
+            }
+            
+            .creator-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .info-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .view-options {
+                margin-left: 0;
+                width: 100%;
+                flex-wrap: wrap;
+            }
+            
+            .nav-links {
+                gap: var(--space-sm);
+            }
+            
+            .nav-link {
+                padding: 6px 10px;
+                font-size: 0.9rem;
+            }
+            
+            .favorites-drawer {
+                max-width: 100%;
+            }
+            
+            .showcase-blocks {
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--space-md);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .palette-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-md);
+            }
+            
+            .creator-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--space-sm);
+            }
+            
+            .palette-preview {
+                padding: var(--space-md);
+            }
+            
+            .palette-content {
+                padding: var(--space-md);
+            }
+            
+            .category-item {
+                padding: 8px 15px;
+                font-size: 0.85rem;
+            }
+            
+            .nav-brand {
+                font-size: 1.2rem;
+            }
+            
+            .nav-logo {
+                width: 28px;
+                height: 28px;
+                font-size: 1rem;
+            }
+            
+            .modal-body {
+                padding: var(--space-md);
+            }
+            
+            .block-grid {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+                gap: var(--space-sm);
+            }
+            
+            .showcase-palette {
+                padding: var(--space-md);
+            }
+            
+            .showcase-blocks {
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--space-sm);
+            }
+            
+            .showcase-palette-name {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <div class="nav-logo"><i class="fas fa-cube"></i></div>
+                Minecraft Atlas
+            </a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Textures</a>
+                <a href="palette.html" class="nav-link active">Palettes</a>
+            </div>
+        </div>
+    </nav>
+    
+    <header class="header">
+        <div class="stars" id="stars"></div>
+        <div class="header-content">
+            <h1 class="hero-title">Palettes de <span class="highlight">Blocs</span></h1>
+            <p class="subtitle">Découvrez et créez des combinaisons de blocs harmonieuses pour vos constructions Minecraft</p>
+        </div>
+    </header>
+    
+    <div class="category-nav">
+        <div class="category-list" id="category-list">
+            <button class="category-item active" data-category="all">Toutes les palettes</button>
+            <button class="category-item" data-category="Construction">Construction</button>
+            <button class="category-item" data-category="Médiéval">Médiéval</button>
+            <button class="category-item" data-category="Moderne">Moderne</button>
+            <button class="category-item" data-category="Futuriste">Futuriste</button>
+            <button class="category-item" data-category="Nature">Nature</button>
+            <button class="category-item" data-category="Aquatique">Aquatique</button>
+            <button class="category-item" data-category="Nether">Nether</button>
+            <button class="category-item" data-category="End">End</button>
+            <button class="category-item" data-category="Décoration">Décoration</button>
+            <button class="category-item" data-category="Divers">Divers</button>
+        </div>
+    </div>
+    
+    <section class="creator-section">
+        <h2 class="creator-title"><i class="fas fa-wand-magic-sparkles"></i> Créateur de palettes</h2>
+        <p class="creator-info">Créez votre propre palette en sélectionnant jusqu'à 6 blocs qui se complètent parfaitement pour vos projets de construction.</p>
+        
+        <div class="creator-grid" id="creator-grid">
+            <div class="creator-slot" data-slot="1">
+                <i class="fas fa-plus"></i>
+                <div class="remove-block"><i class="fas fa-xmark"></i></div>
+            </div>
+            <div class="creator-slot" data-slot="2">
+                <i class="fas fa-plus"></i>
+                <div class="remove-block"><i class="fas fa-xmark"></i></div>
+            </div>
+            <div class="creator-slot" data-slot="3">
+                <i class="fas fa-plus"></i>
+                <div class="remove-block"><i class="fas fa-xmark"></i></div>
+            </div>
+            <div class="creator-slot" data-slot="4">
+                <i class="fas fa-plus"></i>
+                <div class="remove-block"><i class="fas fa-xmark"></i></div>
+            </div>
+            <div class="creator-slot" data-slot="5">
+                <i class="fas fa-plus"></i>
+                <div class="remove-block"><i class="fas fa-xmark"></i></div>
+            </div>
+            <div class="creator-slot" data-slot="6">
+                <i class="fas fa-plus"></i>
+                <div class="remove-block"><i class="fas fa-xmark"></i></div>
+            </div>
+        </div>
+        
+        <div class="preview3d-container" id="preview3d-container">
+            <div class="preview3d-scene" id="preview3d-scene"></div>
+        </div>
+        
+        <div class="creator-actions">
+            <button class="creator-btn creator-btn-primary" id="save-palette">
+                <i class="fas fa-save"></i> Sauvegarder cette palette
+            </button>
+            <button class="creator-btn creator-btn-secondary" id="clear-palette">
+                <i class="fas fa-trash"></i> Effacer tout
+            </button>
+            <button class="creator-btn inspiration-btn" id="random-palette">
+                <i class="fas fa-dice"></i> Palette aléatoire
+            </button>
+        </div>
+    </section>
+    
+    <div class="info-bar">
+        <div class="info-content">
+            <div>
+                <h2 class="section-title">Palettes recommandées</h2>
+            </div>
+            <div class="count-badge">
+                <i class="fas fa-layer-group"></i>
+                <span id="palette-count">0 palettes</span>
+            </div>
+            <div class="view-options">
+                <select class="sort-select" id="sort-select">
+                    <option value="default">Tri par défaut</option>
+                    <option value="name">Nom (A-Z)</option>
+                    <option value="name-desc">Nom (Z-A)</option>
+                    <option value="recent">Plus récentes</option>
+                    <option value="category">Catégorie</option>
+                </select>
+                <div class="view-switcher">
+                    <button class="view-mode active" id="grid-view">
+                        <i class="fas fa-th"></i> Grille
+                    </button>
+                    <button class="view-mode" id="list-view">
+                        <i class="fas fa-bars"></i> Liste
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="palette-container">
+        <div class="loader" id="loader">
+            <div class="loader-spinner"></div>
+            <p class="loader-text">Chargement des palettes...</p>
+        </div>
+        
+        <div class="no-results" id="no-results">
+            <div class="no-results-icon">
+                <i class="fas fa-layer-group"></i>
+            </div>
+            <h3 class="no-results-title">Aucune palette trouvée</h3>
+            <p class="no-results-text">Essayez un autre filtre ou créez votre propre palette avec l'outil ci-dessus.</p>
+        </div>
+        
+        <div class="palette-grid" id="palette-grid"></div>
+    </div>
+    
+    <div class="favorites-toggle" id="favorites-toggle">
+        <i class="fas fa-star"></i>
+    </div>
+    
+    <div class="favorites-drawer" id="favorites-drawer">
+        <div class="favorites-header">
+            <div class="favorites-title">
+                <i class="fas fa-star"></i> Palettes favorites
+            </div>
+            <button class="favorites-close" id="favorites-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="favorites-content" id="favorites-content">
+            <div class="favorites-empty" id="favorites-empty">
+                <i class="fas fa-star"></i>
+                <h3>Aucune favorite</h3>
+                <p>Cliquez sur l'étoile d'une palette pour l'ajouter à vos favoris</p>
+            </div>
+            <div class="favorites-list" id="favorites-list">
+                <!-- Favorites will be added here -->
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="block-picker-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Sélectionner un bloc</h3>
+                <button class="modal-close" id="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-search">
+                    <span class="modal-search-icon"><i class="fas fa-search"></i></span>
+                    <input type="text" class="modal-search-input" id="block-search" placeholder="Rechercher un bloc...">
+                </div>
+                <div class="block-grid" id="block-grid"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="example-modal" id="example-modal">
+        <div class="example-content">
+            <div class="example-header">
+                <h3 class="example-title" id="example-title">Exemple de construction</h3>
+                <button class="example-close" id="example-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <img src="" alt="Exemple de construction" class="example-image" id="example-image">
+        </div>
+    </div>
+    
+    <div class="showcase-container" id="showcase-container">
+        <div class="showcase-header">
+            <h3 class="showcase-title">Showcase des Palettes</h3>
+            <button class="showcase-close" id="showcase-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="showcase-content" id="showcase-content">
+            <!-- Slides will be added here -->
+        </div>
+        <div class="showcase-controls">
+            <button class="showcase-arrow" id="showcase-prev">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="showcase-arrow" id="showcase-next">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+        <div class="showcase-dots" id="showcase-dots">
+            <!-- Dots will be added here -->
+        </div>
+    </div>
+    
+    <div class="toast-container" id="toast-container"></div>
+    
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">Minecraft Texture Atlas</div>
+            <p class="footer-text">
+                Une galerie ultra-moderne pour explorer et télécharger toutes les textures de Minecraft.
+            </p>
+            <p class="footer-copyright">
+                &copy; 2025 Minecraft Texture Atlas. Minecraft est une marque déposée de Mojang Studios.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Références DOM
+            const creatorSlots = document.querySelectorAll('.creator-slot');
+            const blockPickerModal = document.getElementById('block-picker-modal');
+            const modalClose = document.getElementById('modal-close');
+            const blockGrid = document.getElementById('block-grid');
+            const blockSearch = document.getElementById('block-search');
+            const savePaletteBtn = document.getElementById('save-palette');
+            const clearPaletteBtn = document.getElementById('clear-palette');
+            const randomPaletteBtn = document.getElementById('random-palette');
+            const paletteGrid = document.getElementById('palette-grid');
+            const paletteCount = document.getElementById('palette-count');
+            const gridViewBtn = document.getElementById('grid-view');
+            const listViewBtn = document.getElementById('list-view');
+            const sortSelect = document.getElementById('sort-select');
+            const categoryItems = document.querySelectorAll('.category-item');
+            const loader = document.getElementById('loader');
+            const noResults = document.getElementById('no-results');
+            const toastContainer = document.getElementById('toast-container');
+            const preview3dContainer = document.getElementById('preview3d-container');
+            const preview3dScene = document.getElementById('preview3d-scene');
+            const favoritesToggle = document.getElementById('favorites-toggle');
+            const favoritesDrawer = document.getElementById('favorites-drawer');
+            const favoritesClose = document.getElementById('favorites-close');
+            const favoritesList = document.getElementById('favorites-list');
+            const favoritesEmpty = document.getElementById('favorites-empty');
+            const showcaseContainer = document.getElementById('showcase-container');
+            const showcaseContent = document.getElementById('showcase-content');
+            const showcaseClose = document.getElementById('showcase-close');
+            const showcasePrev = document.getElementById('showcase-prev');
+            const showcaseNext = document.getElementById('showcase-next');
+            const showcaseDots = document.getElementById('showcase-dots');
+            const exampleModal = document.getElementById('example-modal');
+            const exampleClose = document.getElementById('example-close');
+            const exampleImage = document.getElementById('example-image');
+            const exampleTitle = document.getElementById('example-title');
+            
+            // Variables globales
+            let allBlocks = [];
+            let allPalettes = [];
+            let currentSlot = null;
+            let paletteData = {
+                slots: {
+                    1: null, 
+                    2: null, 
+                    3: null, 
+                    4: null, 
+                    5: null, 
+                    6: null
+                }
+            };
+            let viewMode = 'grid';
+            let starsCreated = false;
+            let currentCategory = 'all';
+            let sortBy = 'default';
+            let showcaseSlides = [];
+            let currentSlide = 0;
+            let favorites = [];
+            let blockCategoryMap = {
+                'stone': 'Pierre',
+                'dirt': 'Terre',
+                'sand': 'Terre',
+                'gravel': 'Terre',
+                'log': 'Bois',
+                'planks': 'Bois',
+                'wood': 'Bois',
+                'ore': 'Minerai',
+                'diamond': 'Minerai',
+                'gold': 'Minerai',
+                'iron': 'Minerai',
+                'coal': 'Minerai',
+                'redstone': 'Redstone',
+                'emerald': 'Minerai',
+                'lapis': 'Minerai',
+                'quartz': 'Minerai',
+                'obsidian': 'Pierre',
+                'glass': 'Verre',
+                'wool': 'Laine',
+                'concrete': 'Béton',
+                'terracotta': 'Terre cuite',
+                'glazed': 'Terre cuite',
+                'shulker': 'End',
+                'purpur': 'End',
+                'end': 'End',
+                'prismarine': 'Aquatique',
+                'sea': 'Aquatique',
+                'coral': 'Aquatique',
+                'nether': 'Nether',
+                'warped': 'Nether',
+                'crimson': 'Nether',
+                'blackstone': 'Nether',
+                'basalt': 'Nether',
+                'soul': 'Nether',
+                'ancient': 'Nether',
+                'leaves': 'Feuillage',
+                'flower': 'Nature',
+                'grass': 'Nature',
+                'moss': 'Nature',
+                'vine': 'Nature',
+                'melon': 'Nature',
+                'pumpkin': 'Nature',
+                'bamboo': 'Nature',
+                'mushroom': 'Nature',
+                'hay': 'Nature',
+                'snow': 'Nature',
+                'ice': 'Nature',
+                'book': 'Décoratif',
+                'brick': 'Construction',
+                'sandstone': 'Construction',
+                'stained': 'Coloré',
+                'white': 'Coloré',
+                'orange': 'Coloré',
+                'magenta': 'Coloré',
+                'light_blue': 'Coloré',
+                'yellow': 'Coloré',
+                'lime': 'Coloré',
+                'pink': 'Coloré',
+                'gray': 'Coloré',
+                'light_gray': 'Coloré',
+                'cyan': 'Coloré',
+                'purple': 'Coloré',
+                'blue': 'Coloré',
+                'brown': 'Coloré',
+                'green': 'Coloré',
+                'red': 'Coloré',
+                'black': 'Coloré'
+            };
+            
+            // Exemples d'images de constructions pour certaines palettes
+            const exampleImages = {
+                'palette-1': 'https://i.imgur.com/lD8uIQM.jpeg', // Château médiéval
+                'palette-2': 'https://i.imgur.com/1oFBVQK.jpeg', // Tour de guet
+                'palette-6': 'https://i.imgur.com/Bw2c1GN.jpeg', // Maison moderne
+                'palette-11': 'https://i.imgur.com/WMhtkXx.jpeg', // Cabane forêt
+                'palette-16': 'https://i.imgur.com/Q8L6vZD.jpeg', // Vaisseau spatial
+                'palette-21': 'https://i.imgur.com/LMpFXPX.jpeg', // Cité sous-marine
+                'palette-26': 'https://i.imgur.com/HQVfK8k.jpeg', // Forteresse nether
+                'palette-31': 'https://i.imgur.com/ztOvsvs.jpeg', // Cité du End
+                'palette-36': 'https://i.imgur.com/EkiHrtA.jpeg', // Théâtre
+                'palette-41': 'https://i.imgur.com/QaIDdio.jpeg'  // Construction
+            };
+            
+            // Créer les étoiles dans l'en-tête
+            function createStars() {
+                if (starsCreated) return;
+                
+                const starsContainer = document.getElementById('stars');
+                const starCount = 100;
+                
+                for (let i = 0; i < starCount; i++) {
+                    const star = document.createElement('div');
+                    star.classList.add('star');
+                    star.style.top = `${Math.random() * 100}%`;
+                    star.style.left = `${Math.random() * 100}%`;
+                    star.style.animationDelay = `${Math.random() * 5}s`;
+                    star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                    starsContainer.appendChild(star);
+                }
+                
+                starsCreated = true;
+            }
+            
+            // Charger les données des blocs depuis le JSON
+            // Charger les données des blocs depuis le JSON
+// Charger les données des blocs depuis le JSON et créer des palettes dynamiques
+async function loadBlocks() {
+    try {
+        const response = await fetch('texture-data.json');
+        
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP: ${response.status}`);
+        }
+        
+        // Chargement réussi, utiliser les données du JSON
+        allBlocks = await response.json();
+        
+        // Améliorer les données
+        allBlocks = allBlocks.map(block => {
+            const displayName = block.name
+                .replace('.png', '')
+                .replace(/_/g, ' ')
+                .replace(/\b\w/g, l => l.toUpperCase());
+            
+            return {
+                ...block,
+                displayName,
+                category: getCategoryForBlock(block.name.toLowerCase())
+            };
+        });
+        
+        // Vérifier les blocs réellement disponibles en essayant de charger leurs images
+        const availableBlocks = [];
+        const promises = allBlocks.map(block => {
+            return new Promise(resolve => {
+                const img = new Image();
+                img.onload = () => {
+                    availableBlocks.push(block);
+                    resolve();
+                };
+                img.onerror = () => resolve(); // Juste résoudre, ne pas ajouter ce bloc
+                img.src = block.path;
+            });
+        });
+        
+        // Attendre que tous les tests de chargement soient terminés
+        await Promise.all(promises);
+        
+        // Remplacer la liste par les blocs disponibles
+        allBlocks = availableBlocks;
+        
+        console.log(`${allBlocks.length} textures disponibles trouvées.`);
+        
+        // Si nous avons des blocs, créer des palettes dynamiques
+        if (allBlocks.length > 0) {
+            createDynamicPalettes();
+        } else {
+            showToast('error', 'Aucune texture', 'Aucune texture n\'a pu être chargée. Vérifiez le dossier blocks.');
+        }
+        
+        loadFavorites();
+        
+    } catch (error) {
+        console.error('Erreur lors du chargement des blocs:', error);
+        showToast('error', 'Erreur', 'Échec du chargement des textures. Essayez de recharger la page.');
+    }
+}
+
+// Tenter d'attribuer une catégorie en fonction du nom du bloc
+function getCategoryForBlock(name) {
+    if (name.includes('stone') || name.includes('cobble') || name.includes('brick') || name.includes('granite')) 
+        return 'Pierre';
+    if (name.includes('log') || name.includes('planks') || name.includes('wood')) 
+        return 'Bois';
+    if (name.includes('dirt') || name.includes('grass') || name.includes('sand')) 
+        return 'Terre';
+    if (name.includes('iron') || name.includes('gold') || name.includes('diamond') || name.includes('emerald'))
+        return 'Minerai';
+    if (name.includes('concrete') || name.includes('terracotta'))
+        return 'Béton';
+    if (name.includes('wool') || name.includes('carpet'))
+        return 'Laine';
+    
+    return 'Divers';
+}
+
+// Créer des palettes dynamiques basées sur les blocs disponibles
+function createDynamicPalettes() {
+    // Vider les palettes existantes
+    allPalettes = [];
+    
+    // Vérifier s'il y a assez de blocs pour faire des palettes
+    if (allBlocks.length < 6) {
+        // S'il y a moins de 6 blocs, faire une palette avec tous
+        allPalettes.push({
+            id: 'palette-1',
+            name: 'Palette Basique',
+            description: 'Palette basique utilisant toutes les textures disponibles',
+            category: 'Divers',
+            blocks: [...allBlocks],
+            created: new Date().toISOString()
+        });
+        
+        savePalettesToStorage();
+        prepareShowcase();
+        displayPalettes(allPalettes);
+        return;
+    }
+    
+    // Regrouper les blocs par catégorie
+    const blocksByCategory = {};
+    allBlocks.forEach(block => {
+        if (!blocksByCategory[block.category]) {
+            blocksByCategory[block.category] = [];
+        }
+        blocksByCategory[block.category].push(block);
+    });
+    
+    // Créer une palette pour chaque catégorie ayant au moins 6 blocs
+    let paletteId = 1;
+    for (const [category, blocks] of Object.entries(blocksByCategory)) {
+        if (blocks.length >= 6) {
+            allPalettes.push({
+                id: `palette-${paletteId++}`,
+                name: `Palette ${category}`,
+                description: `Une collection de blocs de type ${category.toLowerCase()}`,
+                category: category,
+                blocks: blocks.slice(0, 6), // Prendre les 6 premiers blocs
+                created: new Date().toISOString()
+            });
+        }
+    }
+    
+    // Créer quelques palettes mixtes
+    const numMixedPalettes = Math.min(5, Math.floor(allBlocks.length / 6)); // Max 5 palettes mixtes
+    
+    for (let i = 0; i < numMixedPalettes; i++) {
+        // Mélanger tous les blocs
+        const shuffled = [...allBlocks].sort(() => 0.5 - Math.random());
+        
+        allPalettes.push({
+            id: `palette-${paletteId++}`,
+            name: `Palette Mixte ${i+1}`,
+            description: `Une combinaison aléatoire de blocs divers`,
+            category: 'Divers',
+            blocks: shuffled.slice(0, 6),
+            created: new Date().toISOString()
+        });
+    }
+    
+    // Sauvegarder les palettes
+    savePalettesToStorage();
+    
+    // Préparer le showcase et afficher les palettes
+    prepareShowcase();
+    displayPalettes(allPalettes);
+}
+            // Charger les palettes sauvegardées
+function loadPalettes() {
+    // Essayer de charger depuis le localStorage
+    const savedPalettes = localStorage.getItem('minecraft-palettes');
+    
+    if (savedPalettes) {
+        allPalettes = JSON.parse(savedPalettes);
+    } else {
+        // Palettes par défaut avec des noms de textures plus standardisés
+        allPalettes = [
+            // MÉDIÉVAL
+            {
+                id: 'palette-1',
+                name: 'Château Médiéval Classic',
+                description: 'La palette par excellence pour les châteaux et forteresses médiévales',
+                category: 'Médiéval',
+                blocks: [
+                    getBlockByName('stone_bricks'),
+                    getBlockByName('cobblestone'),
+                    getBlockByName('oak_log'),
+                    getBlockByName('spruce_planks'),
+                    getBlockByName('stone'),
+                    getBlockByName('dark_oak_planks')
+                ],
+                created: new Date().toISOString()
+            },
+            {
+                id: 'palette-2',
+                name: 'Tour de Guet Rustique',
+                description: 'Idéale pour les tours de guet, postes avancés et structures défensives',
+                category: 'Médiéval',
+                blocks: [
+                    getBlockByName('spruce_log'),
+                    getBlockByName('stone'),
+                    getBlockByName('cobblestone'),
+                    getBlockByName('oak_fence'),
+                    getBlockByName('spruce_planks'),
+                    getBlockByName('oak_planks')
+                ],
+                created: new Date().toISOString()
+            },
+            {
+                id: 'palette-3',
+                name: 'Taverne Médiévale',
+                description: 'Parfaite pour créer des tavernes, auberges et maisons médiévales chaleureuses',
+                category: 'Médiéval',
+                blocks: [
+                    getBlockByName('dark_oak_log'),
+                    getBlockByName('dark_oak_planks'),
+                    getBlockByName('spruce_log'),
+                    getBlockByName('hay_block'),
+                    getBlockByName('brick'),
+                    getBlockByName('oak_planks')
+                ],
+                created: new Date().toISOString()
+            },
+            {
+                id: 'palette-4',
+                name: 'Village Nordique',
+                description: 'Style scandinave rustique pour villages de montagne et établissements du nord',
+                category: 'Médiéval',
+                blocks: [
+                    getBlockByName('spruce_log'),
+                    getBlockByName('spruce_planks'),
+                    getBlockByName('cobblestone'),
+                    getBlockByName('stone'),
+                    getBlockByName('snow'),
+                    getBlockByName('white_wool')
+                ],
+                created: new Date().toISOString()
+            },
+            {
+                id: 'palette-5',
+                name: 'Église Gothique',
+                description: 'Pour cathédrales, chapelles et structures religieuses médiévales',
+                category: 'Médiéval',
+                blocks: [
+                    getBlockByName('stone_bricks'),
+                    getBlockByName('cobblestone'),
+                    getBlockByName('glass'),
+                    getBlockByName('black_stained_glass'),
+                    getBlockByName('stone'),
+                    getBlockByName('iron_bars')
+                ],
+                created: new Date().toISOString()
+            },
+            
+            // MODERNE
+            {
+                id: 'palette-6',
+                name: 'Minimaliste Contemporain',
+                description: 'Design épuré et élégant pour maisons et bâtiments modernes',
+                category: 'Moderne',
+                blocks: [
+                    getBlockByName('white_concrete'),
+                    getBlockByName('gray_concrete'),
+                    getBlockByName('black_concrete'),
+                    getBlockByName('glass'),
+                    getBlockByName('oak_planks'),
+                    getBlockByName('quartz_block')
+                ],
+                created: new Date().toISOString()
+            },
+            {
+                id: 'palette-7',
+                name: 'Gratte-ciel Urbain',
+                description: 'Pour construire des tours et immeubles de grande hauteur ultra-modernes',
+                category: 'Moderne',
+                blocks: [
+                    getBlockByName('cyan_concrete'),
+                    getBlockByName('light_blue_stained_glass'),
+                    getBlockByName('gray_concrete'),
+                    getBlockByName('white_concrete'),
+                    getBlockByName('black_concrete'),
+                    getBlockByName('sea_lantern')
+                ],
+                created: new Date().toISOString()
+            },
+            {
+                id: 'palette-8',
+                name: 'Loft Industriel',
+                description: 'Style industriel urbain pour lofts et entrepôts reconvertis',
+                category: 'Moderne',
+                blocks: [
+                    getBlockByName('dark_oak_log'),
+                    getBlockByName('stone'),
+                    getBlockByName('brick'),
+                    getBlockByName('iron_block'),
+                    getBlockByName('anvil'),
+                    getBlockByName('crafting_table')
+                ],
+                created: new Date().toISOString()
+            },
+            {
+                id: 'palette-9',
+                name: 'Maison Minimaliste',
+                description: 'Design scandinave minimaliste pour maisons modernes élégantes',
+                category: 'Moderne',
+                blocks: [
+                    getBlockByName('white_concrete'),
+                    getBlockByName('birch_planks'),
+                    getBlockByName('glass'),
+                    getBlockByName('stone'),
+                    getBlockByName('quartz_block'),
+                    getBlockByName('gray_concrete')
+                ],
+                created: new Date().toISOString()
+            },
+            {
+                id: 'palette-10',
+                name: 'Villa Méditerranéenne',
+                description: 'Style moderne méditerranéen pour villas et résidences de luxe',
+                category: 'Moderne',
+                blocks: [
+                    getBlockByName('white_concrete'),
+                    getBlockByName('terracotta'),
+                    getBlockByName('sandstone'),
+                    getBlockByName('light_blue_concrete'),
+                    getBlockByName('jungle_planks'),
+                    getBlockByName('light_blue_stained_glass')
+                ],
+                created: new Date().toISOString()
+            },
+            
+            // NATURE
+            {
+                id: 'palette-11',
+                name: 'Cabane Forestière',
+                description: 'Parfaite pour les constructions organiques en forêt',
+                category: 'Nature',
+                blocks: [
+                    getBlockByName('oak_log'),
+                    getBlockByName('spruce_planks'),
+                    getBlockByName('grass_block'),
+                    getBlockByName('oak_leaves'),
+                    getBlockByName('dirt'),
+                    getBlockByName('oak_planks')
+                ],
+                created: new Date().toISOString()
+            },
+            {
+                id: 'palette-12',
+                name: 'Jardin Enchanté',
+                description: 'Pour créer des jardins féeriques et espaces verts magiques',
+                category: 'Nature',
+                blocks: [
+                    getBlockByName('oak_leaves'),
+                    getBlockByName('birch_leaves'),
+                    getBlockByName('grass_block'),
+                    getBlockByName('birch_wood'),
+                    getBlockByName('lily_pad'),
+                    getBlockByName('glowstone')
+                ],
+                created: new Date().toISOString()
+            },
+            {
+                id: 'palette-13',
+                name: 'Sanctuaire Naturel',
+                description: 'Harmonie naturelle pour temples et structures organiques',
+                category: 'Nature',
+                blocks: [
+                    getBlockByName('grass_block'),
+                    getBlockByName('dirt'),
+                    getBlockByName('oak_leaves'),
+                    getBlockByName('stone'),
+                    getBlockByName('cobblestone'),
+                    getBlockByName('vine')
+                ],
+                created: new Date().toISOString()
+            },
+            {
+                id: 'palette-14',
+                name: 'Champignons Magiques',
+                description: 'Pour créer des habitats fongiques et maisons champignons',
+                category: 'Nature',
+                blocks: [
+                    getBlockByName('mushroom_block'),
+                    getBlockByName('red_mushroom_block'),
+                    getBlockByName('brown_mushroom_block'),
+                    getBlockByName('dirt'),
+                    getBlockByName('glowstone'),
+                    getBlockByName('oak_planks')
+                ],
+                created: new Date().toISOString()
+            },
+            {
+                id: 'palette-15',
+                name: 'Oasis Tropicale',
+                description: 'Pour constructions exotiques et structures de jungle',
+                category: 'Nature',
+                blocks: [
+                    getBlockByName('jungle_log'),
+                    getBlockByName('jungle_leaves'),
+                    getBlockByName('oak_planks'),
+                    getBlockByName('sand'),
+                    getBlockByName('water'),
+                    getBlockByName('melon')
+                ],
+                created: new Date().toISOString()
+            },
+            
+            // FUTURISTE
+            {
+                id: 'palette-16',
+                name: 'Vaisseau Spatial',
+                description: 'Idéale pour vaisseaux, stations spatiales et bases futuristes',
+                category: 'Futuriste',
+                blocks: [
+                    getBlockByName('gray_concrete'),
+                    getBlockByName('white_concrete'),
+                    getBlockByName('blue_stained_glass'),
+                    getBlockByName('iron_block'),
+                    getBlockByName('glowstone'),
+                    getBlockByName('black_concrete')
+                ],
+                created: new Date().toISOString()
+            },
+            {
+                id: 'palette-17',
+                name: 'Néon Cyberpunk',
+                description: 'Style cyberpunk avec néons pour villes futuristes dystopiques',
+                category: 'Futuriste',
+                blocks: [
+                    getBlockByName('black_concrete'),
+                    getBlockByName('purple_concrete'),
+                    getBlockByName('magenta_concrete'),
+                    getBlockByName('cyan_concrete'),
+                    getBlockByName('end_rod'),
+                    getBlockByName('magenta_glazed_terracotta')
+                ],
+                created: new Date().toISOString()
+            },
+            {
+                id: 'palette-18',
+                name: 'Laboratoire High-Tech',
+                description: 'Pour centres de recherche, laboratoires et installations scientifiques',
+                category: 'Futuriste',
+                blocks: [
+                    getBlockByName('white_concrete'),
+                    getBlockByName('light_blue_concrete'),
+                    getBlockByName('gray_concrete'),
+                    getBlockByName('glass'),
+                    getBlockByName('iron_block'),
+                    getBlockByName('redstone_lamp')
+                ],
+                created: new Date().toISOString()
+            },
+            {
+                id: 'palette-19',
+                name: 'Base Lunaire',
+                description: 'Pour constructions sur la lune ou planètes désolées',
+                category: 'Futuriste',
+                blocks: [
+                    getBlockByName('light_gray_concrete'),
+                    getBlockByName('stone'),
+                    getBlockByName('iron_block'),
+                    getBlockByName('black_concrete'),
+                    getBlockByName('white_stained_glass'),
+                    getBlockByName('stone')
+                ],
+                created: new Date().toISOString()
+            },
+            {
+                id: 'palette-20',
+                name: 'Dôme Bionique',
+                description: 'Futurisme organique mêlant technologie et nature',
+                category: 'Futuriste',
+                blocks: [
+                    getBlockByName('oak_planks'),
+                    getBlockByName('cyan_stained_glass'),
+                    getBlockByName('stone'),
+                    getBlockByName('glowstone'),
+                    getBlockByName('blue_concrete'),
+                    getBlockByName('green_concrete')
+                ],
+                created: new Date().toISOString()
+            },
+            
+            // AQUATIQUE
+            {
+                id: 'palette-21',
+                name: 'Cité Sous-Marine',
+                description: 'Pour constructions immergées et cités sous la mer',
+                category: 'Aquatique',
+                blocks: [
+                    getBlockByName('stone'),
+                    getBlockByName('glowstone'),
+                    getBlockByName('stone'),
+                    getBlockByName('blue_stained_glass'),
+                    getBlockByName('stone'),
+                    getBlockByName('sea_lantern')
+                ],
+                created: new Date().toISOString()
+            },
+            {
+                id: 'palette-22',
+                name: 'Port Maritime',
+                description: 'Style nautique pour ports, quais et constructions côtières',
+                category: 'Aquatique',
+                blocks: [
+                    getBlockByName('oak_planks'),
+                    getBlockByName('spruce_planks'),
+                    getBlockByName('oak_log'),
+                    getBlockByName('blue_wool'),
+                    getBlockByName('white_wool'),
+                    getBlockByName('chest')
+                ],
+                created: new Date().toISOString()
+            },
+            {
+                id: 'palette-23',
+                name: 'Plage Tropicale',
+                description: 'Pour resorts balnéaires et constructions de plage',
+                category: 'Aquatique',
+                blocks: [
+                    getBlockByName('sand'),
+                    getBlockByName('birch_planks'),
+                    getBlockByName('light_blue_concrete'),
+                    getBlockByName('white_concrete'),
+                    getBlockByName('oak_planks'),
+                    getBlockByName('sandstone')
+                ],
+                created: new Date().toISOString()
+            },
+            {
+                id: 'palette-24',
+                name: 'Ruines Submergées',
+                description: 'Pour temples aquatiques anciens et ruines sous-marines',
+                category: 'Aquatique',
+                blocks: [
+                    getBlockByName('stone'),
+                    getBlockByName('mossy_cobblestone'),
+                    getBlockByName('stone_bricks'),
+                    getBlockByName('glowstone'),
+                    getBlockByName('sand'),
+                    getBlockByName('stone')
+                ],
+                created: new Date().toISOString()
+            },
+            {
+                id: 'palette-25',
+                name: 'Récif Corallien',
+                description: 'Pour récifs artificiels et habitats sous-marins colorés',
+                category: 'Aquatique',
+                blocks: [
+                    getBlockByName('stone'),
+                    getBlockByName('stone'),
+                    getBlockByName('stone'),
+                    getBlockByName('stone'),
+                    getBlockByName('stone'),
+                    getBlockByName('sea_lantern')
+                ],
+                created: new Date().toISOString()
+            },
+            
+            // Autres catégories similaires...
+            
+            // Construction - Exemple simplifié
+            {
+                id: 'palette-41',
+                name: 'Fondations Solides',
+                description: 'Blocs structurels pour bases de bâtiments robustes',
+                category: 'Construction',
+                blocks: [
+                    getBlockByName('stone'),
+                    getBlockByName('cobblestone'),
+                    getBlockByName('stone'),
+                    getBlockByName('stone_bricks'),
+                    getBlockByName('stone'),
+                    getBlockByName('gravel')
+                ],
+                created: new Date().toISOString()
+            },
+            
+            // Divers - Exemple simplifié
+            {
+                id: 'palette-46',
+                name: 'Ferme Rustique',
+                description: 'Style champêtre pour fermes et granges',
+                category: 'Divers',
+                blocks: [
+                    getBlockByName('hay_block'),
+                    getBlockByName('oak_log'),
+                    getBlockByName('spruce_planks'),
+                    getBlockByName('dirt'),
+                    getBlockByName('oak_planks'),
+                    getBlockByName('stone')
+                ],
+                created: new Date().toISOString()
+            }
+        ];
+        
+        // Sauvegarder les palettes par défaut
+        savePalettesToStorage();
+    }
+    
+    // Préparer le showcase
+    prepareShowcase();
+    
+    // Afficher les palettes
+    displayPalettes(allPalettes);
+}
+            
+            // Charger les favoris
+            function loadFavorites() {
+                const savedFavorites = localStorage.getItem('minecraft-favorites');
+                if (savedFavorites) {
+                    favorites = JSON.parse(savedFavorites);
+                    updateFavoritesDisplay();
+                }
+            }
+            
+            // Mettre à jour l'affichage des favoris
+            function updateFavoritesDisplay() {
+                if (favorites.length === 0) {
+                    favoritesEmpty.style.display = 'flex';
+                    favoritesList.style.display = 'none';
+                    return;
+                }
+                
+                favoritesEmpty.style.display = 'none';
+                favoritesList.style.display = 'flex';
+                favoritesList.innerHTML = '';
+                
+                favorites.forEach(fav => {
+                    const palette = allPalettes.find(p => p.id === fav);
+                    if (!palette) return;
+                    
+                    const item = document.createElement('div');
+                    item.className = 'favorite-item';
+                    
+                    const firstBlock = palette.blocks[0] || { path: '' };
+                    
+                    item.innerHTML = `
+                        <div class="favorite-preview">
+                            <img src="${firstBlock.path}" alt="${palette.name}">
+                        </div>
+                        <div class="favorite-content">
+                            <div class="favorite-name">${palette.name}</div>
+                            <div class="favorite-category">${palette.category}</div>
+                            <div class="favorite-actions">
+                                <button class="favorite-btn favorite-btn-primary" data-id="${palette.id}">
+                                    <i class="fas fa-arrow-right"></i> Voir
+                                </button>
+                                <button class="favorite-btn favorite-remove" data-id="${palette.id}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    const viewBtn = item.querySelector('.favorite-btn-primary');
+                    viewBtn.addEventListener('click', () => {
+                        favoritesDrawer.classList.remove('active');
+                        
+                        // Aller à la palette
+                        const paletteEl = document.querySelector(`.palette-card[data-id="${palette.id}"]`);
+                        if (paletteEl) {
+                            paletteEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            
+                            // Mettre en évidence la palette
+                            paletteEl.classList.add('highlight');
+                            setTimeout(() => {
+                                paletteEl.classList.remove('highlight');
+                            }, 2000);
+                        }
+                    });
+                    
+                    const removeBtn = item.querySelector('.favorite-remove');
+                    removeBtn.addEventListener('click', () => {
+                        removeFavorite(palette.id);
+                    });
+                    
+                    favoritesList.appendChild(item);
+                });
+            }
+            
+            // Ajouter aux favoris
+            function addFavorite(paletteId) {
+                if (!favorites.includes(paletteId)) {
+                    favorites.push(paletteId);
+                    localStorage.setItem('minecraft-favorites', JSON.stringify(favorites));
+                    updateFavoritesDisplay();
+                    
+                    // Mettre à jour l'étoile sur la carte
+                    const favBtn = document.querySelector(`.palette-favorite[data-id="${paletteId}"]`);
+                    if (favBtn) favBtn.classList.add('active');
+                    
+                    showToast('success', 'Favori ajouté', 'Cette palette a été ajoutée à vos favoris');
+                }
+            }
+            
+            // Retirer des favoris
+            function removeFavorite(paletteId) {
+                favorites = favorites.filter(id => id !== paletteId);
+                localStorage.setItem('minecraft-favorites', JSON.stringify(favorites));
+                updateFavoritesDisplay();
+                
+                // Mettre à jour l'étoile sur la carte
+                const favBtn = document.querySelector(`.palette-favorite[data-id="${paletteId}"]`);
+                if (favBtn) favBtn.classList.remove('active');
+                
+                showToast('info', 'Favori retiré', 'Cette palette a été retirée de vos favoris');
+            }
+            
+            // Préparer le showcase des palettes
+            function prepareShowcase() {
+                showcaseSlides = [];
+                
+                // Pour la démo, on montre les 10 premières palettes
+                allPalettes.slice(0, 10).forEach(palette => {
+                    showcaseSlides.push(palette);
+                });
+                
+                // Créer les points de navigation
+                showcaseDots.innerHTML = '';
+                showcaseSlides.forEach((_, index) => {
+                    const dot = document.createElement('div');
+                    dot.className = 'showcase-dot';
+                    if (index === 0) dot.classList.add('active');
+                    
+                    dot.addEventListener('click', () => {
+                        goToSlide(index);
+                    });
+                    
+                    showcaseDots.appendChild(dot);
+                });
+            }
+            
+            // Afficher une slide du showcase
+            function showSlide(index) {
+                // Supprimer toutes les slides existantes
+                const currentSlides = document.querySelectorAll('.showcase-slide');
+                currentSlides.forEach(slide => slide.remove());
+                
+                // Créer la nouvelle slide
+                const slide = document.createElement('div');
+                slide.className = 'showcase-slide active';
+                
+                const palette = showcaseSlides[index];
+                
+                // Générer le contenu HTML de la slide
+                let blocksHTML = '';
+                palette.blocks.forEach(block => {
+                    blocksHTML += `
+                        <div class="showcase-block">
+                            <img src="${block.path}" alt="${block.displayName}" loading="lazy">
+                        </div>
+                    `;
+                });
+                
+                slide.innerHTML = `
+                    <div class="showcase-palette">
+                        <h2 class="showcase-palette-name">${palette.name}</h2>
+                        <p class="showcase-palette-desc">${palette.description}</p>
+                        <div class="showcase-blocks">
+                            ${blocksHTML}
+                        </div>
+                    </div>
+                    <div class="showcase-actions">
+                        <button class="showcase-btn showcase-btn-primary" data-id="${palette.id}">
+                            <i class="fas fa-download"></i> Télécharger
+                        </button>
+                        <button class="showcase-btn showcase-btn-secondary" data-id="${palette.id}">
+                            <i class="fas fa-eye"></i> Voir dans la galerie
+                        </button>
+                    </div>
+                `;
+                
+                // Ajouter les événements
+                const downloadBtn = slide.querySelector('.showcase-btn-primary');
+                downloadBtn.addEventListener('click', () => {
+                    downloadPalette(palette);
+                });
+                
+                const viewBtn = slide.querySelector('.showcase-btn-secondary');
+                viewBtn.addEventListener('click', () => {
+                    showcaseContainer.classList.remove('active');
+                    
+                    // Attendre que l'animation de fermeture soit terminée
+                    setTimeout(() => {
+                        // Trouver et scroller vers la palette dans la galerie
+                        const paletteEl = document.querySelector(`.palette-card[data-id="${palette.id}"]`);
+                        if (paletteEl) {
+                            paletteEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            
+                            // Mettre en évidence la palette
+                            paletteEl.classList.add('highlight');
+                            setTimeout(() => {
+                                paletteEl.classList.remove('highlight');
+                            }, 2000);
+                        }
+                    }, 300);
+                });
+                
+                // Ajouter la slide au conteneur
+                showcaseContent.appendChild(slide);
+                
+                // Mettre à jour les points de navigation
+                const dots = document.querySelectorAll('.showcase-dot');
+                dots.forEach((dot, i) => {
+                    if (i === index) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+                
+                // Sauvegarder l'index courant
+                currentSlide = index;
+            }
+            
+            // Aller à une slide spécifique
+            function goToSlide(index) {
+                showSlide(index);
+            }
+            
+            // Aller à la slide suivante
+            function nextSlide() {
+                let nextIndex = currentSlide + 1;
+                if (nextIndex >= showcaseSlides.length) {
+                    nextIndex = 0;
+                }
+                goToSlide(nextIndex);
+            }
+            
+            // Aller à la slide précédente
+            function prevSlide() {
+                let prevIndex = currentSlide - 1;
+                if (prevIndex < 0) {
+                    prevIndex = showcaseSlides.length - 1;
+                }
+                goToSlide(prevIndex);
+            }
+            
+            // Trouver un bloc par son nom
+            // Trouver un bloc par son nom
+// Version simplifiée qui évite de chercher des blocs spécifiques 
+function getBlockByName(name) {
+    // Cette fonction est plus robuste - elle renvoie toujours un bloc disponible
+    
+    // Si nous avons bien le bloc demandé, le renvoyer
+    const exactMatch = allBlocks.find(block => 
+        block.name.toLowerCase() === (name.endsWith('.png') ? name.toLowerCase() : name.toLowerCase() + '.png')
+    );
+    
+    if (exactMatch) return exactMatch;
+    
+    // Essayer de trouver un bloc similaire
+    const nameWithoutExt = name.replace('.png', '').toLowerCase();
+    const similarMatch = allBlocks.find(block => 
+        block.name.toLowerCase().includes(nameWithoutExt)
+    );
+    
+    if (similarMatch) return similarMatch;
+    
+    // Sinon, renvoyer simplement le premier bloc disponible (ou un bloc de pierre si disponible)
+    const stoneBlock = allBlocks.find(block => block.name.toLowerCase().includes('stone'));
+    return stoneBlock || allBlocks[0] || {
+        name: 'default.png',
+        path: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjNFOTlENDcyOUE0MjExRUI4MzEwOUM3MjgzQTI3NzM2IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjNFOTlENDczOUE0MjExRUI4MzEwOUM3MjgzQTI3NzM2Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6M0U5OUQ0NzA5QTQyMTFFQjgzMTA5QzcyODNBMjc3MzYiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6M0U5OUQ0NzE5QTQyMTFFQjgzMTA5QzcyODNBMjc3MzYiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz7ViV8AAAACS0lEQVR42sSXTUhUURTH//c9NDMrjHQ+kCAZCVLIwlIXbiJoEVFtWtWqRRuDNhFBq3YtIjBw1cqPRQsXghUUFLQZP8IPUCYMxXJmmBmd9+7/jDPxGHXezDjiWbzd8+499/zO/557zoMtM/G/hQdTBEZHXtcEW+9vBD04JuK1iNC+GAAVRdQnnz++JVgGlEGqfrq/vdzrTQH0vXjuZVlHZfHydmgeXE0ARN7YGlrfCBkTSQYQfuWRoaAXuuvDZvAxbQB0iOCPFc9c9HldENLFqUYL0wKQEQYjnQ22WGUoZQtkAaCETBvrrDQZ88NwcAwDQFZLCpXygMIe0HmOAUByALOQe2QXk5UCLMkFfW0Y+hgDgIrxRXfNFXS/MsK8uASG70PesQvqt06oCwTRnpizQDKArXQnZk5fxMyObGRNDMO9eA66WJz4L+JGQT85uKELkgO4Eeo3dBkaJQmXe0CcGMDg+RZ4Th5F5Y4quGKzcPf2gJ4jP9kMwk9fDgBhbMQeYKwN3sYWWCFPPCsA74dRRFav3FxOaZQ4gGuHIZo2JQVQtcfgqtybyJMDQ4h9+QYxm4v0KYlSzh5h1HKKTXNd4Z5Vz5KnBAGhXxrPojYZRCJ1ALS/AvWwYvKQfQOSATr5Dx0/+i0BPAyHthqACM3jQsX7Yfd6LSV5Mj+gO2AFYTTwfOFv1QDc/x+xHs+7R9uTXlQnhjGl5v4RQyXLgFJpDKkHyJZ9aLsB4qA5uTkWgRJR4TiAvOYATGLGsAhzLwNrHuiR/wQYAEq+OHLX6+izAAAAAElFTkSuQmCC',
+        displayName: name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+        category: 'Divers'
+    };
+}
+            
+            // Sauvegarder les palettes dans le localStorage
+            function savePalettesToStorage() {
+                localStorage.setItem('minecraft-palettes', JSON.stringify(allPalettes));
+            }
+            
+            // Filtrer les palettes par catégorie
+            function filterPalettesByCategory(category) {
+                if (category === 'all') {
+                    displayPalettes(allPalettes);
+                    return;
+                }
+                
+                const filtered = allPalettes.filter(palette => {
+                    return palette.category === category;
+                });
+                
+                displayPalettes(filtered);
+            }
+            
+            // Trier les palettes
+            function sortPalettes(palettes) {
+                let sorted = [...palettes];
+                
+                switch (sortBy) {
+                    case 'name':
+                        sorted.sort((a, b) => a.name.localeCompare(b.name));
+                        break;
+                    case 'name-desc':
+                        sorted.sort((a, b) => b.name.localeCompare(a.name));
+                        break;
+                    case 'recent':
+                        sorted.sort((a, b) => new Date(b.created) - new Date(a.created));
+                        break;
+                    case 'category':
+                        sorted.sort((a, b) => a.category.localeCompare(b.category));
+                        break;
+                    default:
+                        // Par défaut, ne pas trier
+                        break;
+                }
+                
+                return sorted;
+            }
+            
+            // Afficher les palettes dans la grille
+            function displayPalettes(palettes) {
+                const sorted = sortPalettes(palettes);
+                
+                paletteGrid.innerHTML = '';
+                paletteCount.textContent = `${sorted.length} palette${sorted.length > 1 ? 's' : ''}`;
+                
+                if (sorted.length === 0) {
+                    noResults.style.display = 'block';
+                    loader.style.display = 'none';
+                    paletteGrid.style.display = 'none';
+                    return;
+                }
+                
+                noResults.style.display = 'none';
+                loader.style.display = 'none';
+                paletteGrid.style.display = 'grid';
+                
+                // Appliquer le mode de vue actuel
+                if (viewMode === 'list') {
+                    paletteGrid.classList.add('list-view');
+                } else {
+                    paletteGrid.classList.remove('list-view');
+                }
+                
+                sorted.forEach((palette, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'palette-card';
+                    card.style.animationDelay = `${index * 0.05}s`;
+                    card.setAttribute('data-id', palette.id);
+                    
+                    // Générer le HTML de la carte
+                    let blocksHTML = '';
+                    palette.blocks.forEach(block => {
+                        blocksHTML += `
+                            <div class="palette-block">
+                                <img src="${block.path}" alt="${block.displayName}" loading="lazy">
+                            </div>
+                        `;
+                    });
+                    
+                    // Vérifier si c'est un favori
+                    const isFavorite = favorites.includes(palette.id);
+                    
+                    // Vérifier s'il y a une image d'exemple
+                    const hasExample = exampleImages.hasOwnProperty(palette.id);
+                    
+                    card.innerHTML = `
+                        <div class="palette-preview">
+                            <div class="palette-blocks">
+                                ${blocksHTML}
+                            </div>
+                            <button class="palette-favorite ${isFavorite ? 'active' : ''}" data-id="${palette.id}">
+                                <i class="fas fa-star"></i>
+                            </button>
+                            ${hasExample ? `<button class="palette-example" data-id="${palette.id}">
+                                <i class="fas fa-image"></i>
+                            </button>` : ''}
+                        </div>
+                        <div class="palette-content">
+                            <h3 class="palette-name">${palette.name}</h3>
+                            <p class="palette-description">${palette.description}</p>
+                            <div class="palette-meta">
+                                <div class="palette-tag"><i class="fas fa-tag"></i> ${palette.category}</div>
+                            </div>
+                            <div class="palette-actions">
+                                <button class="action-btn action-btn-primary download-btn" data-id="${palette.id}">
+                                    <i class="fas fa-download"></i> Télécharger
+                                </button>
+                                <button class="action-btn action-btn-secondary action-btn-icon clone-btn" data-id="${palette.id}">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                                <button class="action-btn action-btn-secondary action-btn-icon delete-btn" data-id="${palette.id}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            <div class="palette-actions-row">
+                                <button class="action-btn action-btn-secondary mcfunction-btn" data-id="${palette.id}">
+                                    <i class="fas fa-code"></i> MCFunction
+                                </button>
+                                <button class="action-btn action-btn-secondary action-btn-icon share-btn" data-id="${palette.id}">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Configurer les boutons d'action
+                    const downloadBtn = card.querySelector('.download-btn');
+                    downloadBtn.addEventListener('click', () => {
+                        downloadPalette(palette);
+                    });
+                    
+                    const cloneBtn = card.querySelector('.clone-btn');
+                    cloneBtn.addEventListener('click', () => {
+                        clonePalette(palette);
+                    });
+                    
+                    const deleteBtn = card.querySelector('.delete-btn');
+                    deleteBtn.addEventListener('click', () => {
+                        deletePalette(palette.id);
+                    });
+                    
+                    const mcfunctionBtn = card.querySelector('.mcfunction-btn');
+                    mcfunctionBtn.addEventListener('click', () => {
+                        generateMCFunction(palette);
+                    });
+                    
+                    const shareBtn = card.querySelector('.share-btn');
+                    shareBtn.addEventListener('click', () => {
+                        sharePalette(palette);
+                    });
+                    
+                    const favoriteBtn = card.querySelector('.palette-favorite');
+                    favoriteBtn.addEventListener('click', () => {
+                        if (favorites.includes(palette.id)) {
+                            removeFavorite(palette.id);
+                        } else {
+                            addFavorite(palette.id);
+                        }
+                    });
+                    
+                    // Si exemple disponible, configurer l'affichage
+                    if (hasExample) {
+                        const exampleBtn = card.querySelector('.palette-example');
+                        exampleBtn.addEventListener('click', () => {
+                            showExample(palette);
+                        });
+                    }
+                    
+                    paletteGrid.appendChild(card);
+                });
+            }
+            
+            // Afficher l'exemple de construction
+            function showExample(palette) {
+                // Si aucune image d'exemple, ne rien faire
+                if (!exampleImages[palette.id]) return;
+                
+                // Configurer la modal d'exemple
+                exampleTitle.textContent = `Exemple: ${palette.name}`;
+                exampleImage.src = exampleImages[palette.id];
+                exampleImage.alt = `Exemple de construction avec la palette ${palette.name}`;
+                
+                // Afficher la modal
+                exampleModal.classList.add('active');
+            }
+            
+            // Générer un code MCFunction pour la palette
+            function generateMCFunction(palette) {
+                let mcfunction = `# MCFunction pour la palette: ${palette.name}\n`;
+                mcfunction += `# ${palette.description}\n\n`;
+                mcfunction += `tellraw @p {"text":"Palette ${palette.name}","color":"gold","bold":true}\n\n`;
+                
+                // Ajouter les commandes pour donner les blocs
+                palette.blocks.forEach(block => {
+                    const blockName = block.name.replace('.png', '');
+                    mcfunction += `give @p minecraft:${blockName} 64\n`;
+                });
+                
+                // Copier dans le presse-papier
+                navigator.clipboard.writeText(mcfunction)
+                    .then(() => {
+                        showToast('success', 'Code généré', 'Le code MCFunction a été copié dans le presse-papier');
+                    })
+                    .catch(err => {
+                        console.error('Erreur lors de la copie:', err);
+                        showToast('error', 'Erreur', 'Impossible de copier le code dans le presse-papier');
+                    });
+            }
+            
+            // Partager une palette
+            function sharePalette(palette) {
+                // Créer un texte de partage
+                const shareText = `Découvrez la palette "${palette.name}" pour Minecraft!\n${palette.description}\n\nComposée de ${palette.blocks.length} blocs:\n${palette.blocks.map(b => `- ${b.displayName}`).join('\n')}`;
+                
+                // Essayer de partager avec l'API Web Share si disponible
+                if (navigator.share) {
+                    navigator.share({
+                        title: `Palette Minecraft: ${palette.name}`,
+                        text: shareText
+                    })
+                    .then(() => {
+                        showToast('success', 'Palette partagée', 'La palette a été partagée avec succès');
+                    })
+                    .catch(err => {
+                        console.error('Erreur lors du partage:', err);
+                        
+                        // Fallback si l'API a échoué
+                        copyShareText(shareText);
+                    });
+                } else {
+                    // Fallback: copier le texte
+                    copyShareText(shareText);
+                }
+            }
+            
+            // Copier le texte de partage dans le presse-papier
+            function copyShareText(text) {
+                navigator.clipboard.writeText(text)
+                    .then(() => {
+                        showToast('success', 'Texte copié', 'Le contenu de la palette a été copié dans le presse-papier');
+                    })
+                    .catch(err => {
+                        console.error('Erreur lors de la copie:', err);
+                        showToast('error', 'Erreur', 'Impossible de copier le texte dans le presse-papier');
+                    });
+            }
+            
+            // Télécharger une palette (image composite des blocs)
+            function downloadPalette(palette) {
+                // Créer un canvas pour générer l'image
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                
+                // Dimensions du canvas
+                const width = 600;
+                const height = 400;
+                canvas.width = width;
+                canvas.height = height;
+                
+                // Fond
+                ctx.fillStyle = '#1A1E2E';
+                ctx.fillRect(0, 0, width, height);
+                
+                // Dessiner le titre
+                ctx.font = 'bold 32px Poppins, sans-serif';
+                ctx.fillStyle = '#ffffff';
+                ctx.textAlign = 'center';
+                ctx.fillText(palette.name, width/2, 50);
+                
+                // Dessiner la description
+                ctx.font = '16px Poppins, sans-serif';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                ctx.fillText(palette.description, width/2, 80);
+                
+                // Dessiner les blocs
+                const blockSize = 120;
+                const startX = (width - (3 * blockSize + 2 * 20)) / 2;
+                const startY = 120;
+                
+                // Créer des images temporaires pour les blocs qui n'existent pas
+                const defaultImg = new Image();
+                defaultImg.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFyGlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxNDUgNzkuMTYzNDk5LCAyMDE4LzA4LzEzLTE2OjQwOjIyICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgMjAxOSAoV2luZG93cykiIHhtcDpDcmVhdGVEYXRlPSIyMDIzLTA1LTEwVDE1OjIyOjMxKzAyOjAwIiB4bXA6TW9kaWZ5RGF0ZT0iMjAyMy0wNS0xMFQxNjowNDozMiswMjowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAyMy0wNS0xMFQxNjowNDozMiswMjowMCIgZGM6Zm9ybWF0PSJpbWFnZS9wbmciIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiIHBob3Rvc2hvcDpJQ0NQcm9maWxlPSJzUkdCIElFQzYxOTY2LTIuMSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDphMGNlMWQ4Yy0yNDcwLTMyNDMtYjQ1Ni0wNTA3M2ZkZTQwOGMiIHhtcE1NOkRvY3VtZW50SUQ9ImFkb2JlOmRvY2lkOnBob3Rvc2hvcDplZWNkYzU3Yi05MDRlLTA3NDctOGI5Ni1hODhlNDFiZDFjMTAiIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpjZDQ5MzU1MC03MjFkLWViNGYtOWRhYi04NDYxZDU5ODcxNjUiPiA8eG1wTU06SGlzdG9yeT4gPHJkZjpTZXE+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJjcmVhdGVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOmNkNDkzNTUwLTcyMWQtZWI0Zi05ZGFiLTg0NjFkNTk4NzE2NSIgc3RFdnQ6d2hlbj0iMjAyMy0wNS0xMFQxNToyMjozMSswMjowMCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTkgKFdpbmRvd3MpIi8+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJzYXZlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDphMGNlMWQ4Yy0yNDcwLTMyNDMtYjQ1Ni0wNTA3M2ZkZTQwOGMiIHN0RXZ0OndoZW49IjIwMjMtMDUtMTBUMTY6MDQ6MzIrMDI6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCBDQyAyMDE5IChXaW5kb3dzKSIgc3RFdnQ6Y2hhbmdlZD0iLyIvPiA8L3JkZjpTZXE+IDwveG1wTU06SGlzdG9yeT4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz6Rt3JSAAAIXElEQVR4nO2db0wVRxrGH7a3LLAtXAyCSjVeALsmaD1i7FJ2SbAGWQS02XTd1Ij97L9k16alUU2/kLWpfwgiXyDZxtvUbppuKBhM/EerXpH+wbqbSL3ZpOCf2BBZcHfnfVPu5RxA5L1nhvnlOb/k5eXMnXnmmWfeOe+cGWZQodFoxEJCCFELgBACJBAsIVgAQihAAEIBApDIWoB5MeJrMJtg7L4Pw5gxpjcYc5udV4EQCpDBePiwy7TLaNn25zZjT9o0w9j+xHpjdtOKu9HmjEcY6e9/JQAJ0k8aMbpP73xmz7ZjzwQNpjQYNRvXMqXB+CQ1mB2TIqvHB1tPGaHWU06z9cBtAUiQflKFO1pOV81tmfqX/JauGpEm2y3Wjp9vdnX5yzunedXb79liPXjbA0iQftKFMrfVbLv+R1+XORJbnN3kzZ62SrP9hvvMvtXo3UqABOknfZi9Tc62znc8q5gHs+2GdNcsDjP33UbtYAGd1RCdWCPQtWCXXSAwD4yZrJ5ZDJvFFQF0E0KcAA4j8ErXBz+4LcDY/sTZ2/7R7EYAAOD0xW84kT1tZNf9gL2aGLDL2kgDf9dmQQ3BtxCceZwFANZGR8w+TdSxzOj37vdwO32j0cBWawNtbLS7WuYnH2azJNnO7k0AcPqbNJf7f+Pt7vXQrRcvXsz6JWInZXXgLGQww3C69qvvPjVVs1eTbrZ57G46pZ8cw0HT5Mn92m0UiGYg5Pj61uKa+fJzGKobQ3TjIl3hzCMV8xA79GyX70qNXHuvBLMbAeDzrjMsY88BM3ayN08EvN8Ps8llZg85QmLGTG2lAeBPFxqZorTfMx7z2K8TgJOVBABA0N4qPe0FsHv3bthsNhkWTYzJ5X5YoODxj2rXKqYxAw8fPkRJSQkCgd/PGYoKINJ/qjDR4EMVT3jLy8tha2pCyqHXoHO7oXM4Pm9sbOQnlSdPzmIyFgtc9fUYPnYMI4ODCAaDMcUl6BkJxlIZgP3799tqa2sNxcXFAAANKSkwlZXBVFaGlLw8aMlmA7g13VV73mBG1d4BxqqLANDd3Y3e3l68ePGC32W/fA8LZLs+1e7X7E/D09MDr9cbsTzTZkPK4cPQvbcPCz/YB11RsbgQvDgLWHgUWHSs9NW1rY/Vq8W7W1VVhU2bNsmUbn5cnBjz8PAwfD7fH5LrqaePIvXwYfGzVPUAslj+TXcBiUvX/R8AZhxUKRXn2blUP6/OFwGSiPRD5wLHQ8ICyIdCXAgWCmkfBMoXgQUgFCAA+RIgdx5MKLz8OwupBCTwfVYN0w+Z/lWSQcQKQByJe0HvfALZI8EM3k38Alj6lbF0MRIWYCGREyD1u4LJL2JxWkDiUzGJCUCSoIVMIGEnM0kTQE6ipJjI/QaYr2sUCTiBaQLTBM59BLiKnEkImP8LQCZhQkxkAQhkE6YFmP8MAAkDUBKJKEDaPICk52H0PyJcQCLnAgp3RcgzQheg3C9g+XBJEMR+FKDWAcgEIIBQgACEAgQgFCAA+eIC5nIQSB8EMtIEEIMkfM0RCxdg9MJWkTMJoVEmMf6ZaBSQqgEwPbCdKfhSwoxl9IQFUF1lLJ0Qk9eG7/yMgqc7I7zKSFQLkM4mMnxRCHJFSJLABYTvvEReXgAkV6ZRBKbhEZUuQL5wDWIZZjEBOW9hy06GFnDHt15qFD05FzHCdYUm4yL5IzJxCN8eJHcekKSZ6b12IRGLgPlVP0Ee+hX/TxnhV8VyTTnXJKdxYDYXnZo8L4vCNUU5b9OUc22x3NXYqGcBYdReBYRJnlL+1W7nGo2EcxGpzmBFgCLAdTDsYQ8DOAiG3eyhj9ELjjNRLAzrYWjmGDaxh0GeMawHw6JoB6E0qGU0M/QCWMbexZY8D/1wvZLrw3aNRjMy7ZlA/dDPsA6G8vj7PjaAYZ1iAhkW8a+jnX8wbGPRKjvMYdiJJZG+P8iwA/+NdnmNRqN1PB1GEf9xrJj+Yj0jcWq+4D8sTueFnU/3sxOvK+UqCRl3sY6/8wm/5cSObeSFZWByAq3Yd0I/R3Hs+6Q1Go3G4XB8oDmLveD4JopeG2J0MMQojk87HA6NzWbrVs79VyRaBIMO/n2MYrffF/F8UMNRfQrGIPd7IYZeZ7G1Tuc0tz+lTudEyefzTXT/9m6p2+F9A+vA8BkYinj3v5s9dDsc9h61vGrAMJznQS+ASjDks4cjPGYU9Tg/9c3PiXLIkGxz2Ee0LE7Td2xmD/7eNpZt9h6xVBn+YWizfBpxV6g0p7vKwX3OOmwF+CJYwUvwFZ+UFzCsV8vlbzS/2tHGF+EeX6SZ/v7U3Nz8oWbNTwsbjt2s+tStqqi6N3zqzWWOvLJgUtbCxupbXnVw7MZI8NTJnPeKgknJmUEpuSgoJRUEJRvzQ4ETC9LzKuuoLxBHFp9Y8Mbq2tpXBIl/1TT5DqxiDwvZw5ss9lWn/Ky0smGUd3Y94V1Pn3rH/mA9z05GGX+Xxnm5cJe3mLfRxc+OsM9aeAyH+O8f8tYU47ybGObxJtX/+g6sYGOuPt6zPoql7WQP5byPk7gGRolUAIZDvC9dzTExW8vGPLZW/F6BfpbTxh7aeNvt59Vv5pPzGI4oClPLY18C4xNKxCteQ8snfzPvdwnvFj9XSIC/jj3Uo44VKGCYL9p9lFhYU++f/GfB3+cdZMuKA/+pPjIjZoSMkTEyRsbIGBkjY2SMjJExMkZKAP8H+/TRLynyg3YAAAAASUVORK5CYII=';
+                
+                // Charger les images des blocs et les dessiner
+                Promise.all(palette.blocks.map(block => {
+                    return new Promise((resolve, reject) => {
+                        const img = new Image();
+                        img.crossOrigin = 'Anonymous';
+                        img.onload = () => resolve(img);
+                        img.onerror = () => resolve(defaultImg); // En cas d'erreur, utiliser l'image par défaut
+                        img.src = block.path;
+                    });
+                })).then(images => {
+                    let row = 0;
+                    let col = 0;
+                    
+                    images.forEach((img, i) => {
+                        if (i % 3 === 0 && i > 0) {
+                            row++;
+                            col = 0;
+                        }
+                        
+                        const x = startX + col * (blockSize + 20);
+                        const y = startY + row * (blockSize + 20);
+                        
+                        // Dessiner un fond pour le bloc
+                        ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+                        ctx.fillRect(x, y, blockSize, blockSize);
+                        
+                        // Dessiner l'image du bloc
+                        ctx.drawImage(img, x + 10, y + 10, blockSize - 20, blockSize - 20);
+                        
+                        col++;
+                    });
+                    
+                    // Catégorie
+                    ctx.font = 'bold 14px Poppins, sans-serif';
+                    ctx.fillStyle = '#FF9D5C';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(`Catégorie: ${palette.category}`, width/2, height - 30);
+                    
+                    // Convertir le canvas en URL de données
+                    const dataURL = canvas.toDataURL('image/png');
+                    
+                    // Créer un lien de téléchargement
+                    const link = document.createElement('a');
+                    link.href = dataURL;
+                    link.download = `palette-${palette.name.toLowerCase().replace(/\s+/g, '-')}.png`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    showToast('success', 'Palette téléchargée', `La palette ${palette.name} a été téléchargée en tant qu'image.`);
+                }).catch(error => {
+                    console.error('Erreur lors de la création de l\'image:', error);
+                    showToast('error', 'Erreur de téléchargement', 'Impossible de générer l\'image de la palette.');
+                });
+            }
+            
+            // Cloner une palette dans le créateur
+            function clonePalette(palette) {
+                    // Copier les blocs dans le créateur
+                    paletteData = {
+                        slots: {}
+                    };
+                    
+                    palette.blocks.forEach((block, index) => {
+                        const slotNumber = index + 1;
+                        if (slotNumber <= 6) {
+                            paletteData.slots[slotNumber] = block;
+                            
+                            // Mettre à jour visuellement le slot
+                            const slot = document.querySelector(`.creator-slot[data-slot="${slotNumber}"]`);
+                            updateSlotDisplay(slot, block);
+                        }
+                    });
+                    
+                    showToast('info', 'Palette clonée', 'La palette a été copiée dans le créateur. Vous pouvez maintenant la modifier.');
+                    
+                    // Scroll jusqu'au créateur
+                    document.querySelector('.creator-section').scrollIntoView({ behavior: 'smooth' });
+                }
+                
+                // Supprimer une palette
+                function deletePalette(paletteId) {
+                    // Confirmation avant suppression
+                    if (confirm('Êtes-vous sûr de vouloir supprimer cette palette ?')) {
+                        allPalettes = allPalettes.filter(p => p.id !== paletteId);
+                        
+                        // Si c'était un favori, le retirer
+                        if (favorites.includes(paletteId)) {
+                            removeFavorite(paletteId);
+                        }
+                        
+                        savePalettesToStorage();
+                        
+                        // Reconstruire la liste en préservant les filtres
+                        if (currentCategory === 'all') {
+                            displayPalettes(allPalettes);
+                        } else {
+                            filterPalettesByCategory(currentCategory);
+                        }
+                        
+                        showToast('info', 'Palette supprimée', 'La palette a été supprimée avec succès.');
+                    }
+                }
+                
+                // Mise à jour de l'affichage d'un slot avec un bloc
+                function updateSlotDisplay(slot, block) {
+                    // Nettoyer le slot
+                    slot.innerHTML = '';
+                    
+                    if (block) {
+                        // Ajouter l'image du bloc
+                        const img = document.createElement('img');
+                        img.src = block.path;
+                        img.alt = block.displayName;
+                        slot.appendChild(img);
+                        
+                        // Ajouter le bouton de suppression
+                        const removeBtn = document.createElement('div');
+                        removeBtn.className = 'remove-block';
+                        removeBtn.innerHTML = '<i class="fas fa-xmark"></i>';
+                        slot.appendChild(removeBtn);
+                        
+                        // Ajouter la classe 'filled'
+                        slot.classList.add('filled');
+                        
+                        // Configurer l'événement de suppression
+                        removeBtn.addEventListener('click', (e) => {
+                            e.stopPropagation(); // Empêche le déclenchement du clic sur le slot
+                            const slotNumber = slot.getAttribute('data-slot');
+                            paletteData.slots[slotNumber] = null;
+                            updateSlotDisplay(slot, null);
+                            update3DPreview();
+                        });
+                    } else {
+                        // Réinitialiser le slot
+                        slot.innerHTML = '<i class="fas fa-plus"></i><div class="remove-block"><i class="fas fa-xmark"></i></div>';
+                        slot.classList.remove('filled');
+                    }
+                    
+                    // Mettre à jour la prévisualisation 3D
+                    update3DPreview();
+                }
+                
+                // Remplir la grille de blocs dans le modal
+                function populateBlockGrid(blocks) {
+                    blockGrid.innerHTML = '';
+                    
+                    blocks.forEach(block => {
+                        const blockItem = document.createElement('div');
+                        blockItem.className = 'block-item';
+                        
+                        blockItem.innerHTML = `
+                            <img src="${block.path}" alt="${block.displayName}" loading="lazy">
+                            <div class="block-name">${block.displayName}</div>
+                        `;
+                        
+                        blockItem.addEventListener('click', () => {
+                            selectBlock(block);
+                        });
+                        
+                        blockGrid.appendChild(blockItem);
+                    });
+                }
+                
+                // Sélectionner un bloc dans le modal
+                function selectBlock(block) {
+                    if (currentSlot) {
+                        const slotNumber = currentSlot.getAttribute('data-slot');
+                        paletteData.slots[slotNumber] = block;
+                        
+                        updateSlotDisplay(currentSlot, block);
+                        
+                        // Fermer le modal
+                        blockPickerModal.classList.remove('active');
+                    }
+                }
+                
+                // Rechercher des blocs
+                function searchBlocks() {
+                    const searchTerm = blockSearch.value.toLowerCase().trim();
+                    
+                    if (searchTerm === '') {
+                        populateBlockGrid(allBlocks);
+                        return;
+                    }
+                    
+                    const filtered = allBlocks.filter(block => {
+                        return block.displayName.toLowerCase().includes(searchTerm);
+                    });
+                    
+                    populateBlockGrid(filtered);
+                }
+                
+                // Sauvegarder la palette courante
+                function savePalette() {
+                    // Vérifier si au moins 2 blocs sont sélectionnés
+                    const selectedBlocks = Object.values(paletteData.slots).filter(block => block !== null);
+                    
+                    if (selectedBlocks.length < 2) {
+                        showToast('warning', 'Impossible de sauvegarder', 'Veuillez sélectionner au moins 2 blocs pour créer une palette.');
+                        return;
+                    }
+                    
+                    // Demander le nom et la description
+                    const paletteName = prompt('Nom de la palette:', 'Ma palette personnalisée');
+                    
+                    if (!paletteName) return; // Annulé par l'utilisateur
+                    
+                    const paletteDesc = prompt('Description (optionnelle):', 'Une combinaison harmonieuse de blocs pour mes constructions.');
+                    const paletteCategory = prompt('Catégorie:', 'Divers');
+                    
+                    // Créer la nouvelle palette
+                    const newPalette = {
+                        id: 'palette-' + Date.now(),
+                        name: paletteName,
+                        description: paletteDesc || 'Une palette personnalisée.',
+                        category: paletteCategory || 'Divers',
+                        blocks: selectedBlocks,
+                        created: new Date().toISOString()
+                    };
+                    
+                    // Ajouter la palette et sauvegarder
+                    allPalettes.unshift(newPalette); // Ajouter au début du tableau
+                    savePalettesToStorage();
+                    
+                    // Si la catégorie courante n'est pas "all" et ne correspond pas 
+                    // à la catégorie de la nouvelle palette, revenir à "all"
+                    if (currentCategory !== 'all' && currentCategory !== newPalette.category) {
+                        currentCategory = 'all';
+                        
+                        // Mettre à jour les boutons de catégorie
+                        categoryItems.forEach(item => {
+                            if (item.getAttribute('data-category') === 'all') {
+                                item.classList.add('active');
+                            } else {
+                                item.classList.remove('active');
+                            }
+                        });
+                    }
+                    
+                    // Rafraîchir l'affichage
+                    if (currentCategory === 'all') {
+                        displayPalettes(allPalettes);
+                    } else {
+                        filterPalettesByCategory(currentCategory);
+                    }
+                    
+                    showToast('success', 'Palette sauvegardée', 'Votre palette a été créée avec succès!');
+                }
+                
+                // Effacer tous les slots
+                function clearAllSlots() {
+                    paletteData = {
+                        slots: {
+                            1: null, 
+                            2: null, 
+                            3: null, 
+                            4: null, 
+                            5: null, 
+                            6: null
+                        }
+                    };
+                    
+                    creatorSlots.forEach(slot => {
+                        updateSlotDisplay(slot, null);
+                    });
+                    
+                    // Cacher la prévisualisation 3D
+                    preview3dContainer.classList.remove('active');
+                    
+                    showToast('info', 'Palette effacée', 'Tous les blocs ont été retirés du créateur.');
+                }
+                
+                // Générer une palette aléatoire
+                function generateRandomPalette() {
+                    // Vider d'abord tous les slots
+                    clearAllSlots();
+                    
+                    // Mélanger tous les blocs et en prendre 6 aléatoirement
+                    const shuffled = [...allBlocks].sort(() => 0.5 - Math.random());
+                    const selected = shuffled.slice(0, 6);
+                    
+                    // Remplir les slots avec les blocs aléatoires
+                    selected.forEach((block, index) => {
+                        const slotNumber = index + 1;
+                        paletteData.slots[slotNumber] = block;
+                        
+                        // Mettre à jour visuellement le slot
+                        const slot = document.querySelector(`.creator-slot[data-slot="${slotNumber}"]`);
+                        updateSlotDisplay(slot, block);
+                    });
+                    
+                    showToast('success', 'Palette aléatoire', 'Une palette aléatoire a été générée. Vous pouvez la modifier ou la sauvegarder.');
+                }
+                
+                // Mettre à jour la prévisualisation 3D
+                function update3DPreview() {
+                    const slots = Object.values(paletteData.slots);
+                    const filledSlots = slots.filter(slot => slot !== null);
+                    
+                    // Si moins de 2 blocs, masquer la prévisualisation
+                    if (filledSlots.length < 2) {
+                        preview3dContainer.classList.remove('active');
+                        return;
+                    }
+                    
+                    // Afficher la prévisualisation
+                    preview3dContainer.classList.add('active');
+                    preview3dScene.innerHTML = '';
+                    
+                    // TODO: Implémenter une prévisualisation 3D simple
+                    // Pour l'instant, on affiche juste les blocs côte à côte
+                    filledSlots.forEach((block, index) => {
+                        const blockElement = document.createElement('div');
+                        blockElement.style.position = 'absolute';
+                        blockElement.style.width = '50px';
+                        blockElement.style.height = '50px';
+                        blockElement.style.left = `${50 + index * 60}px`;
+                        blockElement.style.top = '75px';
+                        blockElement.style.transform = 'perspective(500px) rotateX(45deg) rotateZ(45deg)';
+                        blockElement.style.transformOrigin = 'center center';
+                        blockElement.style.boxShadow = '5px 5px 10px rgba(0, 0, 0, 0.3)';
+                        
+                        const img = document.createElement('img');
+                        img.src = block.path;
+                        img.alt = block.displayName;
+                        img.style.width = '100%';
+                        img.style.height = '100%';
+                        img.style.objectFit = 'cover';
+                        img.style.imageRendering = 'pixelated';
+                        
+                        blockElement.appendChild(img);
+                        preview3dScene.appendChild(blockElement);
+                    });
+                }
+                
+                // Afficher un toast de notification
+                function showToast(type, title, message) {
+                    const toast = document.createElement('div');
+                    toast.className = `toast ${type}`;
+                    
+                    let icon = 'info-circle';
+                    if (type === 'success') icon = 'check-circle';
+                    if (type === 'warning') icon = 'exclamation-triangle';
+                    if (type === 'error') icon = 'times-circle';
+                    
+                    toast.innerHTML = `
+                        <div class="toast-icon">
+                            <i class="fas fa-${icon}"></i>
+                        </div>
+                        <div class="toast-content">
+                            <div class="toast-title">${title}</div>
+                            <div class="toast-message">${message}</div>
+                        </div>
+                        <div class="toast-close">
+                            <i class="fas fa-times"></i>
+                        </div>
+                    `;
+                    
+                    // Configuration du bouton de fermeture
+                    const closeBtn = toast.querySelector('.toast-close');
+                    closeBtn.addEventListener('click', () => {
+                        toast.classList.remove('show');
+                        setTimeout(() => {
+                            toast.remove();
+                        }, 300);
+                    });
+                    
+                    // Ajouter au conteneur et afficher
+                    toastContainer.appendChild(toast);
+                    
+                    // Délai pour l'animation
+                    setTimeout(() => {
+                        toast.classList.add('show');
+                    }, 10);
+                    
+                    // Auto-suppression après 5 secondes
+                    setTimeout(() => {
+                        if (toast.parentNode) {
+                            toast.classList.remove('show');
+                            setTimeout(() => {
+                                if (toast.parentNode) toast.remove();
+                            }, 300);
+                        }
+                    }, 5000);
+                }
+                
+                // Configuration des catégories
+                categoryItems.forEach(item => {
+                    item.addEventListener('click', () => {
+                        // Mettre à jour l'état actif
+                        categoryItems.forEach(cat => cat.classList.remove('active'));
+                        item.classList.add('active');
+                        
+                        // Filtrer les palettes
+                        const category = item.getAttribute('data-category');
+                        currentCategory = category;
+                        filterPalettesByCategory(category);
+                    });
+                });
+                
+                // Changement du mode d'affichage (grille/liste)
+                gridViewBtn.addEventListener('click', () => {
+                    viewMode = 'grid';
+                    paletteGrid.classList.remove('list-view');
+                    gridViewBtn.classList.add('active');
+                    listViewBtn.classList.remove('active');
+                });
+                
+                listViewBtn.addEventListener('click', () => {
+                    viewMode = 'list';
+                    paletteGrid.classList.add('list-view');
+                    listViewBtn.classList.add('active');
+                    gridViewBtn.classList.remove('active');
+                });
+                
+                // Configuration du tri
+                sortSelect.addEventListener('change', () => {
+                    sortBy = sortSelect.value;
+                    
+                    // Rafraîchir l'affichage en préservant le filtre de catégorie
+                    if (currentCategory === 'all') {
+                        displayPalettes(allPalettes);
+                    } else {
+                        filterPalettesByCategory(currentCategory);
+                    }
+                });
+                
+                // Configuration du bouton de favoris
+                favoritesToggle.addEventListener('click', () => {
+                    favoritesDrawer.classList.add('active');
+                });
+                
+                favoritesClose.addEventListener('click', () => {
+                    favoritesDrawer.classList.remove('active');
+                });
+                
+                // Configuration du showcase
+                showcaseClose.addEventListener('click', () => {
+                    showcaseContainer.classList.remove('active');
+                });
+                
+                showcasePrev.addEventListener('click', () => {
+                    prevSlide();
+                });
+                
+                showcaseNext.addEventListener('click', () => {
+                    nextSlide();
+                });
+                
+                // Configuration de la modal d'exemple
+                exampleClose.addEventListener('click', () => {
+                    exampleModal.classList.remove('active');
+                });
+                
+                // Configuration des slots du créateur
+                creatorSlots.forEach(slot => {
+                    slot.addEventListener('click', () => {
+                        currentSlot = slot;
+                        blockPickerModal.classList.add('active');
+                        
+                        // Remplir la grille de blocs si ce n'est pas déjà fait
+                        if (blockGrid.children.length === 0) {
+                            populateBlockGrid(allBlocks);
+                        }
+                    });
+                });
+                
+                // Configuration du modal de sélection de blocs
+                modalClose.addEventListener('click', () => {
+                    blockPickerModal.classList.remove('active');
+                });
+                
+                blockPickerModal.addEventListener('click', (e) => {
+                    if (e.target === blockPickerModal) {
+                        blockPickerModal.classList.remove('active');
+                    }
+                });
+                
+                // Configuration de la recherche de blocs
+                blockSearch.addEventListener('input', searchBlocks);
+                
+                // Configuration des boutons d'action
+                savePaletteBtn.addEventListener('click', savePalette);
+                clearPaletteBtn.addEventListener('click', clearAllSlots);
+                randomPaletteBtn.addEventListener('click', generateRandomPalette);
+                
+                // Initialisation
+                createStars();
+                loader.style.display = 'block';
+                loadBlocks();
+            });
+        </script>
+    </body>
+</html>
