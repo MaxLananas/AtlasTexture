@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MineCraft Texture Atlas | Explorateur Avancé</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="./max.jpg" type="image/x-icon">
+    <link rel="shortcut icon" href="./max.jpg" type="image/x-icon">
+    <meta name="description" content="Découvrez les meilleures palettes de blocs Minecraft partagées par la communauté. Inspirez-vous pour vos constructions avec des combinaisons originales et stylées.">
+    <meta name="keywords" content="Minecraft, palettes, blocs, textures, communauté, inspiration, construction, Minecraft Atlas, palette de blocs">
+    <meta name="author" content="Maxence - Minecraft Atlas">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#5D87FF">
+    <meta property="og:title" content="Palettes Minecraft Communautaires | Minecraft Atlas">
+    <meta property="og:description" content="Explore les meilleures combinaisons de blocs Minecraft créées par la communauté.">
+    <meta property="og:image" content="https://ton-site.com/aperçu.jpg"> <!-- à adapter -->
+    <meta property="og:url" content="https://ton-site.com/community-palette.html">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Palettes Minecraft Communautaires | Minecraft Atlas">
+<meta name="twitter:description" content="Explore les palettes de blocs Minecraft créées par la communauté.">
+<meta name="twitter:image" content="https://ton-site.com/aperçu.jpg"> <!-- à adapter -->
+
+
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KJVQB91RZE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KJVQB91RZE');
+</script>
+    <style>
+        :root {
+            /* Couleurs principales */
+            --primary: #5D87FF;
+            --primary-light: #A0BDFF;
+            --primary-dark: #3D57FF;
+            --accent: #FF9D5C;
+            
+            /* Surface et arrière-plans */
+            --surface-1: #1A1E2E;
+            --surface-2: #252B3D;
+            --surface-3: #2F364A;
+            --surface-4: #3A425A;
+            
+            /* Éléments UI */
+            --card-bg: rgba(50, 58, 83, 0.5);
+            --card-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            --hover-effect: rgba(93, 135, 255, 0.1);
+            
+            /* Texte */
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-tertiary: rgba(255, 255, 255, 0.5);
+            
+            /* Bordures et séparateurs */
+            --border: rgba(255, 255, 255, 0.1);
+            --border-hover: rgba(255, 255, 255, 0.2);
+            
+            /* Effets visuels */
+            --glass-blur: blur(12px);
+            --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-medium: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+            
+            /* Espacements */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-xxl: 48px;
+            
+            /* Coins arrondis */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --radius-full: 9999px;
+        }
+
+        /* Réinitialisation de base */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--surface-1);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        button {
+            font-family: inherit;
+            cursor: pointer;
+            background: none;
+            border: none;
+            outline: none;
+        }
+        
+        /* Scrollbar personnalisée */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--surface-2);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: var(--radius-full);
+            transition: var(--transition-fast);
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-light);
+        }
+        
+        /* Header & Navigation */
+        .header {
+            position: relative;
+            overflow: hidden;
+            min-height: 400px;
+            background: radial-gradient(ellipse at bottom, var(--surface-2) 0%, var(--surface-1) 80%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1000px;
+            padding: var(--space-lg);
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: var(--space-md);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .hero-title::before {
+            content: "";
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: var(--radius-md);
+            top: -18px;
+            left: -25px;
+            z-index: -1;
+            opacity: 0.5;
+            transform: rotate(20deg);
+            filter: blur(5px);
+        }
+        
+        .hero-title::after {
+            content: "";
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            border-radius: var(--radius-md);
+            bottom: -10px;
+            right: -15px;
+            z-index: -1;
+            opacity: 0.5;
+            transform: rotate(-15deg);
+            filter: blur(5px);
+        }
+        
+        .hero-title .highlight {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto var(--space-xl);
+        }
+        
+        /* Animation d'étoiles dans l'en-tête */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0;
+            animation: twinkle var(--transition-slow) infinite;
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        
+        /* Barre de recherche */
+        .search-container {
+            max-width: 700px;
+            margin: -35px auto 60px;
+            padding: 0 var(--space-lg);
+            position: relative;
+            z-index: 5;
+        }
+        
+        .search-bar {
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--radius-full);
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            box-shadow: var(--card-shadow);
+            display: flex;
+            border: 1px solid var(--border);
+            transition: var(--transition-medium);
+        }
+        
+        .search-bar:focus-within {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .search-input {
+            flex-grow: 1;
+            padding: 20px 25px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .search-input::placeholder {
+            color: var(--text-tertiary);
+        }
+        
+        .search-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 0 35px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: var(--transition-fast);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .search-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: var(--transition-medium);
+        }
+        
+        .search-btn:hover::before {
+            left: 100%;
+        }
+        
+        /* Info bar */
+        .info-bar {
+            max-width: 1400px;
+            margin: 0 auto var(--space-xl);
+            padding: 0 var(--space-lg);
+        }
+        
+        .info-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--space-md);
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+            margin-bottom: var(--space-sm);
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            height: 4px;
+            width: 60px;
+            background: var(--primary);
+            bottom: -8px;
+            left: 0;
+            border-radius: var(--radius-full);
+        }
+        
+        .count-badge {
+            background: rgba(93, 135, 255, 0.15);
+            color: var(--primary-light);
+            padding: 6px 15px;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1px solid rgba(93, 135, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            height: 36px;
+        }
+        
+        .count-badge i {
+            font-size: 0.8rem;
+        }
+        
+        /* Mode switcher */
+        .view-switcher {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            background: var(--surface-2);
+            border-radius: var(--radius-full);
+            padding: 5px;
+            margin-left: auto;
+        }
+        
+        .view-mode {
+            padding: 7px 14px;
+            border-radius: var(--radius-full);
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition-fast);
+        }
+        
+        .view-mode:hover {
+            color: var(--text-secondary);
+        }
+        
+        .view-mode.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Grid container */
+        .textures-container {
+            max-width: 1400px;
+            margin: 0 auto var(--space-xxl);
+            padding: 0 var(--space-lg);
+        }
+        
+        .textures-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: var(--space-lg);
+        }
+        
+        .textures-grid.list-view {
+            grid-template-columns: 1fr;
+        }
+        
+        /* Texture card */
+        .texture-card {
+            position: relative;
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border);
+            transition: var(--transition-medium);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: cardAppear 0.5s forwards;
+        }
+        
+        @keyframes cardAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .texture-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            border-color: var(--border-hover);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35);
+            z-index: 1;
+        }
+        
+        .textures-grid.list-view .texture-card {
+            flex-direction: row;
+            align-items: center;
+            padding: var(--space-md);
+        }
+        
+        .texture-preview {
+            position: relative;
+            overflow: hidden;
+            height: 240px;
+            background: var(--surface-3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-xl);
+            background-image: 
+                linear-gradient(45deg, rgba(0,0,0,0.1) 25%, transparent 25%), 
+                linear-gradient(-45deg, rgba(0,0,0,0.1) 25%, transparent 25%), 
+                linear-gradient(45deg, transparent 75%, rgba(0,0,0,0.1) 75%), 
+                linear-gradient(-45deg, transparent 75%, rgba(0,0,0,0.1) 75%);
+            background-size: 20px 20px;
+        }
+        
+        .textures-grid.list-view .texture-preview {
+            width: 180px;
+            height: 180px;
+            flex-shrink: 0;
+            border-radius: var(--radius-md);
+        }
+        
+        .texture-img {
+            image-rendering: pixelated;
+            max-width: 80%;
+            max-height: 80%;
+            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.5));
+            transition: var(--transition-slow);
+        }
+        
+        .texture-card:hover .texture-img {
+            transform: scale(1.1) translateY(-5px) rotate(5deg);
+        }
+        
+        .texture-glow {
+            position: absolute;
+            width: 120%;
+            height: 120%;
+            background: radial-gradient(circle, rgba(93, 135, 255, 0.2) 0%, transparent 70%);
+            pointer-events: none;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: var(--transition-medium);
+        }
+        
+        .texture-card:hover .texture-glow {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .texture-content {
+            display: flex;
+            flex-direction: column;
+            padding: var(--space-lg);
+            flex-grow: 1;
+            border-top: 1px solid var(--border);
+        }
+        
+        .textures-grid.list-view .texture-content {
+            flex-grow: 1;
+            border-top: none;
+            border-left: 1px solid var(--border);
+            margin-left: var(--space-lg);
+            padding: var(--space-md) var(--space-lg);
+        }
+        
+        .texture-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: var(--space-md);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .textures-grid.list-view .texture-name {
+            font-size: 1.3rem;
+        }
+        
+        .texture-info {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            color: var(--text-tertiary);
+            font-size: 0.85rem;
+            margin-bottom: var(--space-md);
+        }
+        
+        .texture-tag {
+            background: rgba(255, 157, 92, 0.15);
+            color: var(--accent);
+            padding: 3px 8px;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .texture-actions {
+            display: flex;
+            gap: var(--space-sm);
+            margin-top: auto;
+        }
+        
+        .action-btn {
+            flex-grow: 1;
+            padding: 10px 12px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-xs);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .action-btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+        
+        .action-btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: var(--transition-medium);
+        }
+        
+        .action-btn-primary:hover::before {
+            left: 100%;
+        }
+        
+        .action-btn-primary:hover {
+            transform: translateY(-3px);
+        }
+        
+        .action-btn-secondary {
+            background: var(--surface-4);
+            color: var(--text-secondary);
+        }
+        
+        .action-btn-secondary:hover {
+            background: var(--hover-effect);
+            transform: translateY(-3px);
+        }
+        
+        .action-btn-icon {
+            flex-grow: 0;
+            width: 42px;
+        }
+        
+        /* Loader */
+        .loader {
+            display: none;
+            text-align: center;
+            padding: var(--space-xxl) 0;
+        }
+        
+        .loader-spinner {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto var(--space-lg);
+            position: relative;
+        }
+        
+        .loader-spinner::before,
+        .loader-spinner::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: transparent;
+            border: 5px solid transparent;
+            border-top-color: var(--primary);
+        }
+        
+        .loader-spinner::before {
+            z-index: 10;
+            animation: spin 1s infinite;
+        }
+        
+        .loader-spinner::after {
+            border: 5px solid rgba(93, 135, 255, 0.2);
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loader-text {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        /* No results */
+        .no-results {
+            display: none;
+            text-align: center;
+            padding: var(--space-xxl) 0;
+        }
+        
+        .no-results-icon {
+            font-size: 4rem;
+            color: var(--surface-4);
+            margin-bottom: var(--space-md);
+        }
+        
+        .no-results-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: var(--space-sm);
+            color: var(--text-secondary);
+        }
+        
+        .no-results-text {
+            color: var(--text-tertiary);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        /* Modal preview */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 18, 25, 0.9);
+            backdrop-filter: var(--glass-blur);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-medium);
+        }
+        
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            background: var(--surface-2);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            position: relative;
+            transform: scale(0.9);
+            transition: var(--transition-medium);
+            border: 1px solid var(--border);
+        }
+        
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+        
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-lg) var(--space-xl);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .modal-close {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--surface-3);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: var(--transition-fast);
+        }
+        
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+        
+        .modal-body {
+            padding: var(--space-xl);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .modal-preview {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--space-xl);
+            background: var(--surface-3);
+            border-radius: var(--radius-md);
+            background-image: 
+                linear-gradient(45deg, rgba(0,0,0,0.2) 25%, transparent 25%), 
+                linear-gradient(-45deg, rgba(0,0,0,0.2) 25%, transparent 25%), 
+                linear-gradient(45deg, transparent 75%, rgba(0,0,0,0.2) 75%), 
+                linear-gradient(-45deg, transparent 75%, rgba(0,0,0,0.2) 75%);
+            background-size: 20px 20px;
+            overflow: hidden;
+        }
+        
+        .modal-img {
+            max-width: 80%;
+            max-height: 80%;
+            image-rendering: pixelated;
+            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.4));
+            transform-origin: center;
+            transition: transform var(--transition-medium);
+        }
+        
+        .modal-controls {
+            display: flex;
+            align-items: center;
+            gap: var(--space-lg);
+            margin-top: var(--space-md);
+            margin-bottom: var(--space-xl);
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .modal-zoom {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            background: var(--surface-3);
+            padding: 5px;
+            border-radius: var(--radius-full);
+        }
+        
+        .zoom-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            transition: var(--transition-fast);
+        }
+        
+        .zoom-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+        
+        .zoom-level {
+            width: 60px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: var(--space-md);
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .modal-btn {
+            padding: 12px 24px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            transition: var(--transition-fast);
+            font-size: 1rem;
+        }
+        
+        .modal-btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 14px 30px;
+        }
+        
+        .modal-btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(93, 135, 255, 0.3);
+        }
+        
+        .modal-btn-secondary {
+            background: var(--surface-4);
+            color: var(--text-secondary);
+        }
+        
+        .modal-btn-secondary:hover {
+            background: var(--hover-effect);
+            transform: translateY(-3px);
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: auto;
+            background: var(--surface-2);
+            border-top: 1px solid var(--border);
+            padding: var(--space-xxl) 0 var(--space-lg);
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+            text-align: center;
+        }
+        
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: var(--space-md);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+        }
+        
+        .footer-text {
+            color: var(--text-tertiary);
+            max-width: 600px;
+            margin: 0 auto var(--space-lg);
+        }
+        
+        .footer-copyright {
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .textures-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: var(--space-md);
+            }
+            
+            .modal-body {
+                padding: var(--space-lg);
+            }
+            
+            .modal-preview {
+                height: 350px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .textures-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: var(--space-md);
+            }
+            
+            .texture-preview {
+                height: 180px;
+            }
+            
+            .textures-grid.list-view .texture-card {
+                flex-direction: column;
+                padding: 0;
+            }
+            
+            .textures-grid.list-view .texture-preview {
+                width: 100%;
+                height: 200px;
+                border-radius: 0;
+            }
+            
+            .textures-grid.list-view .texture-content {
+                margin-left: 0;
+                border-left: none;
+                border-top: 1px solid var(--border);
+            }
+            
+            .modal-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .modal-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .info-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .view-switcher {
+                margin-left: 0;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .textures-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: var(--space-sm);
+            }
+            
+            .texture-preview {
+                height: 150px;
+            }
+            
+            .texture-content {
+                padding: var(--space-md);
+            }
+            
+            .texture-name {
+                font-size: 1rem;
+                margin-bottom: var(--space-sm);
+            }
+            
+            .header-content {
+                padding: var(--space-md);
+            }
+            
+            .modal-header {
+                padding: var(--space-md);
+            }
+            
+            .modal-title {
+                font-size: 1.2rem;
+            }
+            
+            .modal-body {
+                padding: var(--space-md);
+            }
+            
+            .modal-preview {
+                height: 250px;
+                margin-bottom: var(--space-lg);
+            }
+            
+            .search-input {
+                padding: 15px 20px;
+            }
+            
+            .search-btn {
+                padding: 0 20px;
+            }
+            
+            .texture-actions {
+                flex-direction: column;
+            }
+        }
+
+        /* Navigation principale */
+.main-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(26, 30, 46, 0.8);
+    backdrop-filter: var(--glass-blur);
+    z-index: 100;
+    border-bottom: 1px solid var(--border);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 15px var(--space-lg);
+}
+
+.nav-brand {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.nav-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.nav-links {
+    display: flex;
+    gap: var(--space-lg);
+}
+
+.nav-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: var(--radius-md);
+    transition: var(--transition-fast);
+    position: relative;
+}
+
+.nav-link:hover {
+    color: var(--text-primary);
+    background: var(--hover-effect);
+}
+
+.nav-link.active {
+    color: var(--text-primary);
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    height: 3px;
+    width: 20px;
+    background: var(--primary);
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: var(--radius-full);
+}
+    </style>
+</head>
+
+<body>
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <div class="nav-logo"><i class="fas fa-cube"></i></div>
+                Minecraft Atlas
+            </a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link active">Textures</a>
+                <a href="palette.html" class="nav-link">Palettes</a>
+                <a href="community-palette.html" class="nav-link">Communauté-Palettes</a>
+                <a href="colorwheel.html" class="nav-link">ColorWheel</a>
+                <a href="blockgradient.html" class="nav-link">BlockGradient</a>
+                <a href="patterncraft.html" class="nav-link">PatternCraft</a>
+                <a href="pixelmapper.html" class="nav-link">PixelMapper</a>
+            </div>
+        </div>
+    </nav>
+    <header class="header">
+        <div class="stars" id="stars"></div>
+        <div class="header-content">
+            <h1 class="hero-title" style="font-size: 2.8em;">Minecraft <span class="highlight">Texture Atlas - By MaxLananas</span></h1>
+            <p class="subtitle">Explorez, visualisez et téléchargez toutes les textures de blocs Minecraft en ultra haute définition</p>
+        </div>
+    </header>
+    
+    <div class="search-container">
+        <div class="search-bar">
+            <input type="text" class="search-input" id="search-input" placeholder="Rechercher une texture par nom...">
+            <button class="search-btn">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+    
+    <div class="info-bar">
+        <div class="info-content">
+            <div>
+                <h2 class="section-title">Textures de blocs</h2>
+            </div>
+            <div class="count-badge">
+                <i class="fas fa-cube"></i>
+                <span id="texture-count">0 textures</span>
+            </div>
+            <div class="view-switcher">
+                <button class="view-mode active" id="grid-view">
+                    <i class="fas fa-th"></i> Grille
+                </button>
+                <button class="view-mode" id="list-view">
+                    <i class="fas fa-bars"></i> Liste
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="textures-container">
+        <div class="loader" id="loader">
+            <div class="loader-spinner"></div>
+            <p class="loader-text">Chargement des textures...</p>
+        </div>
+        
+        <div class="no-results" id="no-results">
+            <div class="no-results-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            <h3 class="no-results-title">Aucune texture trouvée</h3>
+            <p class="no-results-text">Essayez une autre recherche ou vérifiez l'orthographe</p>
+        </div>
+        
+        <div class="textures-grid" id="textures-grid"></div>
+    </div>
+    
+    <div class="modal" id="preview-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">Nom de la texture</h3>
+                <button class="modal-close" id="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-preview">
+                    <img src="" alt="" class="modal-img" id="modal-img">
+                </div>
+                
+                <div class="modal-controls">
+                    <div class="modal-zoom">
+                        <button class="zoom-btn" id="zoom-out">
+                            <i class="fas fa-search-minus"></i>
+                        </button>
+                        <div class="zoom-level" id="zoom-level">100%</div>
+                        <button class="zoom-btn" id="zoom-plus">
+                            <i class="fas fa-search-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="modal-btn modal-btn-primary" id="modal-download">
+                        <i class="fas fa-download"></i> Télécharger cette texture
+                    </button>
+                    <button class="modal-btn modal-btn-secondary" id="modal-copy">
+                        <i class="fas fa-link"></i> Copier le lien
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">Minecraft Texture Atlas</div>
+            <p class="footer-text">
+                Une galerie ultra-moderne pour explorer et télécharger toutes les textures de Minecraft.
+            </p>
+            <p class="footer-copyright">
+                &copy; 2025 Minecraft Texture Atlas. Minecraft est une marque déposée de Mojang Studios.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Références des éléments DOM
+            const searchInput = document.getElementById('search-input');
+            const texturesGrid = document.getElementById('textures-grid');
+            const textureCount = document.getElementById('texture-count');
+            const loader = document.getElementById('loader');
+            const noResults = document.getElementById('no-results');
+            const previewModal = document.getElementById('preview-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalImg = document.getElementById('modal-img');
+            const modalClose = document.getElementById('modal-close');
+            const modalDownload = document.getElementById('modal-download');
+            const modalCopy = document.getElementById('modal-copy');
+            const gridViewBtn = document.getElementById('grid-view');
+            const listViewBtn = document.getElementById('list-view');
+            const zoomOutBtn = document.getElementById('zoom-out');
+            const zoomPlusBtn = document.getElementById('zoom-plus');
+            const zoomLevel = document.getElementById('zoom-level');
+            
+            // Variables globales
+            let allTextures = [];
+            let currentZoomLevel = 100;
+            let starsCreated = false;
+            let viewMode = 'grid';
+            
+            // Créer les étoiles dans l'en-tête
+            function createStars() {
+                if (starsCreated) return;
+                
+                const starsContainer = document.getElementById('stars');
+                const starCount = 100;
+                
+                for (let i = 0; i < starCount; i++) {
+                    const star = document.createElement('div');
+                    star.classList.add('star');
+                    star.style.top = `${Math.random() * 100}%`;
+                    star.style.left = `${Math.random() * 100}%`;
+                    star.style.animationDelay = `${Math.random() * 5}s`;
+                    star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                    starsContainer.appendChild(star);
+                }
+                
+                starsCreated = true;
+            }
+            
+            // Charger les données JSON
+            async function loadTextures() {
+    loader.style.display = 'block';
+    texturesGrid.style.display = 'none';
+    
+    try {
+        const response = await fetch('texture-data.json');
+        if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
+        
+        allTextures = await response.json();
+        allTextures = allTextures.map(texture => {
+            return {
+                ...texture,
+                displayName: texture.name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+                path: `blocks/${texture.name}.png`, // Utilise blocks/ comme dans ton code qui marche
+                avgColor: {
+                    r: texture.rgb[0],
+                    g: texture.rgb[1],
+                    b: texture.rgb[2]
+                }
+            };
+        });
+        
+        displayTextures(allTextures);
+        
+    } catch (error) {
+        console.error('Erreur lors du chargement des textures:', error);
+        noResults.style.display = 'block';
+        loader.style.display = 'none';
+        textureCount.textContent = "0 texture";
+    }
+}
+            
+            // Deviner la catégorie de la texture basée sur son nom
+            function guessCategory(name) {
+                const nameLower = name.toLowerCase();
+                
+                if (nameLower.includes('log') || nameLower.includes('plank') || nameLower.includes('wood')) {
+                    return 'Bois';
+                } else if (nameLower.includes('stone') || nameLower.includes('cobble') || nameLower.includes('granite') || nameLower.includes('andesite') || nameLower.includes('diorite')) {
+                    return 'Pierre';
+                } else if (nameLower.includes('dirt') || nameLower.includes('grass') || nameLower.includes('sand') || nameLower.includes('gravel')) {
+                    return 'Terre';
+                } else if (nameLower.includes('ore') || nameLower.includes('diamond') || nameLower.includes('gold') || nameLower.includes('iron') || nameLower.includes('emerald')) {
+                    return 'Minerai';
+                } else if (nameLower.includes('wool') || nameLower.includes('carpet')) {
+                    return 'Laine';
+                } else if (nameLower.includes('glass')) {
+                    return 'Verre';
+                } else if (nameLower.includes('brick') || nameLower.includes('tile')) {
+                    return 'Briques';
+                } else if (nameLower.includes('concrete') || nameLower.includes('terracotta')) {
+                    return 'Béton';
+                } else {
+                    return 'Divers';
+                }
+            }
+            
+            // Afficher les textures dans la grille
+            function displayTextures(textures) {
+                texturesGrid.innerHTML = '';
+                textureCount.textContent = `${textures.length} texture${textures.length > 1 ? 's' : ''}`;
+                
+                if (textures.length === 0) {
+                    noResults.style.display = 'block';
+                    loader.style.display = 'none';
+                    texturesGrid.style.display = 'none';
+                    return;
+                }
+                
+                noResults.style.display = 'none';
+                loader.style.display = 'none';
+                texturesGrid.style.display = 'grid';
+                
+                // Appliquer le mode de vue actuel
+                if (viewMode === 'list') {
+                    texturesGrid.classList.add('list-view');
+                } else {
+                    texturesGrid.classList.remove('list-view');
+                }
+                
+                textures.forEach((texture, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'texture-card';
+                    card.style.animationDelay = `${index * 0.05}s`;
+                    
+                    card.innerHTML = `
+                        <div class="texture-preview">
+                            <div class="texture-glow"></div>
+                            <img src="${texture.path}" alt="${texture.displayName}" class="texture-img" loading="lazy">
+                        </div>
+                        <div class="texture-content">
+                            <h3 class="texture-name">${texture.displayName}</h3>
+                            <div class="texture-info">
+                                <div class="texture-tag"><i class="fas fa-tag"></i> ${texture.category}</div>
+                            </div>
+                            <div class="texture-actions">
+                                <button class="action-btn action-btn-primary download-btn">
+                                    <i class="fas fa-download"></i> Télécharger
+                                </button>
+                                <button class="action-btn action-btn-secondary action-btn-icon preview-btn">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Gérer les erreurs de chargement d'image
+                    const img = card.querySelector('.texture-img');
+                    img.onerror = function() {
+                        this.src = 'path/to/placeholder-image.png'; // Remplacer par une image de remplacement valide
+                    };
+                    
+                    // Ajouter l'élément au DOM
+                    texturesGrid.appendChild(card);
+                    
+                    // Ajouter les actions des boutons (téléchargement, aperçu)
+                    card.querySelector('.preview-btn').addEventListener('click', function() {
+                        showModal(texture);
+                    });
+                    
+                    card.querySelector('.download-btn').addEventListener('click', function() {
+                        window.location.href = texture.path; // Télécharger le fichier
+                    });
+                });
+            }
+            
+            // Afficher le modal pour la prévisualisation
+            function showModal(texture) {
+                modalTitle.textContent = texture.displayName;
+                modalImg.src = texture.path;
+                modalDownload.href = texture.path;
+                modalCopy.onclick = function() {
+                    navigator.clipboard.writeText(texture.path);
+                };
+                
+                previewModal.style.display = 'block';
+            }
+            
+            // Fermer le modal
+            modalClose.addEventListener('click', function() {
+                previewModal.style.display = 'none';
+            });
+            
+            // Changer le mode de vue
+            gridViewBtn.addEventListener('click', function() {
+                viewMode = 'grid';
+                displayTextures(allTextures);
+            });
+            
+            listViewBtn.addEventListener('click', function() {
+                viewMode = 'list';
+                displayTextures(allTextures);
+            });
+            
+            // Contrôler le niveau de zoom
+            zoomOutBtn.addEventListener('click', function() {
+                if (currentZoomLevel > 50) {
+                    currentZoomLevel -= 10;
+                    zoomLevel.textContent = `${currentZoomLevel}%`;
+                    displayTextures(allTextures);
+                }
+            });
+            
+            zoomPlusBtn.addEventListener('click', function() {
+                if (currentZoomLevel < 200) {
+                    currentZoomLevel += 10;
+                    zoomLevel.textContent = `${currentZoomLevel}%`;
+                    displayTextures(allTextures);
+                }
+            });
+            
+            // Charger les textures au démarrage
+            loadTextures();
+        });
+    </script>
+    
+</body>
+</html>
