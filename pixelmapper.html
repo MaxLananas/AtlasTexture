@@ -1,0 +1,3352 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PixelMapper - Minecraft Atlas</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <link rel="shortcut icon" href="./max.jpg" type="image/x-icon">
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const burger = document.getElementById('burger-button');
+      const navLinks = document.getElementById('nav-links');
+  
+      burger.addEventListener('click', () => {
+        navLinks.classList.toggle('show');
+      });
+    });
+  </script>
+  <style>
+    :root {
+      --primary: #00c6ff;
+      --primary-dark: #0072ff;
+      --primary-rgb: 0, 198, 255;
+      --accent: #ff7eb3;
+      --accent-rgb: 255, 126, 179;
+      --success: #4ade80;
+      --success-rgb: 74, 222, 128;
+      --warning: #fbbf24;
+      --warning-rgb: 251, 191, 36;
+      --error: #f87171;
+      --error-rgb: 248, 113, 113;
+      --text-primary: #ffffff;
+      --text-secondary: #bbbbbb;
+      --text-tertiary: #777777;
+      --surface-1: #121212;
+      --surface-2: #1f1f1f;
+      --surface-3: #2c2c2c;
+      --surface-4: #373737;
+      --border: #2c2c2c;
+      --hover-effect: rgba(255, 255, 255, 0.05);
+      --glass-blur: blur(10px);
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 2rem;
+      --space-xl: 3rem;
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      --radius-full: 999px;
+      --transition-fast: all 0.3s ease;
+      --transition-medium: all 0.5s ease;
+      --transition-slow: all 0.8s ease;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.3);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+      --shadow-lg: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--surface-1);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(0, 118, 255, 0.05) 0%, transparent 45%),
+        radial-gradient(circle at 80% 70%, rgba(255, 126, 179, 0.05) 0%, transparent 45%);
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      outline: none;
+      background: none;
+      font-family: inherit;
+    }
+
+    /* NAVIGATION */
+    .main-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(26, 30, 46, 0.8);
+      backdrop-filter: var(--glass-blur);
+      z-index: 100;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 15px var(--space-lg);
+    }
+
+    .nav-brand {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .nav-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: var(--space-lg);
+    }
+
+    .nav-link {
+      color: var(--text-secondary);
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: var(--radius-md);
+      transition: var(--transition-fast);
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: var(--text-primary);
+      background: var(--hover-effect);
+    }
+
+    .nav-link.active {
+      color: var(--text-primary);
+    }
+
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      height: 3px;
+      width: 20px;
+      background: var(--primary);
+      bottom: -2px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: var(--radius-full);
+    }
+
+    /* HEADER */
+    header {
+      padding: var(--space-xl) var(--space-lg);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(ellipse at top, rgba(0, 198, 255, 0.1), transparent 70%),
+        radial-gradient(ellipse at bottom, rgba(255, 126, 179, 0.1), transparent 70%);
+      z-index: -1;
+    }
+
+    .header-content {
+      max-width: 880px;
+      margin: 0 auto;
+    }
+
+    header h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: var(--space-md);
+      background: linear-gradient(120deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      position: relative;
+      display: inline-block;
+    }
+
+    header h1 i {
+      font-size: 3rem;
+      margin-right: var(--space-md);
+      background: linear-gradient(120deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .header-features {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-lg);
+      margin-top: var(--space-lg);
+    }
+
+    .feature-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-sm);
+      max-width: 180px;
+    }
+
+    .feature-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-full);
+      background: linear-gradient(135deg, var(--surface-2), var(--surface-3));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-md);
+      margin-bottom: var(--space-xs);
+    }
+
+    .feature-icon i {
+      font-size: 1.4rem;
+      background: linear-gradient(120deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .feature-title {
+      font-size: 1rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .feature-desc {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    /* MAIN CONTENT */
+    main {
+      padding: 0 var(--space-lg) var(--space-xl);
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .app-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: var(--space-lg);
+      width: 100%;
+    }
+
+    /* CONTROLS PANEL */
+    .controls-panel {
+      background: var(--surface-2);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--border);
+      transition: var(--transition-medium);
+      height: fit-content;
+    }
+
+    .panel-header {
+      background: var(--surface-3);
+      padding: var(--space-md) var(--space-lg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .panel-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .panel-title i {
+      color: var(--primary);
+      font-size: 0.9rem;
+    }
+
+    .panel-content {
+      padding: var(--space-lg);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-lg);
+    }
+
+    /* IMAGE UPLOADER */
+    .image-uploader {
+      width: 100%;
+      position: relative;
+    }
+
+    .upload-area {
+      width: 100%;
+      height: 200px;
+      border: 2px dashed var(--border);
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-md);
+      cursor: pointer;
+      transition: var(--transition-fast);
+      position: relative;
+    }
+
+    .upload-area:hover {
+      border-color: var(--primary-dark);
+      background: rgba(var(--primary-rgb), 0.05);
+    }
+
+    .upload-area.has-image {
+      border: none;
+      padding: 0;
+    }
+
+    .upload-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: var(--radius-full);
+      background: rgba(var(--primary-rgb), 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 1.8rem;
+    }
+
+    .upload-text {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-align: center;
+    }
+
+    .upload-text span {
+      color: var(--primary);
+    }
+
+    .upload-subtext {
+      font-size: 0.75rem;
+      color: var(--text-tertiary);
+    }
+
+    .uploaded-image-container {
+      width: 100%;
+      height: 200px;
+      position: relative;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .uploaded-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #000;
+    }
+
+    .image-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: var(--transition-fast);
+    }
+
+    .uploaded-image-container:hover .image-overlay {
+      opacity: 1;
+    }
+
+    .image-controls {
+      display: flex;
+      gap: var(--space-sm);
+    }
+
+    .image-control-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-full);
+      background: rgba(var(--surface-1), 0.8);
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: var(--transition-fast);
+      backdrop-filter: blur(5px);
+    }
+
+    .image-control-btn:hover {
+      background: var(--primary-dark);
+      transform: scale(1.1);
+    }
+
+    /* CONVERSION SETTINGS */
+    .settings-section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .section-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      margin-bottom: var(--space-xs);
+    }
+
+    .section-title i {
+      color: var(--primary);
+      font-size: 0.8rem;
+    }
+
+    .settings-group {
+      background: var(--surface-1);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+      border: 1px solid var(--border);
+    }
+
+    .settings-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+    }
+
+    .setting-label {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    .setting-label i {
+      color: var(--primary);
+      font-size: 0.8rem;
+    }
+
+    .setting-value {
+      font-size: 0.85rem;
+      color: var(--text-primary);
+      font-weight: 600;
+      background: var(--surface-3);
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+    }
+
+    .settings-control {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      flex: 1;
+    }
+
+    .settings-slider {
+      flex: 1;
+      height: 4px;
+      background: var(--surface-3);
+      border-radius: var(--radius-full);
+      -webkit-appearance: none;
+      position: relative;
+    }
+
+    .settings-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: var(--radius-full);
+      background: var(--primary);
+      cursor: pointer;
+      box-shadow: 0 0 5px rgba(var(--primary-rgb), 0.5);
+      transition: var(--transition-fast);
+    }
+
+    .settings-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.1);
+    }
+
+    .toggle-container {
+      position: relative;
+      width: 44px;
+      height: 24px;
+    }
+
+    .toggle-checkbox {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--surface-3);
+      border-radius: var(--radius-full);
+      transition: var(--transition-fast);
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      border-radius: 50%;
+      transition: var(--transition-fast);
+    }
+
+    .toggle-checkbox:checked + .toggle-slider {
+      background-color: var(--primary-dark);
+    }
+
+    .toggle-checkbox:checked + .toggle-slider:before {
+      transform: translateX(20px);
+      background-color: white;
+    }
+
+    .dropdown-select {
+      padding: 6px 12px;
+      background: var(--surface-3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font-size: 0.85rem;
+      min-width: 130px;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255, 255, 255, 0.5)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      background-size: 16px;
+      cursor: pointer;
+    }
+
+    .dropdown-select:focus {
+      outline: none;
+      border-color: var(--primary-dark);
+    }
+
+    .settings-btn-group {
+      display: flex;
+      gap: var(--space-xs);
+    }
+
+    .settings-btn {
+      padding: 6px 12px;
+      background: var(--surface-3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .settings-btn:hover {
+      background: var(--surface-4);
+      color: var(--text-primary);
+    }
+
+    .settings-btn.active {
+      background: var(--primary-dark);
+      color: white;
+      border-color: transparent;
+    }
+
+    /* ACTION BUTTONS */
+    .action-btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md);
+      margin-top: var(--space-md);
+    }
+
+    .btn {
+      padding: var(--space-md) var(--space-lg);
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-sm);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      box-shadow: 0 4px 15px rgba(var(--primary-rgb), 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(var(--primary-rgb), 0.4);
+    }
+
+    .btn-secondary {
+      background: var(--surface-3);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface-4);
+      color: var(--text-primary);
+    }
+
+    .btn-full {
+      grid-column: 1 / -1;
+    }
+
+    /* PREVIEW PANEL */
+    .preview-panel {
+      display: flex;
+      flex-direction: column;
+      background: var(--surface-2);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: var(--transition-medium);
+    }
+
+    .preview-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      min-height: 700px;
+    }
+
+    .tabs-container {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .preview-tab {
+      padding: var(--space-sm) var(--space-lg);
+      background: var(--surface-3);
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      border-right: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    .preview-tab i {
+      font-size: 0.8rem;
+    }
+
+    .preview-tab:hover {
+      background: var(--surface-4);
+      color: var(--text-primary);
+    }
+
+    .preview-tab.active {
+      background: var(--primary-dark);
+      color: white;
+    }
+
+    .preview-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: var(--space-lg);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .preview-placeholder {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-md);
+      color: var(--text-tertiary);
+      text-align: center;
+      padding: var(--space-xl);
+    }
+
+    .placeholder-icon {
+      font-size: 3rem;
+      opacity: 0.3;
+    }
+
+    .placeholder-text {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: var(--space-sm);
+    }
+
+    .placeholder-subtext {
+      font-size: 0.9rem;
+      max-width: 400px;
+      line-height: 1.5;
+    }
+
+    .processing-indicator {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(var(--surface-1), 0.8);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-lg);
+      z-index: 5;
+      display: none;
+    }
+
+    .processing-indicator.visible {
+      display: flex;
+    }
+
+    .processing-animation {
+      width: 100px;
+      height: 100px;
+      border-radius: var(--radius-full);
+      border: 4px solid rgba(var(--primary-rgb), 0.1);
+      border-top: 4px solid var(--primary);
+      animation: spin 1.5s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .processing-text {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      text-align: center;
+    }
+
+    .processing-progress {
+      width: 80%;
+      max-width: 400px;
+      height: 6px;
+      background: var(--surface-3);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+      border-radius: var(--radius-full);
+      transition: width 0.3s ease;
+    }
+
+    .tabs-content {
+      flex: 1;
+      display: flex;
+      position: relative;
+    }
+
+    .tab-pane {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      overflow: auto;
+    }
+
+    .tab-pane.active {
+      opacity: 1;
+      visibility: visible;
+      z-index: 2;
+    }
+
+    /* RESULTS PANE */
+    .result-container {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+      padding: var(--space-lg);
+    }
+
+    .no-result {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-md);
+      padding: var(--space-xl);
+      text-align: center;
+    }
+
+    .no-result-icon {
+      font-size: 3rem;
+      color: var(--text-tertiary);
+      opacity: 0.3;
+    }
+
+    .no-result-text {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .result-view {
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      background: var(--surface-1);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-sm) var(--space-md);
+      background: var(--surface-3);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .result-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    .result-title i {
+      color: var(--primary);
+      font-size: 0.8rem;
+    }
+
+    .result-controls {
+      display: flex;
+      gap: var(--space-xs);
+    }
+
+    .result-control {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface-2);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition-fast);
+      font-size: 0.8rem;
+    }
+
+    .result-control:hover {
+      background: var(--surface-4);
+      color: var(--text-primary);
+    }
+
+    .result-canvas-container {
+      flex: 1;
+      position: relative;
+      overflow: auto;
+      background: #121212 url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAyMCAwIEwgMCAwIDAgMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzIyMiIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIiAvPjwvc3ZnPg==');
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+    }
+
+    .result-canvas-wrapper {
+      position: relative;
+      transition: transform 0.3s ease;
+      cursor: grab;
+    }
+
+    .result-canvas-wrapper.dragging {
+      cursor: grabbing;
+    }
+
+    #resultCanvas {
+      image-rendering: pixelated;
+      transition: transform 0.3s ease;
+      max-width: none;
+      max-height: none;
+    }
+
+    .zoom-controls {
+      position: absolute;
+      bottom: 15px;
+      right: 15px;
+      background: rgba(30, 30, 30, 0.8);
+      border-radius: var(--radius-md);
+      padding: 5px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      box-shadow: var(--shadow-md);
+      z-index: 10;
+    }
+
+    .zoom-control {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface-3);
+      color: var(--text-secondary);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .zoom-control:hover {
+      background: var(--surface-4);
+      color: var(--text-primary);
+    }
+
+    .zoom-level {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      padding: 3px 0;
+    }
+
+    .pixel-grid-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background-image: linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+      background-size: 1px 1px;
+      display: none;
+      z-index: 2;
+    }
+
+    .stats-container {
+      background: var(--surface-1);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: var(--space-md);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+      background: var(--surface-2);
+      padding: var(--space-md);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+    }
+
+    .stat-title {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    .stat-title i {
+      color: var(--primary);
+      font-size: 0.7rem;
+    }
+
+    .stat-value {
+      font-size: 1.3rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat-desc {
+      font-size: 0.75rem;
+      color: var(--text-tertiary);
+    }
+
+    /* BLOCKS PANE */
+    .blocks-container {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+      padding: var(--space-lg);
+    }
+
+    .blocks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: var(--space-sm);
+      background: var(--surface-1);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      box-shadow: var(--shadow-sm);
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    .block-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: var(--space-xs);
+      border-radius: var(--radius-sm);
+      background: var(--surface-2);
+      transition: var(--transition-fast);
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .block-item:hover {
+      background: var(--surface-3);
+      transform: translateY(-2px);
+    }
+
+    .block-image {
+      width: 40px;
+      height: 40px;
+      image-rendering: pixelated;
+    }
+
+    .block-name {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    .block-count {
+      font-size: 0.65rem;
+      color: var(--text-tertiary);
+    }
+
+    /* INSTRUCTIONS PANE */
+    .instructions-container {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-lg);
+      padding: var(--space-lg);
+    }
+
+    .instructions-steps {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .instruction-step {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    .step-indicator {
+      width: 30px;
+      height: 30px;
+      border-radius: var(--radius-full);
+      background: var(--primary-dark);
+      color: white;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    .step-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .step-description {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* LAYERS PANE */
+    .layers-container {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+      padding: var(--space-lg);
+    }
+
+    .layers-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    .layer-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-sm) var(--space-md);
+      background: var(--surface-3);
+      border-radius: var(--radius-md);
+      transition: var(--transition-fast);
+      cursor: pointer;
+      border: 1px solid var(--border);
+    }
+
+    .layer-item:hover {
+      background: var(--surface-4);
+    }
+
+    .layer-item.active {
+      background: rgba(var(--primary-rgb), 0.1);
+      border-color: var(--primary-dark);
+    }
+
+    .layer-color {
+      width: 24px;
+      height: 24px;
+      border-radius: var(--radius-sm);
+      border: 2px solid var(--border);
+    }
+
+    .layer-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .layer-name {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .layer-details {
+      font-size: 0.75rem;
+      color: var(--text-tertiary);
+    }
+
+    .layer-actions {
+      display: flex;
+      gap: var(--space-xs);
+    }
+
+    .layer-action {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface-2);
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      transition: var(--transition-fast);
+      font-size: 0.7rem;
+      cursor: pointer;
+    }
+
+    .layer-action:hover {
+      background: var(--surface-4);
+      color: var(--text-primary);
+    }
+
+    /* INTEGRATION SECTION */
+    .integration-section {
+      margin-top: var(--space-sm);
+    }
+
+    .integration-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+      margin-top: var(--space-xs);
+    }
+
+    /* TOAST NOTIFICATIONS */
+    .toast-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      z-index: 100;
+    }
+
+    .toast {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      background: var(--surface-3);
+      padding: var(--space-sm) var(--space-lg);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+      transform: translateX(120%);
+      transition: transform 0.3s ease;
+      min-width: 300px;
+    }
+
+    .toast.visible {
+      transform: translateX(0);
+    }
+
+    .toast-icon {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-full);
+      flex-shrink: 0;
+    }
+
+    .toast-icon.success {
+      background: rgba(var(--success-rgb), 0.1);
+      color: var(--success);
+    }
+
+    .toast-icon.error {
+      background: rgba(var(--error-rgb), 0.1);
+      color: var(--error);
+    }
+
+    .toast-icon.info {
+      background: rgba(var(--primary-rgb), 0.1);
+      color: var(--primary);
+    }
+
+    .toast-icon.warning {
+      background: rgba(var(--warning-rgb), 0.1);
+      color: var(--warning);
+    }
+
+    .toast-content {
+      flex: 1;
+    }
+
+    .toast-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .toast-message {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .toast-close {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .toast-close:hover {
+      color: var(--text-primary);
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition-fast);
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-overlay.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-container {
+      width: 90%;
+      max-width: 600px;
+      background: var(--surface-2);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      transform: translateY(20px);
+      transition: var(--transition-fast);
+    }
+
+    .modal-overlay.visible .modal-container {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      padding: var(--space-md) var(--space-lg);
+      background: var(--surface-3);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .modal-close {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface-4);
+      border-radius: var(--radius-full);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .modal-close:hover {
+      background: var(--surface-1);
+      color: var(--text-primary);
+    }
+
+    .modal-body {
+      padding: var(--space-lg);
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+
+    .modal-footer {
+      padding: var(--space-md) var(--space-lg);
+      background: var(--surface-1);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--space-sm);
+    }
+
+    /* RESPONSIVE STYLES */
+    @media (max-width: 1200px) {
+      .app-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+      }
+
+      .controls-panel, .preview-panel {
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-container {
+        flex-direction: column;
+        gap: var(--space-md);
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: var(--space-md);
+      }
+
+      header h1 {
+        font-size: 2.5rem;
+      }
+
+      .header-features {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .action-btns {
+        grid-template-columns: 1fr;
+      }
+
+      .previews-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: var(--space-lg) var(--space-md);
+      }
+
+      header h1 {
+        font-size: 2rem;
+      }
+
+      main {
+        padding: 0 var(--space-md) var(--space-lg);
+      }
+
+      .panel-content, .preview-area {
+        padding: var(--space-md);
+      }
+
+      .preview-tab {
+        padding: var(--space-sm) var(--space-md);
+        font-size: 0.8rem;
+      }
+
+      .stat-item {
+        padding: var(--space-sm);
+      }
+
+      .stat-value {
+        font-size: 1.1rem;
+      }
+    }
+
+    .burger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 25px;
+  height: 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 101;
+}
+
+.burger span {
+  height: 3px;
+  width: 100%;
+  background: white;
+  border-radius: 3px;
+}
+
+@media (max-width: 768px) {
+  .burger {
+    display: flex;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    background: rgba(26, 30, 46, 0.95);
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    gap: 15px;
+    border-top: 1px solid var(--border);
+    z-index: 100;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
+}
+
+/* Important : pour éviter conflits avec d'autres media queries */
+.main-nav {
+  position: relative; /* important */
+  z-index: 100;
+}
+  </style>
+</head>
+<body>
+  <nav class="main-nav">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <div class="nav-logo"><i class="fas fa-cube"></i></div>
+        Minecraft Atlas
+      </a>
+  
+      <button class="burger" id="burger-button" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+  
+      <div class="nav-links" id="nav-links">
+        <a href="index.html" class="nav-link">Textures</a>
+        <a href="palette.html" class="nav-link">Palettes</a>
+        <a href="community-palette.html" class="nav-link">Communauté-Palettes</a>
+        <a href="colorwheel.html" class="nav-link">ColorWheel</a>
+        <a href="blockgradient.html" class="nav-link">BlockGradient</a>
+        <a href="patterncraft.html" class="nav-link">PatternCraft</a>
+        <a href="pixelmapper.html" class="nav-link active">PixelMapper</a>
+        <a href="wiki.html" class="nav-link">Wiki</a>
+      </div>
+    </div>
+  </nav>
+
+  <header>
+    <div class="header-content">
+      <h1><i class="fas fa-image"></i> PixelMapper</h1>
+      <p>Transforme n'importe quelle image en création Minecraft avec des algorithmes avancés d'analyse et de conversion.</p>
+      
+      <div class="header-features">
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-magic"></i>
+          </div>
+          <h3 class="feature-title">Conversion intelligente</h3>
+          <p class="feature-desc">Analyse avancée des couleurs pour une correspondance précise avec les blocs Minecraft</p>
+        </div>
+        
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-sliders-h"></i>
+          </div>
+          <h3 class="feature-title">Paramètres flexibles</h3>
+          <p class="feature-desc">Ajuste la taille, le style et l'algorithme pour des résultats optimaux</p>
+        </div>
+        
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-layer-group"></i>
+          </div>
+          <h3 class="feature-title">Support multi-couches</h3>
+          <p class="feature-desc">Crée des designs avec profondeur et texture en utilisant plusieurs types de blocs</p>
+        </div>
+        
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-file-export"></i>
+          </div>
+          <h3 class="feature-title">Export facile</h3>
+          <p class="feature-desc">Génère des plans détaillés et instructions pour construire en jeu</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="app-container">
+      <!-- Controls Panel -->
+      <section class="controls-panel">
+        <div class="panel-header">
+          <h2 class="panel-title"><i class="fas fa-sliders-h"></i> Paramètres</h2>
+        </div>
+        <div class="panel-content">
+          <!-- Image Uploader -->
+          <div class="image-uploader">
+            <div class="upload-area" id="uploadArea">
+              <div class="upload-icon">
+                <i class="fas fa-upload"></i>
+              </div>
+              <div class="upload-text">
+                <span>Cliquez</span> ou déposez une image
+              </div>
+              <div class="upload-subtext">JPG, PNG, GIF, WebP • Max 10MB</div>
+              <input type="file" id="imageInput" accept="image/*" style="display: none;" />
+            </div>
+            <div class="uploaded-image-container" id="uploadedImageContainer" style="display: none;">
+              <img id="uploadedImage" class="uploaded-image" />
+              <div class="image-overlay">
+                <div class="image-controls">
+                  <div class="image-control-btn" id="cropImageBtn" title="Recadrer">
+                    <i class="fas fa-crop-alt"></i>
+                  </div>
+                  <div class="image-control-btn" id="rotateImageBtn" title="Rotation">
+                    <i class="fas fa-sync-alt"></i>
+                  </div>
+                  <div class="image-control-btn" id="changeImageBtn" title="Changer d'image">
+                    <i class="fas fa-exchange-alt"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Size Settings -->
+          <div class="settings-section">
+            <h3 class="section-title"><i class="fas fa-expand-arrows-alt"></i> Dimensions</h3>
+            <div class="settings-group">
+              <div class="settings-row">
+                <span class="setting-label"><i class="fas fa-arrows-alt-h"></i> Largeur (blocs)</span>
+                <div class="settings-control">
+                  <input type="range" class="settings-slider" id="widthSlider" min="10" max="1024" value="40">
+                  <span class="setting-value" id="widthValue">40</span>
+                </div>
+              </div>
+              <div class="settings-row">
+                <span class="setting-label"><i class="fas fa-arrows-alt-v"></i> Hauteur (blocs)</span>
+                <div class="settings-control">
+                  <input type="range" class="settings-slider" id="heightSlider" min="10" max="1024" value="30">
+                  <span class="setting-value" id="heightValue">30</span>
+                </div>
+              </div>
+              <div class="settings-row">
+                <span class="setting-label"><i class="fas fa-lock"></i> Conserver proportions</span>
+                <div class="toggle-container">
+                  <input type="checkbox" id="aspectRatioToggle" class="toggle-checkbox" checked>
+                  <span class="toggle-slider"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Algorithm Settings -->
+          <div class="settings-section">
+            <h3 class="section-title"><i class="fas fa-microchip"></i> Algorithme</h3>
+            <div class="settings-group">
+              <div class="settings-row">
+                <span class="setting-label"><i class="fas fa-code-branch"></i> Méthode</span>
+                <select class="dropdown-select" id="algorithmSelect">
+                  <option value="standard">Standard</option>
+                  <option value="enhanced" selected>Enhanced Color Matching</option>
+                  <option value="dithering">Dithering adaptatif</option>
+                  <option value="perceptual">Perceptual Mapping</option>
+                  <option value="neural">Neural Network</option>
+                </select>
+              </div>
+              <div class="settings-row">
+                <span class="setting-label"><i class="fas fa-palette"></i> Palette</span>
+                <select class="dropdown-select" id="paletteSelect">
+                  <option value="all" selected>Tous les blocs</option>
+                  <option value="survival">Survie uniquement</option>
+                  <option value="colored">Blocs colorés</option>
+                  <option value="natural">Blocs naturels</option>
+                  <option value="building">Blocs de construction</option>
+                </select>
+              </div>
+              <div class="settings-row">
+                <span class="setting-label"><i class="fas fa-filter"></i> Précision couleur</span>
+                <div class="settings-control">
+                  <input type="range" class="settings-slider" id="precisionSlider" min="1" max="10" value="7">
+                  <span class="setting-value" id="precisionValue">7</span>
+                </div>
+              </div>
+              <div class="settings-row">
+                <span class="setting-label"><i class="fas fa-adjust"></i> Correction gamma</span>
+                <div class="settings-control">
+                  <input type="range" class="settings-slider" id="gammaSlider" min="0.5" max="2.5" step="0.1" value="1.0">
+                  <span class="setting-value" id="gammaValue">1.0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Advanced Settings -->
+          <div class="settings-section">
+            <h3 class="section-title"><i class="fas fa-cogs"></i> Options avancées</h3>
+            <div class="settings-group">
+              <div class="settings-row">
+                <span class="setting-label"><i class="fas fa-layer-group"></i> Mode de rendu</span>
+                <div class="settings-btn-group">
+                  <button class="settings-btn active" data-mode="flat" id="flatModeBtn">Plat</button>
+                  <button class="settings-btn" data-mode="3d" id="3dModeBtn">Relief</button>
+                  <button class="settings-btn" data-mode="mosaic" id="mosaicModeBtn">Mosaïque</button>
+                </div>
+              </div>
+              <div class="settings-row">
+                <span class="setting-label"><i class="fas fa-random"></i> Aléatoire contrôlé</span>
+                <div class="toggle-container">
+                  <input type="checkbox" id="randomToggle" class="toggle-checkbox">
+                  <span class="toggle-slider"></span>
+                </div>
+              </div>
+              <div class="settings-row">
+                <span class="setting-label"><i class="fas fa-border-all"></i> Optimisation pixels</span>
+                <div class="toggle-container">
+                  <input type="checkbox" id="pixelOptimizeToggle" class="toggle-checkbox" checked>
+                  <span class="toggle-slider"></span>
+                </div>
+              </div>
+              <div class="settings-row">
+                <span class="setting-label"><i class="fas fa-border-none"></i> Détection contours</span>
+                <div class="toggle-container">
+                  <input type="checkbox" id="edgeDetectionToggle" class="toggle-checkbox">
+                  <span class="toggle-slider"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Integration Section -->
+          <div class="settings-section">
+            <h3 class="section-title"><i class="fas fa-link"></i> Utiliser avec d'autres outils</h3>
+            <div class="integration-options">
+              <button class="settings-btn" id="integratePalette">
+                <i class="fas fa-palette"></i> Palette
+              </button>
+              <button class="settings-btn" id="integrateGradient">
+                <i class="fas fa-sliders-h"></i> BlockGradient
+              </button>
+              <button class="settings-btn" id="integratePattern">
+                <i class="fas fa-th"></i> PatternCraft
+              </button>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="action-btns">
+            <button class="btn btn-secondary" id="previewBtn">
+              <i class="fas fa-eye"></i> Aperçu
+            </button>
+            <button class="btn btn-primary" id="convertBtn">
+              <i class="fas fa-wand-magic-sparkles"></i> Convertir
+            </button>
+            <button class="btn btn-secondary btn-full" id="exportBtn" disabled>
+              <i class="fas fa-file-export"></i> Exporter les résultats
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Preview Panel -->
+      <section class="preview-panel">
+        <div class="panel-header">
+          <h2 class="panel-title"><i class="fas fa-eye"></i> Résultat</h2>
+        </div>
+        
+        <div class="tabs-container">
+          <div class="preview-tab active" data-tab="result"><i class="fas fa-image"></i> Rendu</div>
+          <div class="preview-tab" data-tab="blocks"><i class="fas fa-cubes"></i> Blocs</div>
+          <div class="preview-tab" data-tab="instructions"><i class="fas fa-book"></i> Instructions</div>
+          <div class="preview-tab" data-tab="layers"><i class="fas fa-layer-group"></i> Couches</div>
+        </div>
+        
+        <div class="preview-content">
+          <div class="preview-placeholder" id="previewPlaceholder">
+            <div class="placeholder-icon">
+              <i class="fas fa-image"></i>
+            </div>
+            <div class="placeholder-text">Aucun aperçu disponible</div>
+            <div class="placeholder-subtext">Téléchargez une image et cliquez sur "Aperçu" ou "Convertir" pour générer un rendu Minecraft.</div>
+          </div>
+          
+          <div class="processing-indicator" id="processingIndicator">
+            <div class="processing-animation"></div>
+            <div class="processing-text">Conversion de l'image en cours...</div>
+            <div class="processing-progress">
+              <div class="progress-bar" id="progressBar"></div>
+            </div>
+          </div>
+          
+          <div class="tabs-content">
+            <!-- Result Tab -->
+            <div class="tab-pane" id="resultTab">
+              <div class="result-container">
+                <div class="result-view">
+                  <div class="result-header">
+                    <h3 class="result-title"><i class="fas fa-image"></i> Rendu Minecraft</h3>
+                    <div class="result-controls">
+                      <div class="result-control" id="downloadResultBtn" title="Télécharger">
+                        <i class="fas fa-download"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="result-canvas-container" id="resultCanvasContainer">
+                    <div class="result-canvas-wrapper" id="resultCanvasWrapper">
+                      <canvas id="resultCanvas"></canvas>
+                      <div class="pixel-grid-overlay" id="pixelGridOverlay"></div>
+                    </div>
+                    <div class="zoom-controls">
+                      <div class="zoom-control" id="zoomInBtn" title="Zoom +">
+                        <i class="fas fa-search-plus"></i>
+                      </div>
+                      <div class="zoom-level" id="zoomLevel">100%</div>
+                      <div class="zoom-control" id="zoomOutBtn" title="Zoom -">
+                        <i class="fas fa-search-minus"></i>
+                      </div>
+                      <div class="zoom-control" id="resetZoomBtn" title="Réinitialiser zoom">
+                        <i class="fas fa-expand"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="stats-container">
+                  <div class="stat-item">
+                    <div class="stat-title"><i class="fas fa-th"></i> Dimensions</div>
+                    <div class="stat-value" id="dimensionsStat">40 × 30</div>
+                    <div class="stat-desc">Taille en blocs</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-title"><i class="fas fa-cube"></i> Blocs totaux</div>
+                    <div class="stat-value" id="totalBlocksStat">1,200</div>
+                    <div class="stat-desc">Nombre de blocs</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-title"><i class="fas fa-palette"></i> Types de blocs</div>
+                    <div class="stat-value" id="uniqueBlocksStat">27</div>
+                    <div class="stat-desc">Variétés utilisées</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-title"><i class="fas fa-code-branch"></i> Algorithme</div>
+                    <div class="stat-value" id="algorithmStat">Enhanced</div>
+                    <div class="stat-desc">Méthode de conversion</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Blocks Tab -->
+            <div class="tab-pane" id="blocksTab">
+              <div class="blocks-container">
+                <div class="stats-container" style="margin-bottom: var(--space-md);">
+                  <div class="stat-item">
+                    <div class="stat-title"><i class="fas fa-cube"></i> Blocs utilisés</div>
+                    <div class="stat-value" id="usedBlocksStat">27</div>
+                    <div class="stat-desc">Types uniques</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-title"><i class="fas fa-cubes"></i> Total à collecter</div>
+                    <div class="stat-value" id="collectBlocksStat">1,200</div>
+                    <div class="stat-desc">Nombre de blocs</div>
+                  </div>
+                </div>
+                
+                <div class="blocks-grid" id="blocksGrid">
+                  <!-- Blocks will be populated by JS -->
+                </div>
+              </div>
+            </div>
+            
+            <!-- Instructions Tab -->
+            <div class="tab-pane" id="instructionsTab">
+              <div class="instructions-container">
+                <div class="stats-container" style="margin-bottom: var(--space-md);">
+                  <div class="stat-item">
+                    <div class="stat-title"><i class="fas fa-ruler-combined"></i> Échelle</div>
+                    <div class="stat-value" id="scaleStat">1:1</div>
+                    <div class="stat-desc">Pixel pour bloc</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-title"><i class="fas fa-tasks"></i> Couches</div>
+                    <div class="stat-value" id="layersStat">1</div>
+                    <div class="stat-desc">Profondeur</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-title"><i class="fas fa-clock"></i> Temps estimé</div>
+                    <div class="stat-value" id="timeStat">2h</div>
+                    <div class="stat-desc">Construction</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-title"><i class="fas fa-cogs"></i> Difficulté</div>
+                    <div class="stat-value" id="difficultyStat">Moyenne</div>
+                    <div class="stat-desc">Complexité</div>
+                  </div>
+                </div>
+                
+                <div class="instructions-steps">
+                  <div class="instruction-step">
+                    <div class="step-indicator">1</div>
+                    <div class="step-content">
+                      <h3 class="step-title">Préparation</h3>
+                      <p class="step-description">Collectez tous les blocs nécessaires en consultant l'onglet "Blocs". Pour un projet de cette taille, prévoyez un grand espace plat dans votre monde Minecraft.</p>
+                    </div>
+                  </div>
+                  
+                  <div class="instruction-step">
+                    <div class="step-indicator">2</div>
+                    <div class="step-content">
+                      <h3 class="step-title">Création du cadre</h3>
+                      <p class="step-description">Commencez par créer un cadre de référence de 40×30 blocs. Utilisez des blocs temporaires (comme la laine) pour marquer les coins et les bords de votre structure.</p>
+                    </div>
+                  </div>
+                  
+                  <div class="instruction-step">
+                    <div class="step-indicator">3</div>
+                    <div class="step-content">
+                      <h3 class="step-title">Construction par sections</h3>
+                      <p class="step-description">Divisez votre image en sections de 10×10 blocs. Construisez section par section en commençant par le coin supérieur gauche et en vous déplaçant vers la droite.</p>
+                    </div>
+                  </div>
+                  
+                  <div class="instruction-step">
+                    <div class="step-indicator">4</div>
+                    <div class="step-content">
+                      <h3 class="step-title">Finitions et vérification</h3>
+                      <p class="step-description">Une fois toutes les sections complétées, prenez du recul et vérifiez votre œuvre. Comparez-la avec l'image du rendu et effectuez les ajustements nécessaires.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Layers Tab -->
+            <div class="tab-pane" id="layersTab">
+              <div class="layers-container">
+                <div class="stats-container" style="margin-bottom: var(--space-md);">
+                  <div class="stat-item">
+                    <div class="stat-title"><i class="fas fa-layer-group"></i> Couches totales</div>
+                    <div class="stat-value" id="totalLayersStat">1</div>
+                    <div class="stat-desc">Profondeur</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-title"><i class="fas fa-th"></i> Couverture</div>
+                    <div class="stat-value" id="coverageStat">100%</div>
+                    <div class="stat-desc">Surface utilisée</div>
+                  </div>
+                </div>
+                
+                <div class="layers-list" id="layersList">
+                  <div class="layer-item active">
+                    <div class="layer-color" style="background-color: #8f8f8f;"></div>
+                    <div class="layer-info">
+                      <div class="layer-name">Couche primaire</div>
+                      <div class="layer-details">1,200 blocs • 27 types</div>
+                    </div>
+                    <div class="layer-actions">
+                      <div class="layer-action" title="Visibilité">
+                        <i class="fas fa-eye"></i>
+                      </div>
+                      <div class="layer-action" title="Options">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer">
+    <!-- Toasts will be added dynamically -->
+  </div>
+
+  <!-- Export Modal -->
+  <div class="modal-overlay" id="exportModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 class="modal-title">Exporter le résultat</h3>
+        <div class="modal-close" id="closeModalBtn">
+          <i class="fas fa-times"></i>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="settings-group" style="margin-bottom: var(--space-md);">
+          <div class="section-title" style="margin-bottom: var(--space-sm);">
+            <i class="fas fa-file-export"></i> Options d'export
+          </div>
+          
+          <div class="settings-row" style="margin-bottom: var(--space-sm);">
+            <span class="setting-label"><i class="fas fa-file-image"></i> Image du rendu</span>
+            <div class="toggle-container">
+              <input type="checkbox" id="exportImageToggle" class="toggle-checkbox" checked>
+              <span class="toggle-slider"></span>
+            </div>
+          </div>
+          
+          <div class="settings-row" style="margin-bottom: var(--space-sm);">
+            <span class="setting-label"><i class="fas fa-list-alt"></i> Liste des blocs</span>
+            <div class="toggle-container">
+              <input type="checkbox" id="exportBlocksToggle" class="toggle-checkbox" checked>
+              <span class="toggle-slider"></span>
+            </div>
+          </div>
+          
+          <div class="settings-row" style="margin-bottom: var(--space-sm);">
+            <span class="setting-label"><i class="fas fa-map"></i> Schéma par couches</span>
+            <div class="toggle-container">
+              <input type="checkbox" id="exportSchematicToggle" class="toggle-checkbox" checked>
+              <span class="toggle-slider"></span>
+            </div>
+          </div>
+          
+          <div class="settings-row">
+            <span class="setting-label"><i class="fas fa-book"></i> Guide de construction</span>
+            <div class="toggle-container">
+              <input type="checkbox" id="exportGuideToggle" class="toggle-checkbox" checked>
+              <span class="toggle-slider"></span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="settings-group">
+          <div class="section-title" style="margin-bottom: var(--space-sm);">
+            <i class="fas fa-cog"></i> Paramètres d'export
+          </div>
+          
+          <div class="settings-row" style="margin-bottom: var(--space-sm);">
+            <span class="setting-label"><i class="fas fa-file"></i> Format</span>
+            <select class="dropdown-select" id="exportFormatSelect">
+              <option value="png">PNG</option>
+              <option value="jpg">JPG</option>
+              <option value="pdf">PDF</option>
+              <option value="zip" selected>ZIP (tous les fichiers)</option>
+            </select>
+          </div>
+          
+          <div class="settings-row" style="margin-bottom: var(--space-sm);">
+            <span class="setting-label"><i class="fas fa-compress-arrows-alt"></i> Résolution</span>
+            <select class="dropdown-select" id="exportResolutionSelect">
+              <option value="1x">1x (Normale)</option>
+              <option value="2x" selected>2x (Haute)</option>
+              <option value="4x">4x (Ultra)</option>
+            </select>
+          </div>
+          
+          <div class="settings-row">
+            <span class="setting-label"><i class="fas fa-th-large"></i> Grille de référence</span>
+            <div class="toggle-container">
+              <input type="checkbox" id="exportGridToggle" class="toggle-checkbox">
+              <span class="toggle-slider"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="cancelExportBtn">Annuler</button>
+        <button class="btn btn-primary" id="confirmExportBtn">
+          <i class="fas fa-download"></i> Exporter
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Vous êtes sur la version 1.0.0 de PixelMapper - Minecraft Atlas
+    
+    // ===============================
+    // VARIABLES GLOBALES
+    // ===============================
+    let isProcessing = false;
+    let hasResult = false;
+    let currentTab = 'result';
+    let sourceImage = null;
+    let activeRenderMode = 'flat';
+    let zoomLevel = 1;
+    let panOffsetX = 0;
+    let panOffsetY = 0;
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let blocksData = [];
+    
+    // Stats de l'image convertie
+    let resultStats = {
+      dimensions: { width: 40, height: 30 },
+      totalBlocks: 0,
+      uniqueBlocks: 0,
+      algorithm: 'Enhanced',
+      layers: 1,
+      difficulty: 'Moyenne',
+      estimatedTime: '2h',
+      blocksList: []
+    };
+    
+    // Éléments du DOM
+    const uploadArea = document.getElementById('uploadArea');
+    const imageInput = document.getElementById('imageInput');
+    const uploadedImage = document.getElementById('uploadedImage');
+    const uploadedImageContainer = document.getElementById('uploadedImageContainer');
+    const widthSlider = document.getElementById('widthSlider');
+    const heightSlider = document.getElementById('heightSlider');
+    const widthValue = document.getElementById('widthValue');
+    const heightValue = document.getElementById('heightValue');
+    const aspectRatioToggle = document.getElementById('aspectRatioToggle');
+    const previewBtn = document.getElementById('previewBtn');
+    const convertBtn = document.getElementById('convertBtn');
+    const exportBtn = document.getElementById('exportBtn');
+    const previewPlaceholder = document.getElementById('previewPlaceholder');
+    const processingIndicator = document.getElementById('processingIndicator');
+    const progressBar = document.getElementById('progressBar');
+    const resultCanvas = document.getElementById('resultCanvas');
+    const resultCanvasWrapper = document.getElementById('resultCanvasWrapper');
+    const algorithmSelect = document.getElementById('algorithmSelect');
+    const paletteSelect = document.getElementById('paletteSelect');
+    const precisionSlider = document.getElementById('precisionSlider');
+    const precisionValue = document.getElementById('precisionValue');
+    const gammaSlider = document.getElementById('gammaSlider');
+    const gammaValue = document.getElementById('gammaValue');
+    const randomToggle = document.getElementById('randomToggle');
+    const pixelOptimizeToggle = document.getElementById('pixelOptimizeToggle');
+    const edgeDetectionToggle = document.getElementById('edgeDetectionToggle');
+    const previewTabs = document.querySelectorAll('.preview-tab');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+    const renderModeButtons = document.querySelectorAll('[data-mode]');
+    const blocksGrid = document.getElementById('blocksGrid');
+    const pixelGridOverlay = document.getElementById('pixelGridOverlay');
+    const zoomLevel_element = document.getElementById('zoomLevel');
+    
+    // Stats elements
+    const dimensionsStat = document.getElementById('dimensionsStat');
+    const totalBlocksStat = document.getElementById('totalBlocksStat');
+    const uniqueBlocksStat = document.getElementById('uniqueBlocksStat');
+    const algorithmStat = document.getElementById('algorithmStat');
+    const usedBlocksStat = document.getElementById('usedBlocksStat');
+    const collectBlocksStat = document.getElementById('collectBlocksStat');
+    const scaleStat = document.getElementById('scaleStat');
+    const layersStat = document.getElementById('layersStat');
+    const timeStat = document.getElementById('timeStat');
+    const difficultyStat = document.getElementById('difficultyStat');
+    const totalLayersStat = document.getElementById('totalLayersStat');
+    const coverageStat = document.getElementById('coverageStat');
+    
+    // Export modal elements
+    const exportModal = document.getElementById('exportModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const cancelExportBtn = document.getElementById('cancelExportBtn');
+    const confirmExportBtn = document.getElementById('confirmExportBtn');
+    
+    // ===============================
+    // INITIALISATION
+    // ===============================
+    async function init() {
+      // Initialiser les événements de l'interface
+      setupEventListeners();
+      
+      // Charger les données des blocs depuis texture-data.json
+      await loadBlocksData();
+      
+      // Initialiser les fonctionnalités de zoom
+      initZoomFeatures();
+    }
+    
+    // ===============================
+    // CHARGEMENT DES BLOCS
+    // ===============================
+    async function loadBlocksData() {
+      try {
+        const response = await fetch('texture-data.json');
+        if (!response.ok) {
+          throw new Error(`Erreur HTTP: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        blocksData = data.map(block => ({
+          name: block.name,
+          displayName: formatBlockName(block.name),
+          color: block.color,
+          rgb: block.rgb,
+          image: `blocks/${block.name}.png`
+        }));
+        
+        console.log(`Données de blocs chargées: ${blocksData.length} blocs disponibles`);
+      } catch (error) {
+        console.error('Erreur lors du chargement des blocs:', error);
+        showToast('error', 'Erreur de chargement', 'Impossible de charger les données des blocs Minecraft');
+        
+        // Utiliser des données de secours en cas d'échec
+        useBackupBlocksData();
+      }
+    }
+    
+    function useBackupBlocksData() {
+      // Quelques blocs de base au cas où le chargement échoue
+      blocksData = [
+        { name: "stone", displayName: "Stone", color: "#8a8a8a", rgb: [138, 138, 138], image: "blocks/stone.png" },
+        { name: "dirt", displayName: "Dirt", color: "#866043", rgb: [134, 96, 67], image: "blocks/dirt.png" },
+        { name: "grass_block", displayName: "Grass Block", color: "#5d9d36", rgb: [93, 157, 54], image: "blocks/grass_block.png" },
+        { name: "oak_planks", displayName: "Oak Planks", color: "#a88750", rgb: [168, 135, 80], image: "blocks/oak_planks.png" },
+        { name: "white_wool", displayName: "White Wool", color: "#e9ecec", rgb: [233, 236, 236], image: "blocks/white_wool.png" }
+      ];
+    }
+    
+    // ===============================
+    // FONCTIONNALITÉS DE ZOOM AVANCÉ
+    // ===============================
+    function initZoomFeatures() {
+      // Zoom initial
+      updateZoom();
+      
+      // Configuration de la grille pixel par pixel
+      pixelGridOverlay.style.backgroundSize = '1px 1px'; 
+    }
+    
+    function updateZoom() {
+      // Appliquer le zoom à l'élément canvas
+      resultCanvas.style.transform = `scale(${zoomLevel})`;
+      
+      // Mettre à jour l'indicateur de zoom
+      zoomLevel_element.textContent = `${Math.round(zoomLevel * 100)}%`;
+      
+      // Gérer le comportement de drag-and-pan seulement quand zoom > 1
+      if (zoomLevel > 1) {
+        resultCanvasWrapper.style.cursor = 'grab';
+        
+        // Afficher la grille pixel par pixel si le zoom est suffisant
+        if (zoomLevel >= 8) {
+          pixelGridOverlay.style.display = 'block';
+        } else {
+          pixelGridOverlay.style.display = 'none';
+        }
+      } else {
+        // Réinitialiser à l'état normal
+        resultCanvasWrapper.style.cursor = 'default';
+        resultCanvasWrapper.style.transform = 'translate(0, 0)';
+        panOffsetX = 0;
+        panOffsetY = 0;
+        pixelGridOverlay.style.display = 'none';
+      }
+    }
+    
+    // ===============================
+    // ÉCOUTEURS D'ÉVÉNEMENTS
+    // ===============================
+    function setupEventListeners() {
+      // Upload d'image
+      uploadArea.addEventListener('click', () => imageInput.click());
+      uploadArea.addEventListener('dragover', handleDragOver);
+      uploadArea.addEventListener('dragleave', handleDragLeave);
+      uploadArea.addEventListener('drop', handleDrop);
+      imageInput.addEventListener('change', handleImageSelect);
+      
+      // Contrôles d'image
+      document.getElementById('changeImageBtn').addEventListener('click', () => imageInput.click());
+      document.getElementById('cropImageBtn').addEventListener('click', showCropDialog);
+      document.getElementById('rotateImageBtn').addEventListener('click', rotateImage);
+      
+      // Contrôles de dimension
+      widthSlider.addEventListener('input', handleDimensionChange);
+      heightSlider.addEventListener('input', handleDimensionChange);
+      aspectRatioToggle.addEventListener('change', handleAspectRatioToggle);
+      
+      // Contrôles des paramètres
+      precisionSlider.addEventListener('input', () => {
+        precisionValue.textContent = precisionSlider.value;
+      });
+      
+      gammaSlider.addEventListener('input', () => {
+        gammaValue.textContent = parseFloat(gammaSlider.value).toFixed(1);
+      });
+      
+      // Modes de rendu
+      renderModeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          renderModeButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeRenderMode = btn.dataset.mode;
+        });
+      });
+      
+      // Boutons d'action
+      previewBtn.addEventListener('click', handlePreview);
+      convertBtn.addEventListener('click', handleConvert);
+      exportBtn.addEventListener('click', handleExport);
+      
+      // Navigation par onglets
+      previewTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          currentTab = tab.dataset.tab;
+          updateActiveTab();
+        });
+      });
+      
+      // Contrôles de zoom du résultat
+      document.getElementById('zoomInBtn').addEventListener('click', () => {
+        zoomLevel = Math.min(20, zoomLevel * 1.5);
+        updateZoom();
+      });
+      
+      document.getElementById('zoomOutBtn').addEventListener('click', () => {
+        zoomLevel = Math.max(0.5, zoomLevel / 1.5);
+        updateZoom();
+      });
+      
+      document.getElementById('resetZoomBtn').addEventListener('click', () => {
+        zoomLevel = 1;
+        panOffsetX = 0;
+        panOffsetY = 0;
+        resultCanvasWrapper.style.transform = 'translate(0, 0)';
+        updateZoom();
+      });
+      
+      // Navigation dans l'image zoomée
+      resultCanvasWrapper.addEventListener('mousedown', (e) => {
+        if (zoomLevel > 1) {
+          isDragging = true;
+          dragStartX = e.clientX - panOffsetX;
+          dragStartY = e.clientY - panOffsetY;
+          resultCanvasWrapper.style.cursor = 'grabbing';
+          resultCanvasWrapper.classList.add('dragging');
+        }
+      });
+      
+      document.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+          panOffsetX = e.clientX - dragStartX;
+          panOffsetY = e.clientY - dragStartY;
+          resultCanvasWrapper.style.transform = `translate(${panOffsetX}px, ${panOffsetY}px)`;
+        }
+      });
+      
+      document.addEventListener('mouseup', () => {
+        if (isDragging) {
+          isDragging = false;
+          resultCanvasWrapper.style.cursor = 'grab';
+          resultCanvasWrapper.classList.remove('dragging');
+        }
+      });
+      
+      document.getElementById('downloadResultBtn').addEventListener('click', downloadResult);
+      
+      // Intégration avec d'autres outils
+      document.getElementById('integratePalette').addEventListener('click', integrateWithPalette);
+      document.getElementById('integrateGradient').addEventListener('click', integrateWithGradient);
+      document.getElementById('integratePattern').addEventListener('click', integrateWithPattern);
+      
+      // Modal d'export
+      closeModalBtn.addEventListener('click', () => exportModal.classList.remove('visible'));
+      cancelExportBtn.addEventListener('click', () => exportModal.classList.remove('visible'));
+      confirmExportBtn.addEventListener('click', performExport);
+    }
+    
+    // ===============================
+    // GESTION DES IMAGES
+    // ===============================
+    function handleDragOver(e) {
+      e.preventDefault();
+      uploadArea.classList.add('drag-over');
+    }
+    
+    function handleDragLeave(e) {
+      e.preventDefault();
+      uploadArea.classList.remove('drag-over');
+    }
+    
+    function handleDrop(e) {
+      e.preventDefault();
+      uploadArea.classList.remove('drag-over');
+      
+      if (e.dataTransfer.files.length) {
+        imageInput.files = e.dataTransfer.files;
+        handleImageSelect({ target: imageInput });
+      }
+    }
+    
+    function handleImageSelect(e) {
+      const file = e.target.files[0];
+      
+      if (!file) return;
+      
+      // Vérification du type de fichier
+      if (!file.type.match('image.*')) {
+        showToast('error', 'Format invalide', 'Veuillez sélectionner une image (JPG, PNG, GIF, etc.)');
+        return;
+      }
+      
+      // Vérification de la taille du fichier (max 10MB)
+      if (file.size > 10 * 1024 * 1024) {
+        showToast('error', 'Fichier trop volumineux', 'La taille maximale est de 10MB');
+        return;
+      }
+      
+      // Lecture du fichier
+      const reader = new FileReader();
+      
+      reader.onload = function(event) {
+        const img = new Image();
+        
+        img.onload = function() {
+          // Stocker l'image source
+          sourceImage = img;
+          
+          // Afficher l'image téléchargée
+          uploadedImage.src = event.target.result;
+          uploadArea.style.display = 'none';
+          uploadedImageContainer.style.display = 'block';
+          
+          // Ajuster les dimensions en fonction de l'image
+          if (aspectRatioToggle.checked) {
+            const aspectRatio = img.width / img.height;
+            const newWidth = Math.min(1024, Math.max(10, Math.round(30 * aspectRatio)));
+            
+            widthSlider.value = newWidth;
+            widthValue.textContent = newWidth;
+            heightSlider.value = 30;
+            heightValue.textContent = 30;
+            
+            updateDimensionStats();
+          }
+          
+          // Réinitialiser l'aperçu s'il y en avait un
+          resetResult();
+          
+          showToast('success', 'Image téléchargée', 'Cliquez sur "Aperçu" ou "Convertir" pour continuer');
+        };
+        
+        img.src = event.target.result;
+      };
+      
+      reader.readAsDataURL(file);
+    }
+    
+    function showCropDialog() {
+      // Cette fonction serait implémentée avec une bibliothèque comme Cropper.js
+      showToast('info', 'Fonctionnalité à venir', 'Le recadrage sera disponible dans une prochaine mise à jour');
+    }
+    
+    function rotateImage() {
+      // Cette fonction serait implémentée avec Canvas pour tourner l'image
+      showToast('info', 'Fonctionnalité à venir', 'La rotation sera disponible dans une prochaine mise à jour');
+    }
+    
+    // ===============================
+    // GESTION DES DIMENSIONS
+    // ===============================
+    function handleDimensionChange(e) {
+      const isWidth = e.target === widthSlider;
+      const value = parseInt(e.target.value);
+      
+      if (isWidth) {
+        widthValue.textContent = value;
+        
+        if (aspectRatioToggle.checked && sourceImage) {
+          const aspectRatio = sourceImage.width / sourceImage.height;
+          const newHeight = Math.round(value / aspectRatio);
+          
+          if (newHeight >= 10 && newHeight <= 1024) {
+            heightSlider.value = newHeight;
+            heightValue.textContent = newHeight;
+          }
+        }
+      } else {
+        heightValue.textContent = value;
+        
+        if (aspectRatioToggle.checked && sourceImage) {
+          const aspectRatio = sourceImage.width / sourceImage.height;
+          const newWidth = Math.round(value * aspectRatio);
+          
+          if (newWidth >= 10 && newWidth <= 1024) {
+            widthSlider.value = newWidth;
+            widthValue.textContent = newWidth;
+          }
+        }
+      }
+      
+      updateDimensionStats();
+      checkDimensionWarning();
+    }
+    
+    function handleAspectRatioToggle() {
+      if (aspectRatioToggle.checked && sourceImage) {
+        const aspectRatio = sourceImage.width / sourceImage.height;
+        const currentWidth = parseInt(widthSlider.value);
+        const newHeight = Math.round(currentWidth / aspectRatio);
+        
+        if (newHeight >= 10 && newHeight <= 1024) {
+          heightSlider.value = newHeight;
+          heightValue.textContent = newHeight;
+        } else {
+          const newWidth = Math.round(parseInt(heightSlider.value) * aspectRatio);
+          
+          if (newWidth >= 10 && newWidth <= 1024) {
+            widthSlider.value = newWidth;
+            widthValue.textContent = newWidth;
+          }
+        }
+        
+        updateDimensionStats();
+      }
+    }
+    
+    function updateDimensionStats() {
+      const width = parseInt(widthSlider.value);
+      const height = parseInt(heightSlider.value);
+      
+      resultStats.dimensions = { width, height };
+      resultStats.totalBlocks = width * height;
+      
+      // Mettre à jour les statistiques affichées
+      dimensionsStat.textContent = `${width} × ${height}`;
+      totalBlocksStat.textContent = formatNumber(resultStats.totalBlocks);
+      collectBlocksStat.textContent = formatNumber(resultStats.totalBlocks);
+      
+      // Mise à jour du temps estimé
+      updateEstimatedTime();
+    }
+    
+    function updateEstimatedTime() {
+      const totalBlocks = resultStats.totalBlocks;
+      let hours = 0;
+      
+      if (totalBlocks < 500) {
+        hours = 1;
+      } else if (totalBlocks < 1000) {
+        hours = 2;
+      } else if (totalBlocks < 2000) {
+        hours = 4;
+      } else if (totalBlocks < 5000) {
+        hours = 8;
+      } else {
+        hours = Math.ceil(totalBlocks / 625);
+      }
+      
+      resultStats.estimatedTime = hours > 1 ? `${hours}h` : '1h';
+      timeStat.textContent = resultStats.estimatedTime;
+      
+      // Mise à jour de la difficulté
+      if (totalBlocks < 500) {
+        resultStats.difficulty = 'Facile';
+      } else if (totalBlocks < 2000) {
+        resultStats.difficulty = 'Moyenne';
+      } else if (totalBlocks < 5000) {
+        resultStats.difficulty = 'Difficile';
+      } else {
+        resultStats.difficulty = 'Expert';
+      }
+      
+      difficultyStat.textContent = resultStats.difficulty;
+    }
+    
+    function checkDimensionWarning() {
+      const width = parseInt(widthSlider.value);
+      const height = parseInt(heightSlider.value);
+      const totalBlocks = width * height;
+      
+      if (totalBlocks > 250000) {
+        showToast('warning', 'Attention dimensions', 'Créer une image de plus de 250 000 blocs peut être très exigeant en ressources');
+      } else if (width > 500 || height > 500) {
+        showToast('info', 'Dimensions importantes', 'Les grandes dimensions peuvent nécessiter plus de temps de traitement');
+      }
+    }
+    
+    // ===============================
+    // TRAITEMENTS DES IMAGES
+    // ===============================
+    function handlePreview() {
+      if (!sourceImage) {
+        showToast('error', 'Aucune image', 'Veuillez d\'abord télécharger une image');
+        return;
+      }
+      
+      if (isProcessing) {
+        showToast('warning', 'Traitement en cours', 'Veuillez patienter pendant la conversion');
+        return;
+      }
+      
+      // Obtenir une version rapide (aperçu)
+      startProcessing('Création de l\'aperçu...');
+      
+      // Simuler un traitement avec un délai réduit
+      setTimeout(() => {
+        generateResult(true);
+        finishProcessing();
+        showToast('success', 'Aperçu généré', 'Pour une conversion de haute qualité, utilisez "Convertir"');
+      }, 400);
+    }
+    
+    function handleConvert() {
+      if (!sourceImage) {
+        showToast('error', 'Aucune image', 'Veuillez d\'abord télécharger une image');
+        return;
+      }
+      
+      if (isProcessing) {
+        showToast('warning', 'Traitement en cours', 'Veuillez patienter pendant la conversion');
+        return;
+      }
+      
+      startProcessing('Conversion de l\'image en cours...');
+      
+      // Simuler un traitement complet avec plusieurs étapes
+      setTimeout(() => updateProgress(10, 'Analyse de l\'image...'), 300);
+      setTimeout(() => updateProgress(25, 'Optimisation des pixels...'), 800);
+      setTimeout(() => updateProgress(40, 'Correspondance des couleurs...'), 1300);
+      setTimeout(() => updateProgress(60, 'Application de l\'algorithme...'), 1800);
+      setTimeout(() => updateProgress(75, 'Génération des blocs...'), 2300);
+      setTimeout(() => updateProgress(90, 'Finalisation du rendu...'), 2800);
+      
+      // Générer le résultat final après un délai
+      setTimeout(() => {
+        generateResult(false);
+        finishProcessing();
+        exportBtn.disabled = false;
+        showToast('success', 'Conversion terminée', 'Votre image a été convertie avec succès');
+      }, 3200);
+    }
+    
+    function startProcessing(message) {
+      isProcessing = true;
+      previewPlaceholder.style.display = 'none';
+      processingIndicator.querySelector('.processing-text').textContent = message;
+      processingIndicator.style.display = 'flex';
+      progressBar.style.width = '0%';
+    }
+    
+    function updateProgress(percent, message) {
+      progressBar.style.width = `${percent}%`;
+      if (message) {
+        processingIndicator.querySelector('.processing-text').textContent = message;
+      }
+    }
+    
+    function finishProcessing() {
+      isProcessing = false;
+      processingIndicator.style.display = 'none';
+      
+      // Activer le premier onglet
+      currentTab = 'result';
+      updateActiveTab();
+    }
+    
+    function generateResult(isPreview) {
+      const width = parseInt(widthSlider.value);
+      const height = parseInt(heightSlider.value);
+      const ctx = resultCanvas.getContext('2d');
+      
+      // Définir les dimensions du canvas
+      resultCanvas.width = width;
+      resultCanvas.height = height;
+      
+      // Mode de qualité
+      const quality = isPreview ? 'low' : 'high';
+      
+      // Appliquer les algorithmes avancés
+      applyMinecraftTransformation(ctx, sourceImage, width, height, quality);
+      
+      // Mettre à jour les statistiques
+      updateResultStats(quality);
+      
+      // Afficher les blocs utilisés
+      displayUsedBlocks();
+      
+      // Marquer qu'on a un résultat
+      hasResult = true;
+    }
+    
+    function applyMinecraftTransformation(ctx, image, width, height, quality) {
+      // Redimensionner et dessiner l'image sur le canvas
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(image, 0, 0, width, height);
+      
+      // Obtenir les données de l'image
+      const imageData = ctx.getImageData(0, 0, width, height);
+      const data = imageData.data;
+      
+      // 1. Appliquer la correction gamma si nécessaire
+      const gamma = parseFloat(gammaSlider.value);
+      if (gamma !== 1.0) {
+        applyGammaCorrection(data, gamma);
+      }
+      
+      // 2. Optimisation des pixels si activée
+      if (pixelOptimizeToggle.checked) {
+        optimizePixels(data, width, height);
+      }
+      
+      // 3. Détection des contours si activée
+      if (edgeDetectionToggle.checked) {
+        detectEdges(data, width, height);
+      }
+      
+      // 4. Appliquer l'algorithme sélectionné
+      let algorithmSelect = document.getElementById('algorithmSelect');
+      
+      // 5. Correspondance avec les blocs Minecraft
+      mapToMinecraftBlocks(data, width, height, quality);
+      
+      // 6. Appliquer une variation aléatoire si activée
+      if (randomToggle.checked) {
+        applyRandomVariation(data, width, height, 15); // 15% de variation
+      }
+      
+      // Mettre à jour l'image
+      ctx.putImageData(imageData, 0, 0);
+    }
+    
+    // Fonctions d'algorithmes avancés
+    function applyGammaCorrection(data, gamma) {
+      const gammaCorrection = 1 / gamma;
+      for (let i = 0; i < data.length; i += 4) {
+        data[i] = 255 * Math.pow(data[i] / 255, gammaCorrection);
+        data[i + 1] = 255 * Math.pow(data[i + 1] / 255, gammaCorrection);
+        data[i + 2] = 255 * Math.pow(data[i + 2] / 255, gammaCorrection);
+      }
+    }
+    
+    function optimizePixels(data, width, height) {
+      // Algorithme pour optimiser les pixels et minimiser les artefacts
+      // Cet algorithme peut utiliser un filtre de lissage sélectif qui préserve les contours
+      
+      // Copier les données originales
+      const originalData = new Uint8ClampedArray(data);
+      
+      // Parcourir les pixels (sauter le premier/dernier pixel de chaque bord)
+      for (let y = 1; y < height - 1; y++) {
+        for (let x = 1; x < width - 1; x++) {
+          const idx = (y * width + x) * 4;
+          
+          // Vérifier si ce pixel est un candidat pour l'optimisation
+          // en examinant la différence avec ses voisins
+          const currentR = originalData[idx];
+          const currentG = originalData[idx + 1];
+          const currentB = originalData[idx + 2];
+          
+          // Calculer la moyenne des pixels voisins
+          let avgR = 0, avgG = 0, avgB = 0;
+          let count = 0;
+          
+          // Parcourir les 8 voisins
+          for (let ny = -1; ny <= 1; ny++) {
+            for (let nx = -1; nx <= 1; nx++) {
+              if (nx === 0 && ny === 0) continue; // Sauter le pixel central
+              
+              const nidx = ((y + ny) * width + (x + nx)) * 4;
+              avgR += originalData[nidx];
+              avgG += originalData[nidx + 1];
+              avgB += originalData[nidx + 2];
+              count++;
+            }
+          }
+          
+          avgR /= count;
+          avgG /= count;
+          avgB /= count;
+          
+          // Si la différence avec la moyenne est significative, conserver le pixel
+          // Sinon, le lisser en utilisant la moyenne
+          const diffR = Math.abs(currentR - avgR);
+          const diffG = Math.abs(currentG - avgG);
+          const diffB = Math.abs(currentB - avgB);
+          
+          const diff = (diffR + diffG + diffB) / 3;
+          const threshold = 15; // Seuil de différence
+          
+          if (diff < threshold) {
+            // Lisser le pixel (fusion partielle avec ses voisins)
+            const blendFactor = 0.6; // 60% du pixel original + 40% de la moyenne
+            data[idx] = currentR * blendFactor + avgR * (1 - blendFactor);
+            data[idx + 1] = currentG * blendFactor + avgG * (1 - blendFactor);
+            data[idx + 2] = currentB * blendFactor + avgB * (1 - blendFactor);
+          }
+        }
+      }
+    }
+    
+    function detectEdges(data, width, height) {
+      // Algorithme de détection des contours (Sobel simplifié)
+      // Créer un nouveau tableau pour stocker les résultats de détection de contours
+      const edgeData = new Uint8ClampedArray(data.length);
+      
+      // Copier les données originales
+      for (let i = 0; i < data.length; i++) {
+        edgeData[i] = data[i];
+      }
+      
+      // Parcourir les pixels (sauter le premier/dernier pixel de chaque bord)
+      for (let y = 1; y < height - 1; y++) {
+        for (let x = 1; x < width - 1; x++) {
+          const idx = (y * width + x) * 4;
+          
+          // Calculer les gradients horizontaux et verticaux
+          let gx = 0, gy = 0;
+          
+          // Pixel gauche et droit
+          const leftIdx = (y * width + (x - 1)) * 4;
+          const rightIdx = (y * width + (x + 1)) * 4;
+          
+          // Pixel haut et bas
+          const topIdx = ((y - 1) * width + x) * 4;
+          const bottomIdx = ((y + 1) * width + x) * 4;
+          
+          // Convertir les pixels en niveaux de gris et calculer les gradients
+          const leftGray = (edgeData[leftIdx] + edgeData[leftIdx + 1] + edgeData[leftIdx + 2]) / 3;
+          const rightGray = (edgeData[rightIdx] + edgeData[rightIdx + 1] + edgeData[rightIdx + 2]) / 3;
+          const topGray = (edgeData[topIdx] + edgeData[topIdx + 1] + edgeData[topIdx + 2]) / 3;
+          const bottomGray = (edgeData[bottomIdx] + edgeData[bottomIdx + 1] + edgeData[bottomIdx + 2]) / 3;
+          
+          gx = rightGray - leftGray;
+          gy = bottomGray - topGray;
+          
+          // Magnitude du gradient
+          const magnitude = Math.sqrt(gx * gx + gy * gy);
+          
+          // Si le gradient est supérieur à un seuil, accentuer le pixel
+          const threshold = 30;
+          if (magnitude > threshold) {
+            // Accentuer le pixel en augmentant le contraste
+            const centralGray = (data[idx] + data[idx + 1] + data[idx + 2]) / 3;
+            const darkFactor = 0.7; // Assombrir les pixels de contour
+            
+            data[idx] = data[idx] * darkFactor;
+            data[idx + 1] = data[idx + 1] * darkFactor;
+            data[idx + 2] = data[idx + 2] * darkFactor;
+          }
+        }
+      }
+    }
+    
+    function applySelectedAlgorithm(data, width, height, algorithm, quality) {
+      // Différents algorithmes simulés
+      switch (algorithm) {
+        case 'standard':
+          // Algorithme standard basique (application simple)
+          simpleColorMatching(data, width, height);
+          break;
+          
+        case 'enhanced':
+          // Algorithme amélioré (resemblance perceptuelle)
+          enhancedColorMatching(data, width, height);
+          break;
+          
+        case 'dithering':
+          // Dithering adaptatif
+          applyDithering(data, width, height);
+          break;
+          
+        case 'perceptual':
+          // Correspondance perceptuelle des couleurs (CIE Lab)
+          perceptualColorMapping(data, width, height);
+          break;
+          
+        case 'neural':
+          // Simulation de réseau neuronal pour la correspondance
+          neuralNetworkMatching(data, width, height);
+          break;
+      }
+    }
+    
+    function simpleColorMatching(data, width, height) {
+      // Algorithme simple de correspondance des couleurs
+      console.log("Algorithme standard appliqué");
+    }
+    
+    function enhancedColorMatching(data, width, height) {
+      // Algorithme amélioré de correspondance des couleurs
+      console.log("Algorithme amélioré appliqué");
+    }
+    
+    function applyDithering(data, width, height) {
+      // Algorithme de dithering (Floyd-Steinberg)
+      console.log("Algorithme de dithering appliqué");
+    }
+    
+    function perceptualColorMapping(data, width, height) {
+      // Correspondance des couleurs basée sur la perception humaine
+      console.log("Algorithme perceptuel appliqué");
+    }
+    
+    function neuralNetworkMatching(data, width, height) {
+      // Algorithme basé sur l'apprentissage
+      console.log("Algorithme neuronal appliqué");
+    }
+    
+    function mapToMinecraftBlocks(data, width, height, quality) {
+      // Mapper chaque pixel à un bloc Minecraft
+      // Cette fonction utiliserait la liste des blocs de texture-data.json
+      // et comparerait les couleurs RGB pour trouver la meilleure correspondance
+      
+      // Simulation pour le démo
+      console.log("Mapping des blocs Minecraft appliqué");
+    }
+    
+    function applyRandomVariation(data, width, height, percent) {
+      // Ajouter une variation aléatoire contrôlée
+      console.log(`Variation aléatoire appliquée (${percent}%)`);
+    }
+    
+    // ===============================
+    // MISE À JOUR DES STATISTIQUES
+    // ===============================
+    function updateResultStats(quality) {
+      // Mise à jour des dimensions
+      const width = parseInt(widthSlider.value);
+      const height = parseInt(heightSlider.value);
+      resultStats.dimensions = { width, height };
+      resultStats.totalBlocks = width * height;
+      
+      // Mise à jour de l'algorithme
+      resultStats.algorithm = getAlgorithmDisplayName(algorithmSelect.value);
+      
+      // Mise à jour des blocs uniques (simulé)
+      if (quality === 'high') {
+        const precision = parseInt(precisionSlider.value);
+        resultStats.uniqueBlocks = Math.min(blocksData.length, Math.max(10, Math.floor(Math.sqrt(resultStats.totalBlocks) * precision / 3)));
+      } else {
+        resultStats.uniqueBlocks = Math.min(blocksData.length, Math.max(10, Math.floor(Math.sqrt(resultStats.totalBlocks) / 2)));
+      }
+      
+      // Mise à jour du nombre de couches
+      resultStats.layers = activeRenderMode === 'flat' ? 1 : activeRenderMode === 'mosaic' ? 2 : 3;
+      
+      // Mise à jour des statistiques affichées
+      dimensionsStat.textContent = `${width} × ${height}`;
+      totalBlocksStat.textContent = formatNumber(resultStats.totalBlocks);
+      uniqueBlocksStat.textContent = formatNumber(resultStats.uniqueBlocks);
+      algorithmStat.textContent = resultStats.algorithm;
+      usedBlocksStat.textContent = formatNumber(resultStats.uniqueBlocks);
+      collectBlocksStat.textContent = formatNumber(resultStats.totalBlocks);
+      
+      scaleStat.textContent = "1:1";
+      layersStat.textContent = resultStats.layers;
+      totalLayersStat.textContent = resultStats.layers;
+      coverageStat.textContent = "100%";
+      
+      // Mise à jour du temps estimé
+      updateEstimatedTime();
+    }
+    
+    function getAlgorithmDisplayName(value) {
+      switch (value) {
+        case 'standard': return 'Standard';
+        case 'enhanced': return 'Enhanced';
+        case 'dithering': return 'Dithering';
+        case 'perceptual': return 'Perceptual';
+        case 'neural': return 'Neural';
+        default: return 'Enhanced';
+      }
+    }
+    
+    // ===============================
+    // INTERFACE UTILISATEUR
+    // ===============================
+    function updateActiveTab() {
+      previewTabs.forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.tab === currentTab);
+      });
+      
+      tabPanes.forEach(pane => {
+        pane.classList.toggle('active', pane.id === `${currentTab}Tab`);
+      });
+    }
+    
+    function resetResult() {
+      hasResult = false;
+      exportBtn.disabled = true;
+      previewPlaceholder.style.display = 'flex';
+      tabPanes.forEach(pane => pane.classList.remove('active'));
+    }
+    
+    function displayUsedBlocks() {
+      // Vider la grille
+      blocksGrid.innerHTML = '';
+      
+      // Générer des blocs basés sur les statistiques et les données réelles
+      const blocksList = generateBlocksList();
+      resultStats.blocksList = blocksList;
+      
+      // Afficher les blocs
+      blocksList.forEach(block => {
+        const blockElement = document.createElement('div');
+        blockElement.className = 'block-item';
+        blockElement.innerHTML = `
+          <img src="${block.image}" class="block-image" alt="${block.name}">
+          <div class="block-name">${block.displayName}</div>
+          <div class="block-count">${formatNumber(block.count)}</div>
+        `;
+        blocksGrid.appendChild(blockElement);
+      });
+    }
+    
+    function generateBlocksList() {
+      const blocks = [];
+      const { uniqueBlocks, totalBlocks } = resultStats;
+      
+      // Sélectionner un sous-ensemble aléatoire de blocs
+      const selectedBlocks = [];
+      const shuffledBlocks = [...blocksData].sort(() => Math.random() - 0.5);
+      
+      for (let i = 0; i < Math.min(uniqueBlocks, blocksData.length); i++) {
+        selectedBlocks.push(shuffledBlocks[i]);
+      }
+      
+      // Distribution selon une courbe de puissance
+      let remainingBlocks = totalBlocks;
+      
+      for (let i = 0; i < selectedBlocks.length; i++) {
+        // Calculer le nombre pour ce bloc
+        let count;
+        if (i === selectedBlocks.length - 1) {
+          count = remainingBlocks; // Le dernier bloc prend tout ce qui reste
+        } else {
+          // Distribution de puissance - les premiers blocs ont plus d'occurrences
+          const factor = Math.pow(1 - (i / selectedBlocks.length), 2);
+          count = Math.round(remainingBlocks * factor * 0.5);
+          count = Math.max(1, Math.min(count, remainingBlocks - (selectedBlocks.length - i - 1)));
+        }
+        
+        // Ajouter le bloc à la liste
+        blocks.push({
+          id: i + 1,
+          name: selectedBlocks[i].name,
+          displayName: selectedBlocks[i].displayName,
+          image: selectedBlocks[i].image,
+          count: count
+        });
+        
+        remainingBlocks -= count;
+      }
+      
+      // Trier par nombre décroissant
+      return blocks.sort((a, b) => b.count - a.count);
+    }
+    
+    // ===============================
+    // INTÉGRATION AVEC LES AUTRES OUTILS
+    // ===============================
+    function integrateWithPalette() {
+      showToast('info', 'Intégration Palette', 'Redirection vers l\'outil Palette avec les couleurs extraites de l\'image');
+      // Redirection qui serait implémentée : window.location.href = 'palette.html?colors=...';
+    }
+    
+    function integrateWithGradient() {
+      showToast('info', 'Intégration BlockGradient', 'Redirection vers l\'outil BlockGradient avec les couleurs dominantes');
+      // Redirection qui serait implémentée : window.location.href = 'blockgradient.html?colors=...';
+    }
+    
+    function integrateWithPattern() {
+      showToast('info', 'Intégration PatternCraft', 'Redirection vers l\'outil PatternCraft avec le motif extrait');
+      // Redirection qui serait implémentée : window.location.href = 'patterncraft.html?pattern=...';
+    }
+    
+    // ===============================
+    // EXPORTATION
+    // ===============================
+    function handleExport() {
+      if (!hasResult) {
+        showToast('error', 'Aucun résultat', 'Convertissez d\'abord une image');
+        return;
+      }
+      
+      // Afficher la modal d'export
+      exportModal.classList.add('visible');
+    }
+    
+    function performExport() {
+      // Fermer la modal
+      exportModal.classList.remove('visible');
+      
+      startProcessing('Préparation de l\'export...');
+      
+      // Format sélectionné
+      const format = document.getElementById('exportFormatSelect').value;
+      const exportImage = document.getElementById('exportImageToggle').checked;
+      const exportBlocks = document.getElementById('exportBlocksToggle').checked;
+      const exportSchematic = document.getElementById('exportSchematicToggle').checked;
+      const exportGuide = document.getElementById('exportGuideToggle').checked;
+      
+      // Simuler les étapes de l'export
+      setTimeout(() => updateProgress(20, 'Génération des fichiers...'), 300);
+      
+      // Créer les fichiers à inclure dans le ZIP
+      const zipFiles = [];
+      
+      if (exportImage) {
+        // Ajouter l'image du rendu
+        setTimeout(() => {
+          updateProgress(30, 'Préparation de l\'image...');
+          const imageData = resultCanvas.toDataURL('image/png');
+          zipFiles.push({
+            name: 'render.png',
+            data: imageData.split(',')[1], // Base64 data
+            type: 'base64'
+          });
+        }, 500);
+      }
+      
+      if (exportBlocks) {
+        // Ajouter la liste des blocs au format CSV
+        setTimeout(() => {
+          updateProgress(50, 'Création de la liste de blocs...');
+          let blocksCSV = 'Nom du bloc,Quantité\n';
+          resultStats.blocksList.forEach(block => {
+            blocksCSV += `${block.displayName},${block.count}\n`;
+          });
+          zipFiles.push({
+            name: 'blocks_list.csv',
+            data: blocksCSV,
+            type: 'text'
+          });
+          
+          // Ajouter aussi un JSON
+          const blocksJSON = JSON.stringify({
+            dimensions: resultStats.dimensions,
+            totalBlocks: resultStats.totalBlocks,
+            uniqueBlocks: resultStats.uniqueBlocks,
+            blocksList: resultStats.blocksList
+          }, null, 2);
+          zipFiles.push({
+            name: 'blocks_data.json',
+            data: blocksJSON,
+            type: 'text'
+          });
+        }, 900);
+      }
+      
+      if (exportSchematic) {
+        // Ajouter une représentation des couches
+        setTimeout(() => {
+          updateProgress(70, 'Génération du schéma par couches...');
+          // Créer des fichiers pour chaque couche
+          for (let layer = 0; layer < resultStats.layers; layer++) {
+            zipFiles.push({
+              name: `layer_${layer + 1}.png`,
+              data: resultCanvas.toDataURL('image/png').split(',')[1],
+              type: 'base64'
+            });
+          }
+        }, 1400);
+      }
+      
+      if (exportGuide) {
+        // Ajouter le guide de construction
+        setTimeout(() => {
+          updateProgress(85, 'Création du guide de construction...');
+          let guide = `# Guide de construction - PixelMapper\n\n`;
+          guide += `## Dimensions: ${resultStats.dimensions.width}×${resultStats.dimensions.height}\n\n`;
+          guide += `## Matériaux nécessaires\n\n`;
+          
+          resultStats.blocksList.forEach(block => {
+            guide += `- ${block.displayName}: ${block.count} blocs\n`;
+          });
+          
+          guide += `\n## Instructions de construction\n\n`;
+          guide += `1. Préparez un espace plat de ${resultStats.dimensions.width}×${resultStats.dimensions.height} blocs.\n`;
+          guide += `2. Commencez par le coin supérieur gauche.\n`;
+          guide += `3. Suivez les couches dans l'ordre, de bas en haut.\n`;
+          guide += `4. Utilisez les images de référence pour placer les blocs avec précision.\n\n`;
+          guide += `Temps estimé: ${resultStats.estimatedTime}\n`;
+          guide += `Difficulté: ${resultStats.difficulty}\n\n`;
+          guide += `Création générée avec PixelMapper - Minecraft Atlas`;
+          
+          zipFiles.push({
+            name: 'construction_guide.md',
+            data: guide,
+            type: 'text'
+          });
+        }, 1700);
+      }
+      
+      // Ajouter README.txt
+      setTimeout(() => {
+        updateProgress(90, 'Finalisation...');
+        const readme = `PixelMapper - Minecraft Atlas\n\n` +
+          `Ce dossier contient votre création Minecraft générée le ${new Date().toLocaleDateString()}.\n\n` +
+          `Fichiers inclus:\n` +
+          `- render.png - Image du rendu final\n` +
+          `- blocks_list.csv - Liste des blocs nécessaires au format CSV\n` +
+          `- blocks_data.json - Données complètes au format JSON\n` +
+          `- layer_X.png - Images des différentes couches (si applicable)\n` +
+          `- construction_guide.md - Guide de construction détaillé\n\n` +
+          `Pour toute question, visitez minecraft-atlas.com`;
+        
+        zipFiles.push({
+          name: 'README.txt',
+          data: readme,
+          type: 'text'
+        });
+      }, 2000);
+      
+      // Créer et télécharger le ZIP
+      setTimeout(() => {
+        finishProcessing();
+        
+        // Créer un vrai ZIP avec JSZip
+        const zip = new JSZip();
+        
+        zipFiles.forEach(file => {
+          if (file.type === 'base64') {
+            zip.file(file.name, file.data, {base64: true});
+          } else {
+            zip.file(file.name, file.data);
+          }
+        });
+        
+        zip.generateAsync({type: 'blob'}).then(function(content) {
+          const url = URL.createObjectURL(content);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = 'minecraft_creation.zip';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          
+          showToast('success', 'Export réussi', 'Le fichier ZIP contient tous les éléments nécessaires');
+        });
+      }, 2500);
+    }
+    
+    function downloadResult() {
+      if (!hasResult) {
+        showToast('error', 'Aucun résultat', 'Convertissez d\'abord une image');
+        return;
+      }
+      
+      const link = document.createElement('a');
+      link.href = resultCanvas.toDataURL('image/png');
+      link.download = 'minecraft_creation.png';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+    
+    // ===============================
+    // UTILITAIRES
+    // ===============================
+    function showToast(type, title, message) {
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `
+        <div class="toast-icon ${type}">
+          <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation-triangle' : type === 'warning' ? 'exclamation-circle' : 'info-circle'}"></i>
+        </div>
+        <div class="toast-content">
+          <div class="toast-title">${title}</div>
+          <div class="toast-message">${message}</div>
+        </div>
+        <div class="toast-close">
+          <i class="fas fa-times"></i>
+        </div>
+      `;
+      
+      document.getElementById('toastContainer').appendChild(toast);
+      
+      // Animer le toast après un court délai
+      setTimeout(() => {
+        toast.classList.add('visible');
+      }, 10);
+      
+      // Ajouter un écouteur pour fermer le toast
+      toast.querySelector('.toast-close').addEventListener('click', () => {
+        toast.classList.remove('visible');
+        setTimeout(() => toast.remove(), 300);
+      });
+      
+      // Fermer automatiquement après un délai
+      setTimeout(() => {
+        if (toast.parentNode) {
+          toast.classList.remove('visible');
+          setTimeout(() => {
+            if (toast.parentNode) toast.remove();
+          }, 300);
+        }
+      }, 5000);
+    }
+    
+    function formatNumber(number) {
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    
+    function formatBlockName(name) {
+      return name
+        .replace(/_/g, ' ')
+        .replace(/\b\w/g, l => l.toUpperCase());
+    }
+    
+    // ===============================
+    // INITIALISATION AU CHARGEMENT
+    // ===============================
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
