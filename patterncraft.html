@@ -1,0 +1,3447 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PatternCraft - Minecraft Atlas</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="./max.jpg" type="image/x-icon">
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const burger = document.getElementById('burger-button');
+      const navLinks = document.getElementById('nav-links');
+  
+      burger.addEventListener('click', () => {
+        navLinks.classList.toggle('show');
+      });
+    });
+  </script>
+  <style>
+    :root {
+      --primary: #00c6ff;
+      --primary-dark: #0072ff;
+      --primary-light: #70e1ff;
+      --primary-rgb: 0, 198, 255;
+      --accent: #ff7eb3;
+      --accent-dark: #ff4d96;
+      --accent-rgb: 255, 126, 179;
+      --success: #4ade80;
+      --success-rgb: 74, 222, 128;
+      --warning: #fbbf24;
+      --error: #f87171;
+      --text-primary: #ffffff;
+      --text-secondary: #bbbbbb;
+      --text-tertiary: #777777;
+      --surface-1: #121212;
+      --surface-2: #1f1f1f;
+      --surface-3: #2c2c2c;
+      --surface-4: #373737;
+      --border: #2c2c2c;
+      --hover-effect: rgba(255, 255, 255, 0.05);
+      --glass-blur: blur(10px);
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 2rem;
+      --space-xl: 3rem;
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-full: 999px;
+      --transition-fast: all 0.3s ease;
+      --transition-medium: all 0.5s ease;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.3);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+      --shadow-lg: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--surface-1);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image: radial-gradient(circle at 10% 20%, rgba(0, 118, 255, 0.05) 0%, transparent 45%),
+                        radial-gradient(circle at 80% 70%, rgba(255, 126, 179, 0.05) 0%, transparent 45%);
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* NAVIGATION - CONSERVÉ TEL QUEL */
+    .main-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(26, 30, 46, 0.8);
+      backdrop-filter: var(--glass-blur);
+      z-index: 100;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 15px var(--space-lg);
+    }
+
+    .nav-brand {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .nav-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: var(--space-lg);
+    }
+
+    .nav-link {
+      color: var(--text-secondary);
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: var(--radius-md);
+      transition: var(--transition-fast);
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: var(--text-primary);
+      background: var(--hover-effect);
+    }
+
+    .nav-link.active {
+      color: var(--text-primary);
+    }
+
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      height: 3px;
+      width: 20px;
+      background: var(--primary);
+      bottom: -2px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: var(--radius-full);
+    }
+
+    /* HEADER - STYLISÉ */
+    header {
+      padding: var(--space-xl) var(--space-lg);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(ellipse at top, rgba(0, 198, 255, 0.1), transparent 70%),
+                  radial-gradient(ellipse at bottom, rgba(255, 126, 179, 0.1), transparent 70%);
+      z-index: -1;
+    }
+
+    header h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      margin-bottom: var(--space-md);
+      background: linear-gradient(120deg, var(--accent), var(--primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      position: relative;
+      display: inline-block;
+    }
+
+    header h1 i {
+      font-size: 2.8rem;
+      margin-right: var(--space-md);
+      background: linear-gradient(120deg, var(--accent-dark), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    header h1::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 25%;
+      width: 50%;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+      border-radius: var(--radius-full);
+    }
+
+    header p {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* MAIN CONTENT */
+    main {
+      max-width: 1400px;
+      margin: 0 auto var(--space-xl);
+      padding: 0 var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xl);
+      width: 100%;
+    }
+
+    /* WORKSPACE LAYOUT */
+    .workspace {
+      display: grid;
+      grid-template-columns: 300px 1fr 300px;
+      gap: var(--space-lg);
+    }
+
+    /* PANELS COMMON STYLES */
+    .panel {
+      background: var(--surface-2);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .panel-header {
+      background: var(--surface-3);
+      padding: var(--space-md) var(--space-lg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .panel-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .panel-title i {
+      color: var(--primary);
+      font-size: 0.9rem;
+    }
+
+    .panel-content {
+      padding: var(--space-lg);
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    /* TOOLBOX PANEL */
+    .toolbox {
+      height: fit-content;
+    }
+
+    .tool-group {
+      margin-bottom: var(--space-lg);
+    }
+
+    .tool-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .tool-group-title {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: var(--space-sm);
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    .tool-group-title i {
+      color: var(--accent);
+      font-size: 0.8rem;
+    }
+
+    /* GRID SIZE SELECTOR */
+    .grid-size-selector {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-sm);
+      margin-bottom: var(--space-md);
+    }
+
+    .grid-size-option {
+      background: var(--surface-3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-sm);
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      font-size: 0.9rem;
+    }
+
+    .grid-size-option:hover {
+      background: var(--surface-4);
+    }
+
+    .grid-size-option.active {
+      background: var(--primary-dark);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    /* PATTERN MODES */
+    .pattern-modes {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .pattern-mode {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-sm) var(--space-md);
+      background: var(--surface-3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .pattern-mode:hover {
+      background: var(--surface-4);
+    }
+
+    .pattern-mode.active {
+      background: var(--primary-dark);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .pattern-mode-icon {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+    }
+
+    .pattern-mode-info {
+      flex: 1;
+    }
+
+    .pattern-mode-name {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .pattern-mode-desc {
+      font-size: 0.75rem;
+      color: var(--text-tertiary);
+    }
+
+    /* BLOCK CATEGORIES */
+    .block-categories {
+      margin-bottom: var(--space-sm);
+    }
+
+    .category-selector {
+      display: flex;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      gap: 4px;
+    }
+
+    .category-tab {
+      padding: 5px 10px;
+      font-size: 0.8rem;
+      white-space: nowrap;
+      background: var(--surface-3);
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .category-tab:hover {
+      background: var(--surface-4);
+      color: var(--text-primary);
+    }
+
+    .category-tab.active {
+      background: var(--primary-dark);
+      color: white;
+    }
+
+    /* PALETTE SECTION */
+    .block-palette {
+      margin-top: var(--space-md);
+    }
+
+    .palette-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-sm);
+    }
+
+    .palette-title {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .palette-actions {
+      display: flex;
+      gap: var(--space-xs);
+    }
+
+    .palette-action {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface-3);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: var(--transition-fast);
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .palette-action:hover {
+      background: var(--surface-4);
+      color: var(--text-primary);
+    }
+
+    .blocks-container {
+      max-height: 200px;
+      overflow-y: auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-xs);
+      background: var(--surface-1);
+      border-radius: var(--radius-sm);
+      padding: var(--space-sm);
+      border: 1px solid var(--border);
+    }
+
+    .loading-blocks {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-secondary);
+      grid-column: 1 / -1;
+    }
+
+    .loading-blocks i {
+      font-size: 1.5rem;
+      color: var(--primary);
+    }
+
+    .block-item {
+      width: 100%;
+      aspect-ratio: 1/1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface-3);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: var(--transition-fast);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .block-item:hover {
+      background: var(--surface-4);
+      transform: translateY(-2px);
+    }
+
+    .block-item.active {
+      box-shadow: 0 0 0 2px var(--primary);
+    }
+
+    .block-item img {
+      width: 90%;
+      height: 90%;
+      object-fit: contain;
+      image-rendering: pixelated;
+    }
+
+    .block-tooltip {
+      position: absolute;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 0.7rem;
+      white-space: nowrap;
+      transition: var(--transition-fast);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .block-item:hover .block-tooltip {
+      bottom: 2px;
+      opacity: 1;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 10px;
+      grid-column: 1 / -1;
+    }
+
+    .page-btn {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface-3);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .page-btn:hover {
+      background: var(--surface-4);
+    }
+
+    .page-btn.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* EDITOR PANEL */
+    .editor {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .editor-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .editor-controls {
+      display: flex;
+      gap: var(--space-sm);
+    }
+
+    .editor-control {
+      padding: var(--space-xs) var(--space-sm);
+      font-size: 0.8rem;
+      background: var(--surface-3);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: var(--transition-fast);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .editor-control:hover {
+      background: var(--surface-4);
+    }
+
+    .editor-actions {
+      display: flex;
+      gap: var(--space-sm);
+    }
+
+    .editor-action {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: var(--space-xs) var(--space-sm);
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      background: var(--surface-3);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .editor-action:hover {
+      background: var(--surface-4);
+      color: var(--text-primary);
+    }
+
+    .editor-content {
+      flex: 1;
+      padding: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .pattern-grid-container {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .pattern-grid {
+      display: grid;
+      gap: 1px;
+      background: var(--border);
+      padding: 1px;
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-md);
+    }
+
+    .grid-cell {
+      width: 40px;
+      height: 40px;
+      background: var(--surface-1);
+      cursor: pointer;
+      transition: background 0.1s ease;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .grid-cell:hover {
+      background: var(--surface-3);
+    }
+
+    .grid-cell img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      image-rendering: pixelated;
+    }
+
+    .grid-guides {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .grid-guide-h, .grid-guide-v {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .grid-guide-h {
+      height: 1px;
+      left: 0;
+      right: 0;
+    }
+
+    .grid-guide-v {
+      width: 1px;
+      top: 0;
+      bottom: 0;
+    }
+
+    .grid-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .grid-overlay.visible {
+      opacity: 1;
+    }
+
+    .grid-overlay-message {
+      background: rgba(0, 0, 0, 0.8);
+      padding: var(--space-md) var(--space-lg);
+      border-radius: var(--radius-md);
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
+    }
+
+    .pattern-controls {
+      margin-top: var(--space-md);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      justify-content: center;
+    }
+
+    .pattern-control {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: var(--space-xs) var(--space-md);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .pattern-control:hover {
+      background: var(--surface-3);
+      color: var(--text-primary);
+    }
+
+    .pattern-control i {
+      font-size: 0.8rem;
+      color: var(--primary);
+    }
+
+    /* PREVIEW PANEL */
+    .preview {
+      height: fit-content;
+    }
+
+    .preview-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .preview-tab {
+      flex: 1;
+      padding: var(--space-sm) var(--space-md);
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition-fast);
+      border-bottom: 2px solid transparent;
+    }
+
+    .preview-tab:hover {
+      color: var(--text-primary);
+      background: var(--hover-effect);
+    }
+
+    .preview-tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    .preview-content {
+      padding: var(--space-lg);
+    }
+
+    .preview-container {
+      background: var(--surface-1);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+      width: 100%;
+      aspect-ratio: 1/1;
+      position: relative;
+    }
+
+    .preview-grid {
+      display: grid;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .preview-cell {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .preview-cell img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      image-rendering: pixelated;
+    }
+
+    .preview-3d {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      perspective: 800px;
+    }
+
+    .preview-surface {
+      position: absolute;
+      transform-style: preserve-3d;
+      transition: transform 1s ease;
+      width: 100%;
+      height: 100%;
+    }
+
+    .preview-surface.wall {
+      transform: translateZ(-50px);
+    }
+
+    .preview-surface.floor {
+      transform: rotateX(70deg) translateY(30%) translateZ(-50px);
+    }
+
+    .preview-surface.ceiling {
+      transform: rotateX(-70deg) translateY(-30%) translateZ(-50px);
+    }
+
+    .preview-info {
+      margin-top: var(--space-md);
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .preview-description {
+      margin-bottom: var(--space-md);
+    }
+
+    .preview-actions {
+      display: flex;
+      gap: var(--space-sm);
+      margin-top: var(--space-md);
+    }
+
+    .preview-action {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: var(--space-xs) var(--space-md);
+      background: var(--surface-3);
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .preview-action:hover {
+      background: var(--surface-4);
+      color: var(--text-primary);
+    }
+
+    .preview-action i {
+      font-size: 0.8rem;
+    }
+
+    /* ADDITIONAL COMPONENTS */
+    /* Templates Library Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal {
+      background: var(--surface-2);
+      border-radius: var(--radius-lg);
+      width: 90%;
+      max-width: 900px;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+      overflow: hidden;
+    }
+
+    .modal-overlay.visible .modal {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .modal-close {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface-3);
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .modal-close:hover {
+      background: var(--surface-4);
+    }
+
+    .modal-body {
+      padding: var(--space-lg);
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .modal-footer {
+      padding: var(--space-md) var(--space-lg);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--space-md);
+    }
+
+    .templates-filter {
+      display: flex;
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+    }
+
+    .templates-search {
+      flex: 1;
+      position: relative;
+    }
+
+    .templates-search input {
+      width: 100%;
+      padding: var(--space-sm) var(--space-lg);
+      background: var(--surface-3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font-size: 0.9rem;
+    }
+
+    .templates-search i {
+      position: absolute;
+      left: var(--space-sm);
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-tertiary);
+    }
+
+    .templates-categories {
+      display: flex;
+      gap: var(--space-xs);
+    }
+
+    .template-category {
+      padding: var(--space-xs) var(--space-md);
+      background: var(--surface-3);
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .template-category:hover, .template-category.active {
+      background: var(--primary-dark);
+      color: #fff;
+    }
+
+    .templates-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: var(--space-md);
+    }
+
+    .template-item {
+      background: var(--surface-3);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: var(--transition-fast);
+      cursor: pointer;
+    }
+
+    .template-item:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .template-preview {
+      width: 100%;
+      aspect-ratio: 1/1;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .template-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .template-info {
+      padding: var(--space-sm) var(--space-md);
+    }
+
+    .template-name {
+      font-size: 0.9rem;
+      margin-bottom: 2px;
+    }
+
+    .template-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .template-tag {
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      background: var(--surface-2);
+      border-radius: var(--radius-sm);
+      color: var(--text-tertiary);
+    }
+
+    /* Button Styles */
+    .btn {
+      padding: var(--space-sm) var(--space-lg);
+      border-radius: var(--radius-md);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    .btn-primary {
+      background: linear-gradient(to right, var(--primary-dark), var(--primary));
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(var(--primary-rgb), 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(var(--primary-rgb), 0.4);
+    }
+
+    .btn-secondary {
+      background: var(--surface-3);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface-4);
+      color: var(--text-primary);
+    }
+
+    /* Toast Notifications */
+    .toast-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      z-index: 1000;
+    }
+
+    .toast {
+      background: var(--surface-3);
+      padding: var(--space-sm) var(--space-lg);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      transform: translateX(120%);
+      transition: transform 0.3s ease;
+      min-width: 300px;
+    }
+
+    .toast.visible {
+      transform: translateX(0);
+    }
+
+    .toast-icon {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-full);
+      font-size: 0.9rem;
+    }
+
+    .toast-icon.success {
+      background: rgba(var(--success-rgb), 0.2);
+      color: var(--success);
+    }
+
+    .toast-icon.error {
+      background: rgba(255, 69, 58, 0.2);
+      color: #ff453a;
+    }
+
+    .toast-message {
+      flex: 1;
+      font-size: 0.9rem;
+    }
+
+    .toast-close {
+      cursor: pointer;
+      opacity: 0.6;
+      transition: opacity 0.2s ease;
+    }
+
+    .toast-close:hover {
+      opacity: 1;
+    }
+
+    /* Tutorial Section */
+    .tutorial-section {
+      margin-top: var(--space-xl);
+      background: var(--surface-2);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      box-shadow: var(--shadow-md);
+    }
+
+    .tutorial-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-lg);
+    }
+
+    .tutorial-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(to right, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .tutorial-steps {
+      margin-top: var(--space-md);
+    }
+
+    .tutorial-step {
+      display: flex;
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+    }
+
+    .step-number {
+      width: 32px;
+      height: 32px;
+      background: var(--primary);
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .step-content {
+      flex: 1;
+    }
+
+    .step-title {
+      font-size: 1.1rem;
+      margin-bottom: var(--space-xs);
+      color: var(--text-primary);
+    }
+
+    .step-description {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: var(--space-sm);
+      line-height: 1.5;
+    }
+
+    .step-image {
+      width: 100%;
+      max-width: 500px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin-top: var(--space-sm);
+      box-shadow: var(--shadow-md);
+    }
+
+    .step-image img {
+      width: 100%;
+      height: auto;
+    }
+
+    /* RESPONSIVE STYLES */
+    @media (max-width: 1200px) {
+      .workspace {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+      }
+      
+      .toolbox, .preview {
+        max-width: 100%;
+      }
+      
+      .panel-content {
+        max-height: 300px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2.5rem;
+      }
+      
+      .nav-container {
+        flex-direction: column;
+        gap: var(--space-md);
+        padding: var(--space-md);
+      }
+      
+      .nav-links {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      
+      .grid-cell {
+        width: 30px;
+        height: 30px;
+      }
+      
+      .templates-filter {
+        flex-direction: column;
+        gap: var(--space-sm);
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: var(--space-lg) var(--space-md);
+      }
+      
+      header h1 {
+        font-size: 2rem;
+      }
+      
+      main {
+        padding: 0 var(--space-md);
+      }
+      
+      .grid-cell {
+        width: 25px;
+        height: 25px;
+      }
+      
+      .modal {
+        width: 95%;
+      }
+    }
+
+    .burger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 25px;
+  height: 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 101;
+}
+
+.burger span {
+  height: 3px;
+  width: 100%;
+  background: white;
+  border-radius: 3px;
+}
+
+@media (max-width: 768px) {
+  .burger {
+    display: flex;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    background: rgba(26, 30, 46, 0.95);
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    gap: 15px;
+    border-top: 1px solid var(--border);
+    z-index: 100;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
+}
+
+/* Important : pour éviter conflits avec d'autres media queries */
+.main-nav {
+  position: relative; /* important */
+  z-index: 100;
+}
+
+.menu-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1001;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .menu-toggle .bar {
+      width: 30px;
+      height: 4px;
+      background-color: white;
+      margin: 5px 0;
+      border-radius: 2px;
+      transition: all var(--transition-fast);
+    }
+
+    .menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: var(--glass-blur);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transform: translateY(-100%);
+      transition: transform var(--transition-fast);
+    }
+
+    .menu-overlay.show {
+      transform: translateY(0);
+    }
+
+    .menu-link {
+      font-size: 1.8rem;
+      margin: 20px 0;
+      color: var(--text-primary);
+      text-decoration: none;
+      transition: color var(--transition-fast);
+    }
+
+    .menu-link:hover {
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <button class="menu-toggle" id="menu-toggle" aria-label="Menu">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </button>
+
+  <div class="menu-overlay" id="menu-overlay">
+    <a href="index.html" class="menu-link">Textures</a>
+    <a href="palette.html" class="menu-link">Palettes</a>
+    <a href="community-palette.html" class="menu-link">Communauté-Palettes</a>
+    <a href="colorwheel.html" class="menu-link">ColorWheel</a>
+    <a href="blockgradient.html" class="menu-link">BlockGradient</a>
+    <a href="patterncraft.html" class="menu-link">PatternCraft</a>
+    <a href="pixelmapper.html" class="menu-link">PixelMapper</a>
+    <a href="wiki.html" class="menu-link">Wiki</a>
+  </div>
+
+  <script>
+    const menuToggle = document.getElementById('menu-toggle');
+    const menuOverlay = document.getElementById('menu-overlay');
+
+    menuToggle.addEventListener('click', () => {
+      menuOverlay.classList.toggle('show');
+    });
+  </script>
+
+  <header>
+    <h1><i class="fas fa-th"></i> PatternCraft</h1>
+    <p>Crée des motifs et des arrangements de blocs pour embellir tes constructions Minecraft</p>
+  </header>
+
+  <main>
+    <div class="workspace">
+      <!-- Toolbox Panel -->
+      <section class="panel toolbox">
+        <div class="panel-header">
+          <h2 class="panel-title"><i class="fas fa-tools"></i> Outils</h2>
+        </div>
+        <div class="panel-content">
+          <!-- Grid Size Tool -->
+          <div class="tool-group">
+            <h3 class="tool-group-title"><i class="fas fa-border-all"></i> Taille de la grille</h3>
+            <div class="grid-size-selector">
+              <div class="grid-size-option" data-size="3">3×3</div>
+              <div class="grid-size-option" data-size="5">5×5</div>
+              <div class="grid-size-option active" data-size="8">8×8</div>
+              <div class="grid-size-option" data-size="10">10×10</div>
+              <div class="grid-size-option" data-size="12">12×12</div>
+              <div class="grid-size-option" data-size="16">16×16</div>
+            </div>
+          </div>
+
+          <!-- Pattern Modes -->
+          <div class="tool-group">
+            <h3 class="tool-group-title"><i class="fas fa-vector-square"></i> Mode de motif</h3>
+            <div class="pattern-modes">
+              <div class="pattern-mode active" data-mode="repeat">
+                <div class="pattern-mode-icon"><i class="fas fa-th"></i></div>
+                <div class="pattern-mode-info">
+                  <div class="pattern-mode-name">Répétition</div>
+                  <div class="pattern-mode-desc">Répète le motif tel quel</div>
+                </div>
+              </div>
+              <div class="pattern-mode" data-mode="symmetric">
+                <div class="pattern-mode-icon"><i class="fas fa-expand-arrows-alt"></i></div>
+                <div class="pattern-mode-info">
+                  <div class="pattern-mode-name">Symétrie</div>
+                  <div class="pattern-mode-desc">Miroir horizontal et vertical</div>
+                </div>
+              </div>
+              <div class="pattern-mode" data-mode="radial">
+                <div class="pattern-mode-icon"><i class="fas fa-circle-notch"></i></div>
+                <div class="pattern-mode-info">
+                  <div class="pattern-mode-name">Rayonnant</div>
+                  <div class="pattern-mode-desc">Rotation autour du centre</div>
+                </div>
+              </div>
+              <div class="pattern-mode" data-mode="random">
+                <div class="pattern-mode-icon"><i class="fas fa-random"></i></div>
+                <div class="pattern-mode-info">
+                  <div class="pattern-mode-name">Aléatoire</div>
+                  <div class="pattern-mode-desc">Variation contrôlée du motif</div>
+                </div>
+              </div>
+              <div class="pattern-mode" data-mode="perlin">
+                <div class="pattern-mode-icon"><i class="fas fa-water"></i></div>
+                <div class="pattern-mode-info">
+                  <div class="pattern-mode-name">Bruit de Perlin</div>
+                  <div class="pattern-mode-desc">Transitions douces entre blocs</div>
+                </div>
+              </div>
+              <div class="pattern-mode" data-mode="simplex">
+                <div class="pattern-mode-icon"><i class="fas fa-mountain"></i></div>
+                <div class="pattern-mode-info">
+                  <div class="pattern-mode-name">Bruit Simplex</div>
+                  <div class="pattern-mode-desc">Distribution naturelle</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Block Palette -->
+          <div class="tool-group">
+            <div class="palette-header">
+              <h3 class="tool-group-title"><i class="fas fa-palette"></i> Blocs</h3>
+              <div class="palette-actions">
+                <div class="palette-action" id="import-palette" title="Importer une palette"><i class="fas fa-file-import"></i></div>
+                <div class="palette-action" id="clear-palette" title="Effacer la palette"><i class="fas fa-trash-alt"></i></div>
+              </div>
+            </div>
+            
+            <div class="search-container" style="margin-bottom: 8px;">
+              <i class="fas fa-search search-icon"></i>
+              <input type="text" class="search-input" id="search-blocks" placeholder="Rechercher un bloc...">
+            </div>
+            
+            <div class="block-categories">
+              <div class="category-selector">
+                <div class="category-tab active" data-category="all">Tous</div>
+                <div class="category-tab" data-category="building">Construction</div>
+                <div class="category-tab" data-category="natural">Naturel</div>
+                <div class="category-tab" data-category="colored">Colorés</div>
+                <div class="category-tab" data-category="redstone">Redstone</div>
+                <div class="category-tab" data-category="special">Spéciaux</div>
+              </div>
+            </div>
+            
+            <div class="block-palette">
+              <div class="blocks-container" id="all-blocks">
+                <div class="loading-blocks">
+                  <i class="fas fa-spinner fa-spin"></i>
+                  <span>Chargement des blocs...</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="palette-header" style="margin-top: 12px;">
+              <h3 class="palette-title">Blocs récemment utilisés</h3>
+            </div>
+            <div class="block-palette">
+              <div class="blocks-container" id="recent-blocks">
+                <!-- Sera rempli dynamiquement -->
+              </div>
+            </div>
+          </div>
+          
+          <!-- Templates Button -->
+          <div class="tool-group">
+            <button class="btn btn-primary" id="open-templates">
+              <i class="fas fa-shapes"></i> Modèles prédéfinis
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Editor Panel -->
+      <section class="panel editor">
+        <div class="panel-header">
+          <div class="editor-header">
+            <h2 class="panel-title"><i class="fas fa-edit"></i> Éditeur</h2>
+            <div class="editor-controls">
+              <div class="editor-control" id="zoom-in"><i class="fas fa-search-plus"></i></div>
+              <div class="editor-control" id="zoom-out"><i class="fas fa-search-minus"></i></div>
+              <div class="editor-control" id="toggle-grid"><i class="fas fa-grip-lines"></i></div>
+            </div>
+          </div>
+          <div class="editor-actions">
+            <div class="editor-action" id="clear-editor"><i class="fas fa-eraser"></i> Effacer</div>
+            <div class="editor-action" id="save-pattern"><i class="fas fa-save"></i> Sauvegarder</div>
+          </div>
+        </div>
+        <div class="panel-content editor-content">
+          <div class="pattern-grid-container">
+            <div class="pattern-grid" id="pattern-grid" style="grid-template-columns: repeat(8, 1fr);">
+              <!-- Grid will be populated by JS -->
+            </div>
+            <div class="grid-guides" id="grid-guides">
+              <!-- Guides will be added by JS -->
+            </div>
+            <div class="grid-overlay" id="grid-overlay">
+              <div class="grid-overlay-message">Chargement du modèle...</div>
+            </div>
+          </div>
+          <div class="pattern-controls">
+            <div class="pattern-control" id="rotate-pattern">
+              <i class="fas fa-sync-alt"></i> Rotation
+            </div>
+            <div class="pattern-control" id="flip-h">
+              <i class="fas fa-arrows-alt-h"></i> Miroir H
+            </div>
+            <div class="pattern-control" id="flip-v">
+              <i class="fas fa-arrows-alt-v"></i> Miroir V
+            </div>
+            <div class="pattern-control" id="randomize">
+              <i class="fas fa-dice"></i> Varier les blocs
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Preview Panel -->
+      <section class="panel preview">
+        <div class="panel-header">
+          <h2 class="panel-title"><i class="fas fa-eye"></i> Aperçu</h2>
+        </div>
+        <div class="preview-tabs">
+          <div class="preview-tab active" data-view="repeated">Répété</div>
+          <div class="preview-tab" data-view="wall">Mur</div>
+          <div class="preview-tab" data-view="floor">Sol</div>
+          <div class="preview-tab" data-view="ceiling">Plafond</div>
+        </div>
+        <div class="preview-content">
+          <div class="preview-container">
+            <div class="preview-grid" id="preview-repeated" style="grid-template-columns: repeat(4, 1fr);">
+              <!-- Will be populated by JS -->
+            </div>
+            <div class="preview-3d" id="preview-3d" style="display: none;">
+              <div class="preview-surface" id="preview-surface">
+                <div class="preview-grid" id="preview-surface-grid" style="grid-template-columns: repeat(8, 1fr);">
+                  <!-- Will be populated by JS -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="preview-info">
+            <p class="preview-description">
+              Ce motif créera un effet visuel intéressant pour tes constructions. Utilise-le pour les murs, sols ou plafonds.
+            </p>
+            <div class="preview-actions">
+              <div class="preview-action" id="copy-pattern">
+                <i class="fas fa-clipboard"></i> Copier
+              </div>
+              <div class="preview-action" id="export-pattern">
+                <i class="fas fa-download"></i> Exporter
+              </div>
+              <div class="preview-action" id="generate-tutorial">
+                <i class="fas fa-book"></i> Tutoriel
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Tutorial Section (Initially Hidden) -->
+    <div class="tutorial-section" id="tutorial-section" style="display: none;">
+      <div class="tutorial-header">
+        <h2 class="tutorial-title">Comment reproduire ce motif</h2>
+        <button class="btn btn-secondary" id="hide-tutorial">
+          <i class="fas fa-times"></i> Fermer
+        </button>
+      </div>
+
+      <div class="tutorial-steps" id="tutorial-steps">
+        <!-- Will be populated by JS -->
+      </div>
+    </div>
+  </main>
+
+  <!-- Templates Modal -->
+  <div class="modal-overlay" id="templates-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Modèles de motifs</h3>
+        <div class="modal-close" id="close-templates">
+          <i class="fas fa-times"></i>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="templates-filter">
+          <div class="templates-search">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Rechercher un modèle...">
+          </div>
+          <div class="templates-categories">
+            <div class="template-category active" data-category="all">Tous</div>
+            <div class="template-category" data-category="geometric">Géométrique</div>
+            <div class="template-category" data-category="floor">Sol</div>
+            <div class="template-category" data-category="wall">Mur</div>
+          </div>
+        </div>
+        <div class="templates-grid">
+          <!-- Geometric Templates -->
+          <div class="template-item" data-template="checkerboard">
+            <div class="template-preview">
+              <img src="templates/checkerboard.png" alt="Damier">
+            </div>
+            <div class="template-info">
+              <div class="template-name">Damier</div>
+              <div class="template-tags">
+                <span class="template-tag">Géométrique</span>
+                <span class="template-tag">Sol</span>
+              </div>
+            </div>
+          </div>
+          <div class="template-item" data-template="zigzag">
+            <div class="template-preview">
+              <img src="templates/zigzag.png" alt="Zigzag">
+            </div>
+            <div class="template-info">
+              <div class="template-name">Zigzag</div>
+              <div class="template-tags">
+                <span class="template-tag">Géométrique</span>
+                <span class="template-tag">Mur</span>
+              </div>
+            </div>
+          </div>
+          <div class="template-item" data-template="diamonds">
+            <div class="template-preview">
+              <img src="templates/diamonds.png" alt="Diamants">
+            </div>
+            <div class="template-info">
+              <div class="template-name">Diamants</div>
+              <div class="template-tags">
+                <span class="template-tag">Géométrique</span>
+                <span class="template-tag">Sol</span>
+              </div>
+            </div>
+          </div>
+          <div class="template-item" data-template="stripes">
+            <div class="template-preview">
+              <img src="templates/stripes.png" alt="Rayures">
+            </div>
+            <div class="template-info">
+              <div class="template-name">Rayures</div>
+              <div class="template-tags">
+                <span class="template-tag">Géométrique</span>
+                <span class="template-tag">Mur</span>
+              </div>
+            </div>
+          </div>
+          <div class="template-item" data-template="circles">
+            <div class="template-preview">
+              <img src="templates/circles.png" alt="Cercles">
+            </div>
+            <div class="template-info">
+              <div class="template-name">Cercles</div>
+              <div class="template-tags">
+                <span class="template-tag">Géométrique</span>
+                <span class="template-tag">Sol</span>
+              </div>
+            </div>
+          </div>
+          <div class="template-item" data-template="border">
+            <div class="template-preview">
+              <img src="templates/border.png" alt="Bordure">
+            </div>
+            <div class="template-info">
+              <div class="template-name">Bordure</div>
+              <div class="template-tags">
+                <span class="template-tag">Décoratif</span>
+                <span class="template-tag">Sol</span>
+              </div>
+            </div>
+          </div>
+          <div class="template-item" data-template="maze">
+            <div class="template-preview">
+              <img src="templates/maze.png" alt="Labyrinthe">
+            </div>
+            <div class="template-info">
+              <div class="template-name">Labyrinthe</div>
+              <div class="template-tags">
+                <span class="template-tag">Complexe</span>
+                <span class="template-tag">Sol</span>
+              </div>
+            </div>
+          </div>
+          <div class="template-item" data-template="medieval">
+            <div class="template-preview">
+              <img src="templates/medieval.png" alt="Médiéval">
+            </div>
+            <div class="template-info">
+              <div class="template-name">Médiéval</div>
+              <div class="template-tags">
+                <span class="template-tag">Historique</span>
+                <span class="template-tag">Mur</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="cancel-template">Annuler</button>
+        <button class="btn btn-primary" id="apply-template">Appliquer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container">
+    <!-- Toasts will be added dynamically -->
+  </div>
+
+  <script>
+    // STATE MANAGEMENT
+    let currentGridSize = 8;
+    let currentMode = 'repeat';
+    let currentView = 'repeated';
+    let selectedBlock = 'oak_planks';
+    let zoomLevel = 1;
+    let gridVisible = true;
+    let selectedTemplate = null;
+    let patternGrid = []; // 2D array to store the current pattern
+    let recentBlocks = []; // Array to store recently used blocks
+    let allMinecraftBlocks = []; // All blocks loaded from texture-data.json
+    let filteredBlocks = []; // Blocks filtered by search or category
+    let currentCategory = 'all';
+    let searchQuery = '';
+    let currentPage = 1;
+    const blocksPerPage = 24;
+
+    // UTILITY FUNCTIONS
+    
+    // Format block name for display
+    function formatBlockName(name) {
+      return name
+        .split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+    }
+
+    // Show toast notification
+    function showToast(type, message) {
+      const toastContainer = document.getElementById('toast-container');
+      
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `
+        <div class="toast-icon ${type}">
+          <i class="fas fa-${type === 'success' ? 'check' : 'exclamation-triangle'}"></i>
+        </div>
+        <div class="toast-message">${message}</div>
+        <div class="toast-close">
+          <i class="fas fa-times"></i>
+        </div>
+      `;
+      
+      toastContainer.appendChild(toast);
+      
+      // Show the toast after a small delay for animation
+      setTimeout(() => {
+        toast.classList.add('visible');
+      }, 10);
+      
+      // Setup close button
+      toast.querySelector('.toast-close').addEventListener('click', () => {
+        toast.classList.remove('visible');
+        setTimeout(() => {
+          toast.remove();
+        }, 300);
+      });
+      
+      // Auto close after 3 seconds
+      setTimeout(() => {
+        if (toast.parentNode) {
+          toast.classList.remove('visible');
+          setTimeout(() => {
+            if (toast.parentNode) {
+              toast.remove();
+            }
+          }, 300);
+        }
+      }, 3000);
+    }
+    
+    // Select a block as the current painting tool
+    function selectBlock(blockName) {
+      selectedBlock = blockName;
+      
+      // Update UI
+      document.querySelectorAll('.block-item').forEach(item => {
+        item.classList.toggle('active', item.dataset.block === blockName);
+      });
+      
+      // Add to recent blocks if not already there
+      if (!recentBlocks.includes(blockName)) {
+        recentBlocks.unshift(blockName);
+        if (recentBlocks.length > 8) {
+          recentBlocks.pop();
+        }
+        updateRecentBlocks();
+      }
+      
+      // Show toast
+      showToast('success', `${formatBlockName(blockName)} sélectionné`);
+    }
+    
+    // Update recent blocks display
+    function updateRecentBlocks() {
+      const recentBlocksContainer = document.getElementById('recent-blocks');
+      recentBlocksContainer.innerHTML = '';
+      
+      if (recentBlocks.length === 0) {
+        recentBlocksContainer.innerHTML = '<div style="padding: 10px; color: var(--text-tertiary); text-align: center;">Aucun bloc utilisé récemment</div>';
+        return;
+      }
+      
+      recentBlocks.forEach(block => {
+        const blockItem = document.createElement('div');
+        blockItem.className = `block-item ${selectedBlock === block ? 'active' : ''}`;
+        blockItem.dataset.block = block;
+        blockItem.innerHTML = `
+          <img src="blocks/${block}.png" alt="${formatBlockName(block)}">
+          <div class="block-tooltip">${formatBlockName(block)}</div>
+        `;
+        
+        blockItem.addEventListener('click', function() {
+          selectBlock(block);
+        });
+        
+        recentBlocksContainer.appendChild(blockItem);
+      });
+    }
+    
+    // GRID MANAGEMENT
+    
+    // Initialize Pattern Grid
+    function initGrid(size = 8) {
+      const grid = document.getElementById('pattern-grid');
+      grid.innerHTML = '';
+      grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+      
+      // Create a 2D array to store block data
+      patternGrid = Array(size).fill().map(() => Array(size).fill(null));
+      
+      for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+          const cell = document.createElement('div');
+          cell.className = 'grid-cell';
+          cell.dataset.x = x;
+          cell.dataset.y = y;
+          
+          cell.addEventListener('click', function() {
+            placeBlock(x, y, selectedBlock);
+          });
+          
+          grid.appendChild(cell);
+        }
+      }
+      
+      // Update guides
+      updateGridGuides(size);
+      
+      // Update current grid size
+      currentGridSize = size;
+      
+      // Update preview
+      updatePreview();
+    }
+    
+    // Place a block in the pattern grid
+    function placeBlock(x, y, blockName) {
+      // Update the grid array
+      patternGrid[y][x] = blockName;
+      
+      // Update the visual cell
+      const cell = document.querySelector(`.grid-cell[data-x="${x}"][data-y="${y}"]`);
+      cell.innerHTML = `<img src="blocks/${blockName}.png" alt="${blockName}">`;
+      
+      // Update preview
+      updatePreview();
+    }
+    
+    // Update the grid guides
+    function updateGridGuides(size) {
+      const guidesContainer = document.getElementById('grid-guides');
+      guidesContainer.innerHTML = '';
+      
+      // For symmetric mode, add center guides
+      if (currentMode === 'symmetric' || currentMode === 'radial') {
+        const halfSize = size / 2;
+        
+        // Horizontal center guide
+        if (size % 2 === 0) {
+          // Even size - guide between cells
+          const hGuide = document.createElement('div');
+          hGuide.className = 'grid-guide-h';
+          hGuide.style.top = `${halfSize * 41}px`; // 41px = cell height (40px) + gap (1px)
+          guidesContainer.appendChild(hGuide);
+        } else {
+          // Odd size - guide through center cells
+          const hGuide = document.createElement('div');
+          hGuide.className = 'grid-guide-h';
+          hGuide.style.top = `${Math.floor(halfSize) * 41 + 20}px`;
+          guidesContainer.appendChild(hGuide);
+        }
+        
+        // Vertical center guide
+        if (size % 2 === 0) {
+          // Even size
+          const vGuide = document.createElement('div');
+          vGuide.className = 'grid-guide-v';
+          vGuide.style.left = `${halfSize * 41}px`;
+          guidesContainer.appendChild(vGuide);
+        } else {
+          // Odd size
+          const vGuide = document.createElement('div');
+          vGuide.className = 'grid-guide-v';
+          vGuide.style.left = `${Math.floor(halfSize) * 41 + 20}px`;
+          guidesContainer.appendChild(vGuide);
+        }
+      }
+    }
+    
+    // Set grid size
+    function setGridSize(size) {
+      currentGridSize = size;
+      
+      // Update UI
+      document.querySelectorAll('.grid-size-option').forEach(option => {
+        option.classList.toggle('active', parseInt(option.dataset.size) === size);
+      });
+      
+      // Reinitialize grid
+      initGrid(size);
+    }
+    
+    // Clear grid
+    function clearGrid() {
+      patternGrid = Array(currentGridSize).fill().map(() => Array(currentGridSize).fill(null));
+      
+      // Update UI
+      document.querySelectorAll('.grid-cell').forEach(cell => {
+        cell.innerHTML = '';
+      });
+      
+      // Update preview
+      updatePreview();
+    }
+    
+    // PREVIEW MANAGEMENT
+    
+    // Update the preview based on the current pattern and mode
+    function updatePreview() {
+      if (currentView === 'repeated') {
+        updateRepeatedPreview();
+      } else {
+        update3DPreview(currentView);
+      }
+    }
+    
+    // Update the repeated pattern preview
+    function updateRepeatedPreview() {
+      const previewGrid = document.getElementById('preview-repeated');
+      previewGrid.innerHTML = '';
+      previewGrid.style.display = 'grid';
+      document.getElementById('preview-3d').style.display = 'none';
+      
+      // Create a 4x4 repetition of the pattern
+      const repetitions = 4;
+      previewGrid.style.gridTemplateColumns = `repeat(${currentGridSize * 2}, 1fr)`;
+      
+      // Different preview generation based on mode
+      switch (currentMode) {
+        case 'repeat':
+          generateRepeatPreview(previewGrid, repetitions);
+          break;
+        case 'symmetric':
+          generateSymmetricPreview(previewGrid, repetitions);
+          break;
+        case 'radial':
+          generateRadialPreview(previewGrid, repetitions);
+          break;
+        case 'random':
+          generateRandomizedPreview(previewGrid, repetitions);
+          break;
+        case 'perlin':
+          generatePerlinPreview(previewGrid, repetitions);
+          break;
+        case 'simplex':
+          generateSimplexPreview(previewGrid, repetitions);
+          break;
+      }
+    }
+    
+    // Generate standard repeat preview
+    function generateRepeatPreview(previewGrid, repetitions) {
+      const patternWidth = currentGridSize;
+      const patternHeight = currentGridSize;
+      
+      for (let y = 0; y < patternHeight * 2; y++) {
+        for (let x = 0; x < patternWidth * 2; x++) {
+          const sourceX = x % patternWidth;
+          const sourceY = y % patternHeight;
+          const block = patternGrid[sourceY][sourceX];
+          
+          const cell = document.createElement('div');
+          cell.className = 'preview-cell';
+          
+          if (block) {
+            cell.innerHTML = `<img src="blocks/${block}.png" alt="${block}">`;
+          }
+          
+          previewGrid.appendChild(cell);
+        }
+      }
+    }
+    
+    // Generate symmetric preview
+    function generateSymmetricPreview(previewGrid, repetitions) {
+      // For symmetric mode, we first create a full symmetric pattern
+      const symmetricPattern = createSymmetricPattern();
+      const patternWidth = symmetricPattern[0].length;
+      const patternHeight = symmetricPattern.length;
+      
+      // Then repeat it
+      for (let y = 0; y < patternHeight * 2; y++) {
+        for (let x = 0; x < patternWidth * 2; x++) {
+          const sourceX = x % patternWidth;
+          const sourceY = y % patternHeight;
+          const block = symmetricPattern[sourceY][sourceX];
+          
+          const cell = document.createElement('div');
+          cell.className = 'preview-cell';
+          
+          if (block) {
+            cell.innerHTML = `<img src="blocks/${block}.png" alt="${block}">`;
+          }
+          
+          previewGrid.appendChild(cell);
+        }
+      }
+    }
+    
+    // Create a symmetric pattern from the current grid
+    function createSymmetricPattern() {
+      const halfSize = Math.ceil(currentGridSize / 2);
+      const fullPattern = Array(currentGridSize).fill().map(() => Array(currentGridSize).fill(null));
+      
+      // Fill in the top-left quadrant from the current pattern
+      for (let y = 0; y < halfSize; y++) {
+        for (let x = 0; x < halfSize; x++) {
+          fullPattern[y][x] = patternGrid[y][x];
+        }
+      }
+      
+      // Mirror horizontally for top-right quadrant
+      for (let y = 0; y < halfSize; y++) {
+        for (let x = 0; x < halfSize; x++) {
+          if (fullPattern[y][x]) {
+            fullPattern[y][currentGridSize - 1 - x] = fullPattern[y][x];
+          }
+        }
+      }
+      
+      // Mirror vertically for bottom halves
+      for (let y = 0; y < halfSize; y++) {
+        for (let x = 0; x < currentGridSize; x++) {
+          if (fullPattern[y][x]) {
+            fullPattern[currentGridSize - 1 - y][x] = fullPattern[y][x];
+          }
+        }
+      }
+      
+      return fullPattern;
+    }
+    
+    // Generate radial preview
+    function generateRadialPreview(previewGrid, repetitions) {
+      // For radial mode, we first create a radial pattern
+      const radialPattern = createRadialPattern();
+      const patternWidth = radialPattern[0].length;
+      const patternHeight = radialPattern.length;
+      
+      // Then repeat it
+      for (let y = 0; y < patternHeight * 2; y++) {
+        for (let x = 0; x < patternWidth * 2; x++) {
+          const sourceX = x % patternWidth;
+          const sourceY = y % patternHeight;
+          const block = radialPattern[sourceY][sourceX];
+          
+          const cell = document.createElement('div');
+          cell.className = 'preview-cell';
+          
+          if (block) {
+            cell.innerHTML = `<img src="blocks/${block}.png" alt="${block}">`;
+          }
+          
+          previewGrid.appendChild(cell);
+        }
+      }
+    }
+    
+    // Create a radial pattern from the current grid
+    function createRadialPattern() {
+      const halfSize = Math.ceil(currentGridSize / 2);
+      const fullPattern = Array(currentGridSize).fill().map(() => Array(currentGridSize).fill(null));
+      
+      // Fill in the top-left quadrant from the current pattern
+      for (let y = 0; y < halfSize; y++) {
+        for (let x = 0; x < halfSize; x++) {
+          fullPattern[y][x] = patternGrid[y][x];
+        }
+      }
+      
+      // Rotate the quadrant to create a radial pattern
+      for (let y = 0; y < halfSize; y++) {
+        for (let x = 0; x < halfSize; x++) {
+          if (fullPattern[y][x]) {
+            // Top-right quadrant (90° rotation)
+            fullPattern[x][currentGridSize - 1 - y] = fullPattern[y][x];
+            // Bottom-right quadrant (180° rotation)
+            fullPattern[currentGridSize - 1 - y][currentGridSize - 1 - x] = fullPattern[y][x];
+            // Bottom-left quadrant (270° rotation)
+            fullPattern[currentGridSize - 1 - x][y] = fullPattern[y][x];
+          }
+        }
+      }
+      
+      return fullPattern;
+    }
+    
+    // Generate randomized preview
+    function generateRandomizedPreview(previewGrid, repetitions) {
+      // Create a pattern with controlled randomization
+      const randomizedPattern = createRandomizedPattern();
+      const patternWidth = randomizedPattern[0].length;
+      const patternHeight = randomizedPattern.length;
+      
+      // Then repeat it with variations
+      for (let ry = 0; ry < 2; ry++) {
+        for (let rx = 0; rx < 2; rx++) {
+          // For random mode, generate a new random pattern each time
+          const thisPattern = rx === 0 && ry === 0 ? randomizedPattern : createRandomizedPattern();
+          
+          for (let y = 0; y < patternHeight; y++) {
+            for (let x = 0; x < patternWidth; x++) {
+              const block = thisPattern[y][x];
+              
+              const cell = document.createElement('div');
+              cell.className = 'preview-cell';
+              
+              if (block) {
+                cell.innerHTML = `<img src="blocks/${block}.png" alt="${block}">`;
+              }
+              
+              previewGrid.appendChild(cell);
+            }
+          }
+        }
+      }
+    }
+    
+    // Create a randomized pattern, preserving structure but varying blocks
+    function createRandomizedPattern() {
+      const randomPattern = Array(currentGridSize).fill().map(() => Array(currentGridSize).fill(null));
+      
+      // Collect all used blocks in the pattern
+      const usedBlocks = new Set();
+      for (let y = 0; y < currentGridSize; y++) {
+        for (let x = 0; x < currentGridSize; x++) {
+          if (patternGrid[y][x]) {
+            usedBlocks.add(patternGrid[y][x]);
+          }
+        }
+      }
+      
+      // Convert to array for easier random selection
+      const blockArray = Array.from(usedBlocks);
+      
+      // Create a random variation of the pattern
+      for (let y = 0; y < currentGridSize; y++) {
+        for (let x = 0; x < currentGridSize; x++) {
+          if (patternGrid[y][x]) {
+            // 70% chance to keep the original block, 30% chance to use another block
+            if (Math.random() < 0.7) {
+              randomPattern[y][x] = patternGrid[y][x];
+            } else {
+              // Pick a random block from the used blocks
+              const randomBlock = blockArray[Math.floor(Math.random() * blockArray.length)];
+              randomPattern[y][x] = randomBlock;
+            }
+          }
+        }
+      }
+      
+      return randomPattern;
+    }
+    
+    // Generate Perlin noise preview
+    function generatePerlinPreview(previewGrid, repetitions) {
+      // Create a larger pattern using Perlin noise
+      const perlinPattern = createPerlinPattern();
+      const patternWidth = perlinPattern[0].length;
+      const patternHeight = perlinPattern.length;
+      
+      // Display the pattern
+      for (let y = 0; y < patternHeight; y++) {
+        for (let x = 0; x < patternWidth; x++) {
+          const block = perlinPattern[y][x];
+          
+          const cell = document.createElement('div');
+          cell.className = 'preview-cell';
+          
+          if (block) {
+            cell.innerHTML = `<img src="blocks/${block}.png" alt="${block}">`;
+          }
+          
+          previewGrid.appendChild(cell);
+        }
+      }
+    }
+    
+    // Create a pattern using Perlin noise
+    function createPerlinPattern() {
+      // Use a larger size for the Perlin noise pattern
+      const size = currentGridSize * 2;
+      const pattern = Array(size).fill().map(() => Array(size).fill(null));
+      
+      // Collect all used blocks in the current pattern
+      const usedBlocks = [];
+      for (let y = 0; y < currentGridSize; y++) {
+        for (let x = 0; x < currentGridSize; x++) {
+          if (patternGrid[y][x] && !usedBlocks.includes(patternGrid[y][x])) {
+            usedBlocks.push(patternGrid[y][x]);
+          }
+        }
+      }
+      
+      // If no blocks are used, return an empty pattern
+      if (usedBlocks.length === 0) return pattern;
+      
+      // Simple implementation of Perlin-like noise (not true Perlin)
+      const scale = 0.1;
+      const octaves = 3;
+      
+      for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+          // Generate a noise value between 0 and 1
+          let noise = 0;
+          let amplitude = 1;
+          let frequency = 1;
+          let maxValue = 0;
+          
+          for (let i = 0; i < octaves; i++) {
+            const sampleX = x * scale * frequency;
+            const sampleY = y * scale * frequency;
+            
+            // Simplified noise function (not true Perlin)
+            const value = Math.sin(sampleX) * Math.cos(sampleY) * 0.5 + 0.5;
+            
+            noise += value * amplitude;
+            maxValue += amplitude;
+            
+            amplitude *= 0.5;
+            frequency *= 2;
+          }
+          
+          // Normalize noise to 0-1
+          noise /= maxValue;
+          
+          // Map the noise value to a block
+          const blockIndex = Math.floor(noise * usedBlocks.length);
+          pattern[y][x] = usedBlocks[Math.min(blockIndex, usedBlocks.length - 1)];
+        }
+      }
+      
+      return pattern;
+    }
+    
+    // Generate Simplex noise preview
+    function generateSimplexPreview(previewGrid, repetitions) {
+      // Create a larger pattern using Simplex-like noise
+      const simplexPattern = createSimplexPattern();
+      const patternWidth = simplexPattern[0].length;
+      const patternHeight = simplexPattern.length;
+      
+      // Display the pattern
+      for (let y = 0; y < patternHeight; y++) {
+        for (let x = 0; x < patternWidth; x++) {
+          const block = simplexPattern[y][x];
+          
+          const cell = document.createElement('div');
+          cell.className = 'preview-cell';
+          
+          if (block) {
+            cell.innerHTML = `<img src="blocks/${block}.png" alt="${block}">`;
+          }
+          
+          previewGrid.appendChild(cell);
+        }
+      }
+    }
+    
+    // Create a pattern using Simplex-like noise
+    function createSimplexPattern() {
+      // Use a larger size for the Simplex noise pattern
+      const size = currentGridSize * 2;
+      const pattern = Array(size).fill().map(() => Array(size).fill(null));
+      
+      // Collect all used blocks in the current pattern
+      const usedBlocks = [];
+      for (let y = 0; y < currentGridSize; y++) {
+        for (let x = 0; x < currentGridSize; x++) {
+          if (patternGrid[y][x] && !usedBlocks.includes(patternGrid[y][x])) {
+            usedBlocks.push(patternGrid[y][x]);
+          }
+        }
+      }
+      
+      // If no blocks are used, return an empty pattern
+      if (usedBlocks.length === 0) return pattern;
+      
+      // Simplex-like noise parameters
+      const scale = 0.05;
+      const persistence = 0.5;
+      const lacunarity = 2.0;
+      const octaves = 4;
+      
+      for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+          // Generate a noise value between 0 and 1
+          let noise = 0;
+          let amplitude = 1;
+          let frequency = 1;
+          let maxValue = 0;
+          
+          for (let i = 0; i < octaves; i++) {
+            // Sample coordinates
+            const sampleX = x * scale * frequency;
+            const sampleY = y * scale * frequency;
+            
+            // Use a different approach from Perlin for variety
+            // This is not true Simplex noise but creates a different pattern
+            const nx = Math.cos(sampleX + sampleY);
+            const ny = Math.sin(sampleX - sampleY);
+            const value = (nx * ny + 1) * 0.5; // Normalize to 0-1
+            
+            noise += value * amplitude;
+            maxValue += amplitude;
+            
+            amplitude *= persistence;
+            frequency *= lacunarity;
+          }
+          
+          // Normalize noise to 0-1
+          noise /= maxValue;
+          
+          // Map the noise value to a block
+          const blockIndex = Math.floor(noise * usedBlocks.length);
+          pattern[y][x] = usedBlocks[Math.min(blockIndex, usedBlocks.length - 1)];
+        }
+      }
+      
+      return pattern;
+    }
+    
+    // Update 3D preview (wall, floor, ceiling)
+    function update3DPreview(viewType) {
+      const preview3D = document.getElementById('preview-3d');
+      preview3D.style.display = 'block';
+      document.getElementById('preview-repeated').style.display = 'none';
+      
+      const previewSurface = document.getElementById('preview-surface');
+      const surfaceGrid = document.getElementById('preview-surface-grid');
+      
+      // Update the surface class for proper 3D orientation
+      previewSurface.className = `preview-surface ${viewType}`;
+      
+      // Clear and setup the grid
+      surfaceGrid.innerHTML = '';
+      surfaceGrid.style.gridTemplateColumns = `repeat(${currentGridSize * 3}, 1fr)`;
+      
+      // Different pattern generation based on mode
+      let fullPattern;
+      switch (currentMode) {
+        case 'repeat':
+          fullPattern = patternGrid;
+          break;
+        case 'symmetric':
+          fullPattern = createSymmetricPattern();
+          break;
+        case 'radial':
+          fullPattern = createRadialPattern();
+          break;
+        case 'random':
+          fullPattern = createRandomizedPattern();
+          break;
+        case 'perlin':
+          fullPattern = createPerlinPattern();
+          // Use a subsection for better scale
+          fullPattern = fullPattern.slice(0, currentGridSize).map(row => row.slice(0, currentGridSize));
+          break;
+        case 'simplex':
+          fullPattern = createSimplexPattern();
+          // Use a subsection for better scale
+          fullPattern = fullPattern.slice(0, currentGridSize).map(row => row.slice(0, currentGridSize));
+          break;
+      }
+      
+      // Create a 3x3 repetition for the surface
+      for (let ry = 0; ry < 3; ry++) {
+        for (let rx = 0; rx < 3; rx++) {
+          for (let y = 0; y < currentGridSize; y++) {
+            for (let x = 0; x < currentGridSize; x++) {
+              const block = fullPattern[y][x];
+              
+              const cell = document.createElement('div');
+              cell.className = 'preview-cell';
+              
+              if (block) {
+                cell.innerHTML = `<img src="blocks/${block}.png" alt="${block}">`;
+              }
+              
+              surfaceGrid.appendChild(cell);
+            }
+          }
+        }
+      }
+    }
+    
+    // PATTERN TRANSFORMATION
+    
+    // Rotate pattern
+    function rotatePattern() {
+      const size = currentGridSize;
+      const newGrid = Array(size).fill().map(() => Array(size).fill(null));
+      
+      // Perform rotation (90 degrees clockwise)
+      for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+          newGrid[x][size - 1 - y] = patternGrid[y][x];
+        }
+      }
+      
+      // Update grid
+      patternGrid = newGrid;
+      
+      // Update UI
+      for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+          const cell = document.querySelector(`.grid-cell[data-x="${x}"][data-y="${y}"]`);
+          cell.innerHTML = '';
+          
+          if (patternGrid[y][x]) {
+            cell.innerHTML = `<img src="blocks/${patternGrid[y][x]}.png" alt="${patternGrid[y][x]}">`;
+          }
+        }
+      }
+      
+      // Update preview
+      updatePreview();
+      
+      showToast('success', 'Motif tourné de 90° dans le sens horaire');
+    }
+    
+    // Flip pattern horizontally
+    function flipHorizontal() {
+      const size = currentGridSize;
+      const newGrid = Array(size).fill().map(() => Array(size).fill(null));
+      
+      // Perform horizontal flip
+      for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+          newGrid[y][size - 1 - x] = patternGrid[y][x];
+        }
+      }
+      
+      // Update grid
+      patternGrid = newGrid;
+      
+      // Update UI
+      for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+          const cell = document.querySelector(`.grid-cell[data-x="${x}"][data-y="${y}"]`);
+          cell.innerHTML = '';
+          
+          if (patternGrid[y][x]) {
+            cell.innerHTML = `<img src="blocks/${patternGrid[y][x]}.png" alt="${patternGrid[y][x]}">`;
+          }
+        }
+      }
+      
+      // Update preview
+      updatePreview();
+      
+      showToast('success', 'Motif inversé horizontalement');
+    }
+    
+    // Flip pattern vertically
+    function flipVertical() {
+      const size = currentGridSize;
+      const newGrid = Array(size).fill().map(() => Array(size).fill(null));
+      
+      // Perform vertical flip
+      for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+          newGrid[size - 1 - y][x] = patternGrid[y][x];
+        }
+      }
+      
+      // Update grid
+      patternGrid = newGrid;
+      
+      // Update UI
+      for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+          const cell = document.querySelector(`.grid-cell[data-x="${x}"][data-y="${y}"]`);
+          cell.innerHTML = '';
+          
+          if (patternGrid[y][x]) {
+            cell.innerHTML = `<img src="blocks/${patternGrid[y][x]}.png" alt="${patternGrid[y][x]}">`;
+          }
+        }
+      }
+      
+      // Update preview
+      updatePreview();
+      
+      showToast('success', 'Motif inversé verticalement');
+    }
+    
+    // Randomize blocks in the pattern
+    function randomizeBlocks() {
+      // Collect all the blocks used in the pattern
+      const blocksUsed = new Set();
+      
+      for (let y = 0; y < currentGridSize; y++) {
+        for (let x = 0; x < currentGridSize; x++) {
+          if (patternGrid[y][x]) {
+            blocksUsed.add(patternGrid[y][x]);
+          }
+        }
+      }
+      
+      if (blocksUsed.size < 2) {
+        showToast('error', 'Utilisez au moins 2 blocs différents pour cette fonction');
+        return;
+      }
+      
+      const blocksArray = Array.from(blocksUsed);
+      
+      // Randomize with a 40% chance of changing a block
+      for (let y = 0; y < currentGridSize; y++) {
+        for (let x = 0; x < currentGridSize; x++) {
+          if (patternGrid[y][x] && Math.random() < 0.4) {
+            // Choose a different block than the current one
+            let newBlock;
+            do {
+              newBlock = blocksArray[Math.floor(Math.random() * blocksArray.length)];
+            } while (newBlock === patternGrid[y][x] && blocksArray.length > 1);
+            
+            placeBlock(x, y, newBlock);
+          }
+        }
+      }
+      
+      updatePreview();
+      showToast('success', 'Blocs réorganisés aléatoirement');
+    }
+    
+    // TEMPLATE MANAGEMENT
+    
+    // Load a template into the editor
+    function loadTemplate(templateName) {
+      const overlay = document.getElementById('grid-overlay');
+      overlay.querySelector('.grid-overlay-message').textContent = 'Chargement du modèle...';
+      overlay.classList.add('visible');
+      
+      // Simulate loading time (in a real app, this would fetch template data)
+      setTimeout(() => {
+        switch (templateName) {
+          case 'checkerboard':
+            loadCheckerboardTemplate();
+            break;
+          case 'zigzag':
+            loadZigzagTemplate();
+            break;
+          case 'diamonds':
+            loadDiamondsTemplate();
+            break;
+          case 'stripes':
+            loadStripesTemplate();
+            break;
+          case 'circles':
+            loadCirclesTemplate();
+            break;
+          case 'border':
+            loadBorderTemplate();
+            break;
+          case 'maze':
+            loadMazeTemplate();
+            break;
+          case 'medieval':
+            loadMedievalTemplate();
+            break;
+          default:
+            showToast('error', 'Modèle inconnu');
+            overlay.classList.remove('visible');
+            return;
+        }
+        
+        // Update preview and hide overlay
+        updatePreview();
+        overlay.classList.remove('visible');
+        
+        showToast('success', `Modèle "${templateName}" chargé avec succès`);
+      }, 600);
+    }
+    
+    // Template generators (just examples - in a real app these would be more sophisticated)
+    function loadCheckerboardTemplate() {
+      // Switch to 8x8 grid if not already
+      if (currentGridSize !== 8) {
+        setGridSize(8);
+      }
+      
+      // Create checkerboard pattern
+      for (let y = 0; y < currentGridSize; y++) {
+        for (let x = 0; x < currentGridSize; x++) {
+          if ((x + y) % 2 === 0) {
+            placeBlock(x, y, 'white_concrete');
+          } else {
+            placeBlock(x, y, 'black_concrete');
+          }
+        }
+      }
+    }
+    
+    function loadZigzagTemplate() {
+      // Switch to 8x8 grid for this template
+      if (currentGridSize !== 8) {
+        setGridSize(8);
+      }
+      
+      // Clear grid first
+      clearGrid();
+      
+      // Create zigzag pattern
+      for (let y = 0; y < currentGridSize; y++) {
+        for (let x = 0; x < currentGridSize; x++) {
+          if ((x + y) % 4 < 2) {
+            placeBlock(x, y, 'stone');
+          } else {
+            placeBlock(x, y, 'oak_planks');
+          }
+        }
+      }
+    }
+    
+    function loadDiamondsTemplate() {
+      // Switch to 8x8 grid
+      if (currentGridSize !== 8) {
+        setGridSize(8);
+      }
+      
+      // Clear grid first
+      clearGrid();
+      
+      // Create diamond pattern (simple version)
+      const center = Math.floor(currentGridSize / 2);
+      
+      for (let y = 0; y < currentGridSize; y++) {
+        for (let x = 0; x < currentGridSize; x++) {
+          const distanceFromCenter = Math.abs(x - center) + Math.abs(y - center);
+          if (distanceFromCenter % 2 === 0) {
+            placeBlock(x, y, 'quartz_block');
+          } else if (distanceFromCenter % 3 === 0) {
+            placeBlock(x, y, 'blue_concrete');
+          } else {
+            placeBlock(x, y, 'stone');
+          }
+        }
+      }
+    }
+    
+    function loadStripesTemplate() {
+      // Switch to 8x8 grid
+      if (currentGridSize !== 8) {
+        setGridSize(8);
+      }
+      
+      // Clear grid first
+      clearGrid();
+      
+      // Create striped pattern
+      for (let y = 0; y < currentGridSize; y++) {
+        for (let x = 0; x < currentGridSize; x++) {
+          if (x % 3 === 0) {
+            placeBlock(x, y, 'oak_planks');
+          } else if (x % 3 === 1) {
+            placeBlock(x, y, 'stone');
+          } else {
+            placeBlock(x, y, 'bricks');
+          }
+        }
+      }
+    }
+    
+    function loadCirclesTemplate() {
+      // This template works best with a 16x16 grid
+      if (currentGridSize !== 16) {
+        setGridSize(16);
+      }
+      
+      // Clear grid first
+      clearGrid();
+      
+      // Create a circle pattern
+      const center = currentGridSize / 2 - 0.5;
+      
+      for (let y = 0; y < currentGridSize; y++) {
+        for (let x = 0; x < currentGridSize; x++) {
+          const distanceFromCenter = Math.sqrt(Math.pow(x - center, 2) + Math.pow(y - center, 2));
+          if (distanceFromCenter < 2.5) {
+            placeBlock(x, y, 'blue_concrete');
+          } else if (distanceFromCenter < 5) {
+            placeBlock(x, y, 'white_concrete');
+          } else if (distanceFromCenter < 7.5) {
+            placeBlock(x, y, 'black_concrete');
+          } else {
+            placeBlock(x, y, 'stone');
+          }
+        }
+      }
+    }
+    
+    function loadBorderTemplate() {
+      // Switch to 8x8 grid
+      if (currentGridSize !== 8) {
+        setGridSize(8);
+      }
+      
+      // Clear grid first
+      clearGrid();
+      
+      // Create border pattern
+      for (let y = 0; y < currentGridSize; y++) {
+        for (let x = 0; x < currentGridSize; x++) {
+          if (x === 0 || x === currentGridSize - 1 || y === 0 || y === currentGridSize - 1) {
+            placeBlock(x, y, 'stone');
+          } else if (x === 1 || x === currentGridSize - 2 || y === 1 || y === currentGridSize - 2) {
+            placeBlock(x, y, 'bricks');
+          } else {
+            placeBlock(x, y, 'oak_planks');
+          }
+        }
+      }
+    }
+    
+    function loadMazeTemplate() {
+      // Switch to 16x16 grid for more detail
+      if (currentGridSize !== 16) {
+        setGridSize(16);
+      }
+      
+      // Clear grid first
+      clearGrid();
+      
+      // Create a simple maze pattern
+      for (let y = 0; y < currentGridSize; y++) {
+        for (let x = 0; x < currentGridSize; x++) {
+          if (x % 4 === 0 || y % 4 === 0) {
+            placeBlock(x, y, 'stone');
+          } else {
+            // Add some random walls
+            if ((x % 2 === 0 && y % 2 === 0) && Math.random() > 0.7) {
+              placeBlock(x, y, 'stone');
+            } else {
+              placeBlock(x, y, 'white_concrete');
+            }
+          }
+        }
+      }
+    }
+    
+    function loadMedievalTemplate() {
+      // Switch to 10x10 grid
+      if (currentGridSize !== 10) {
+        setGridSize(10);
+      }
+      
+      // Clear grid first
+      clearGrid();
+      
+      // Create medieval wall pattern
+      for (let y = 0; y < currentGridSize; y++) {
+        for (let x = 0; x < currentGridSize; x++) {
+          if (y % 2 === 0) {
+            // Even rows are bricks
+            placeBlock(x, y, 'stone');
+          } else {
+            // Odd rows create an offset pattern
+            if (x % 2 === 0) {
+              placeBlock(x, y, 'stone');
+            } else {
+              placeBlock(x, y, 'bricks');
+            }
+          }
+        }
+      }
+    }
+    
+    // ACTIONS
+    
+    // Save pattern (simplified - in a real app, this would save to a database or localStorage)
+    function savePattern() {
+      // Check if pattern has at least one block
+      let hasBlock = false;
+      for (let y = 0; y < currentGridSize; y++) {
+        for (let x = 0; x < currentGridSize; x++) {
+          if (patternGrid[y][x]) {
+            hasBlock = true;
+            break;
+          }
+        }
+        if (hasBlock) break;
+      }
+      
+      if (!hasBlock) {
+        showToast('error', 'Le motif est vide');
+        return;
+      }
+      
+      // In a real app, this would actually save the pattern
+      // For this demo, we'll just show a success message
+      showToast('success', 'Motif sauvegardé avec succès');
+    }
+    
+    // Copy pattern to clipboard
+    function copyPattern() {
+      // Create a text representation of the pattern
+      let patternText = "Motif PatternCraft :\n\n";
+      
+      // Add info about mode and size
+      patternText += `Mode: ${currentMode}, Taille: ${currentGridSize}x${currentGridSize}\n\n`;
+      
+      // Add the pattern representation
+      for (let y = 0; y < currentGridSize; y++) {
+        for (let x = 0; x < currentGridSize; x++) {
+          patternText += patternGrid[y][x] ? formatBlockName(patternGrid[y][x]) : "Vide";
+          patternText += x < currentGridSize - 1 ? " | " : "";
+        }
+        patternText += "\n";
+      }
+      
+      // Add a list of required blocks
+      patternText += "\nBlocs nécessaires:\n";
+      const blocksUsed = new Set();
+      for (let y = 0; y < currentGridSize; y++) {
+        for (let x = 0; x < currentGridSize; x++) {
+          if (patternGrid[y][x]) {
+            blocksUsed.add(patternGrid[y][x]);
+          }
+        }
+      }
+      
+      blocksUsed.forEach(block => {
+        patternText += `- ${formatBlockName(block)}\n`;
+      });
+      
+      // Add a footer
+      patternText += "\nCréé avec Minecraft Atlas - PatternCraft";
+      
+      // Copy to clipboard
+      navigator.clipboard.writeText(patternText)
+        .then(() => {
+          showToast('success', 'Motif copié dans le presse-papier');
+        })
+        .catch(err => {
+          console.error('Erreur lors de la copie:', err);
+          showToast('error', 'Impossible de copier le motif');
+        });
+    }
+    
+    // Export pattern (simplified)
+    function exportPattern() {
+      // Here we'd generate a file to download
+      // For the demo, we'll just show a success message
+      showToast('success', 'Motif exporté');
+    }
+    
+    // Generate tutorial
+    function generateTutorial() {
+      const tutorialSection = document.getElementById('tutorial-section');
+      const tutorialSteps = document.getElementById('tutorial-steps');
+      
+      // Clear previous content
+      tutorialSteps.innerHTML = '';
+      
+      // Check if pattern has blocks
+      let hasBlock = false;
+      for (let y = 0; y < currentGridSize; y++) {
+        for (let x = 0; x < currentGridSize; x++) {
+          if (patternGrid[y][x]) {
+            hasBlock = true;
+            break;
+          }
+        }
+        if (hasBlock) break;
+      }
+      
+      if (!hasBlock) {
+        showToast('error', 'Créez un motif avant de générer un tutoriel');
+        return;
+      }
+      
+      // Create tutorial steps
+      // 1. Preparation
+      const step1 = document.createElement('div');
+      step1.className = 'tutorial-step';
+      step1.innerHTML = `
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h3 class="step-title">Préparation des matériaux</h3>
+          <p class="step-description">
+            Pour ce motif, vous aurez besoin des blocs suivants :
+          </p>
+          <ul style="margin-top: 8px; color: var(--text-secondary); list-style-type: disc; padding-left: 20px;">
+            ${getRequiredBlocks().map(block => `<li>${formatBlockName(block)}</li>`).join('')}
+          </ul>
+        </div>
+      `;
+      tutorialSteps.appendChild(step1);
+      
+      // 2. Grid Layout
+      const step2 = document.createElement('div');
+      step2.className = 'tutorial-step';
+      step2.innerHTML = `
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h3 class="step-title">Créer la structure de base</h3>
+          <p class="step-description">
+            Commencez par créer une grille de ${currentGridSize}×${currentGridSize} blocs pour y placer votre motif.
+            Si vous utilisez le mode ${currentMode === 'repeat' ? 'répétition' : currentMode === 'symmetric' ? 'symétrie' : currentMode === 'radial' ? 'rayonnant' : currentMode === 'perlin' ? 'bruit de Perlin' : currentMode === 'simplex' ? 'bruit Simplex' : 'aléatoire'},
+            une seule section de base suffit.
+          </p>
+          <div class="step-image">
+            <img src="tutorials/grid_setup.png" alt="Configuration de la grille">
+          </div>
+        </div>
+      `;
+      tutorialSteps.appendChild(step2);
+      
+      // 3. Pattern Placement
+      const step3 = document.createElement('div');
+      step3.className = 'tutorial-step';
+      step3.innerHTML = `
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h3 class="step-title">Placement des blocs</h3>
+          <p class="step-description">
+            Placez les blocs selon le motif suivant. Commencez par la première rangée, de gauche à droite,
+            puis continuez avec les rangées suivantes.
+          </p>
+          <div style="margin-top: 15px; background: var(--surface-1); padding: 15px; border-radius: var(--radius-md); max-width: 500px;">
+            ${generatePatternInstructions()}
+          </div>
+        </div>
+      `;
+      tutorialSteps.appendChild(step3);
+
+      
+      // Show the tutorial section
+      tutorialSection.style.display = 'block';
+      tutorialSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Get all required blocks for the tutorial
+    function getRequiredBlocks() {
+      const blocks = new Set();
+      
+      for (let y = 0; y < currentGridSize; y++) {
+        for (let x = 0; x < currentGridSize; x++) {
+          if (patternGrid[y][x]) {
+            blocks.add(patternGrid[y][x]);
+          }
+        }
+      }
+      
+      return Array.from(blocks);
+    }
+    
+    // Generate text instructions for the pattern
+    function generatePatternInstructions() {
+      let instructions = '';
+      
+      for (let y = 0; y < currentGridSize; y++) {
+        instructions += '<div style="display: flex; gap: 4px; margin-bottom: 4px;">';
+        for (let x = 0; x < currentGridSize; x++) {
+          const block = patternGrid[y][x];
+          if (block) {
+            instructions += `<div style="width: 30px; height: 30px; background-image: url('blocks/${block}.png'); background-size: cover; image-rendering: pixelated;"></div>`;
+          } else {
+            instructions += `<div style="width: 30px; height: 30px; background: var(--surface-4);"></div>`;
+          }
+        }
+        instructions += '</div>';
+      }
+      
+      return instructions;
+    }
+    
+    // BLOCK MANAGEMENT
+    
+    // Load all blocks from texture-data.json
+    async function loadAllBlocks() {
+      try {
+        const response = await fetch('texture-data.json');
+        if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
+        
+        const data = await response.json();
+        allMinecraftBlocks = data.map(block => ({
+          name: block.name,
+          displayName: block.name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+          color: block.color,
+          rgb: block.rgb,
+          category: getCategoryForBlock(block.name)
+        }));
+        
+        // Filtrer et afficher les blocs
+        filterBlocks();
+      } catch (error) {
+        console.error('Erreur lors du chargement des blocs:', error);
+        document.getElementById('all-blocks').innerHTML = `
+          <div style="padding: 20px; text-align: center; color: var(--error);">
+            Erreur lors du chargement des blocs. Veuillez recharger la page.
+          </div>
+        `;
+      }
+    }
+    
+    // Determine the category for a block
+    function getCategoryForBlock(name) {
+      if (name.includes('planks') || name.includes('brick') || name.includes('stone') || 
+          name.includes('block') || name.includes('tile') || name.includes('glass') || 
+          name.includes('wood') || name.includes('log')) {
+        return 'building';
+      }
+      
+      if (name.includes('grass') || name.includes('dirt') || name.includes('sand') || 
+          name.includes('leaves') || name.includes('flower') || name.includes('mushroom') || 
+          name.includes('vine') || name.includes('snow') || name.includes('ice')) {
+        return 'natural';
+      }
+      
+      if (name.includes('red') || name.includes('orange') || name.includes('yellow') || 
+          name.includes('green') || name.includes('blue') || name.includes('purple') || 
+          name.includes('pink') || name.includes('magenta') || name.includes('white') || 
+          name.includes('black') || name.includes('concrete') || name.includes('wool') || 
+          name.includes('terracotta')) {
+        return 'colored';
+      }
+      
+      if (name.includes('redstone') || name.includes('piston') || name.includes('hopper') || 
+          name.includes('dropper') || name.includes('dispenser') || name.includes('rail')) {
+        return 'redstone';
+      }
+      
+      return 'special';
+    }
+    
+    // Filter blocks by category and search query
+    function filterBlocks() {
+      filteredBlocks = allMinecraftBlocks.filter(block => {
+        // Filter by category
+        const categoryMatch = currentCategory === 'all' || block.category === currentCategory;
+        
+        // Filter by search query
+        const searchMatch = searchQuery === '' || 
+                           block.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                           block.displayName.toLowerCase().includes(searchQuery.toLowerCase());
+        
+        return categoryMatch && searchMatch;
+      });
+      
+      // Reset to first page after filtering
+      currentPage = 1;
+      
+      // Display filtered blocks
+      displayBlocks();
+    }
+    
+    // Display blocks with pagination
+    function displayBlocks() {
+      const blocksContainer = document.getElementById('all-blocks');
+      blocksContainer.innerHTML = '';
+      
+      if (filteredBlocks.length === 0) {
+        blocksContainer.innerHTML = `
+          <div style="padding: 20px; text-align: center; color: var(--text-secondary); grid-column: 1 / -1;">
+            Aucun bloc ne correspond à votre recherche.
+          </div>
+        `;
+        return;
+      }
+      
+      // Calculate start and end indices for pagination
+      const startIndex = (currentPage - 1) * blocksPerPage;
+      const endIndex = Math.min(startIndex + blocksPerPage, filteredBlocks.length);
+      
+      // Add blocks for the current page
+      for (let i = startIndex; i < endIndex; i++) {
+        const block = filteredBlocks[i];
+        
+        const blockItem = document.createElement('div');
+        blockItem.className = `block-item ${selectedBlock === block.name ? 'active' : ''}`;
+        blockItem.dataset.block = block.name;
+        blockItem.innerHTML = `
+          <img src="blocks/${block.name}.png" alt="${block.displayName}" loading="lazy">
+          <div class="block-tooltip">${block.displayName}</div>
+        `;
+        
+        blockItem.addEventListener('click', function() {
+          selectBlock(block.name);
+        });
+        
+        blocksContainer.appendChild(blockItem);
+      }
+      
+      // Add pagination if necessary
+      if (filteredBlocks.length > blocksPerPage) {
+        addPagination(blocksContainer);
+      }
+    }
+    
+    // Add pagination controls
+    function addPagination(container) {
+      const totalPages = Math.ceil(filteredBlocks.length / blocksPerPage);
+      
+      const pagination = document.createElement('div');
+      pagination.className = 'pagination';
+      
+      // Previous button
+      const prevBtn = document.createElement('div');
+      prevBtn.className = 'page-btn';
+      prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+      prevBtn.addEventListener('click', () => {
+        if (currentPage > 1) {
+          currentPage--;
+          displayBlocks();
+        }
+      });
+      pagination.appendChild(prevBtn);
+      
+      // Page numbers
+      const maxVisiblePages = 5;
+      let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+      let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+      
+      // Adjust if we're at the end
+      if (endPage - startPage + 1 < maxVisiblePages) {
+        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+      }
+      
+      for (let i = startPage; i <= endPage; i++) {
+        const pageBtn = document.createElement('div');
+        pageBtn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+        pageBtn.textContent = i;
+        pageBtn.addEventListener('click', () => {
+          currentPage = i;
+          displayBlocks();
+        });
+        pagination.appendChild(pageBtn);
+      }
+      
+      // Next button
+      const nextBtn = document.createElement('div');
+      nextBtn.className = 'page-btn';
+      nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+      nextBtn.addEventListener('click', () => {
+        if (currentPage < totalPages) {
+          currentPage++;
+          displayBlocks();
+        }
+      });
+      pagination.appendChild(nextBtn);
+      
+      container.appendChild(pagination);
+    }
+    
+    // INITIALIZATION
+    document.addEventListener('DOMContentLoaded', function() {
+      // Load all blocks from texture-data.json
+      loadAllBlocks();
+      
+      // Initialize grid
+      initGrid(8);
+      
+      // Default to a few recent blocks for better UX
+      recentBlocks = ['oak_planks', 'stone', 'bricks', 'white_concrete'];
+      updateRecentBlocks();
+      
+      // Set up event listeners
+      
+      // Grid Size Selector
+      document.querySelectorAll('.grid-size-option').forEach(option => {
+        option.addEventListener('click', function() {
+          setGridSize(parseInt(this.dataset.size));
+        });
+      });
+      
+      // Pattern Mode Selector
+      document.querySelectorAll('.pattern-mode').forEach(mode => {
+        mode.addEventListener('click', function() {
+          // Update mode
+          currentMode = this.dataset.mode;
+          
+          // Update UI
+          document.querySelectorAll('.pattern-mode').forEach(m => {
+            m.classList.toggle('active', m === this);
+          });
+          
+          // Update guides based on mode
+          updateGridGuides(currentGridSize);
+          
+          // Update preview
+          updatePreview();
+        });
+      });
+      
+      // Block search
+      document.getElementById('search-blocks').addEventListener('input', function(e) {
+        searchQuery = e.target.value;
+        filterBlocks();
+      });
+      
+      // Category tabs
+      document.querySelectorAll('.category-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+          currentCategory = this.dataset.category;
+          
+          document.querySelectorAll('.category-tab').forEach(t => {
+            t.classList.toggle('active', t === this);
+          });
+          
+          filterBlocks();
+        });
+      });
+      
+      // Editor controls
+      document.getElementById('zoom-in').addEventListener('click', function() {
+        // Implement zoom in
+        zoomLevel = Math.min(zoomLevel + 0.2, 2);
+        document.querySelector('.pattern-grid').style.transform = `scale(${zoomLevel})`;
+      });
+      
+      document.getElementById('zoom-out').addEventListener('click', function() {
+        // Implement zoom out
+        zoomLevel = Math.max(zoomLevel - 0.2, 0.5);
+        document.querySelector('.pattern-grid').style.transform = `scale(${zoomLevel})`;
+      });
+      
+      document.getElementById('toggle-grid').addEventListener('click', function() {
+        // Toggle grid visibility
+        gridVisible = !gridVisible;
+        document.querySelector('.pattern-grid').style.gap = gridVisible ? '1px' : '0';
+      });
+      
+      document.getElementById('clear-editor').addEventListener('click', function() {
+        if (confirm('Êtes-vous sûr de vouloir effacer la grille ?')) {
+          clearGrid();
+          showToast('success', 'Grille effacée');
+        }
+      });
+      
+      document.getElementById('save-pattern').addEventListener('click', savePattern);
+      
+      // Pattern controls
+      document.getElementById('rotate-pattern').addEventListener('click', rotatePattern);
+      document.getElementById('flip-h').addEventListener('click', flipHorizontal);
+      document.getElementById('flip-v').addEventListener('click', flipVertical);
+      document.getElementById('randomize').addEventListener('click', randomizeBlocks);
+      
+      // Preview tabs
+      document.querySelectorAll('.preview-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+          // Update view
+          currentView = this.dataset.view;
+          
+          // Update UI
+          document.querySelectorAll('.preview-tab').forEach(t => {
+            t.classList.toggle('active', t === this);
+          });
+          
+          // Update preview
+          updatePreview();
+        });
+      });
+      
+      // Preview actions
+      document.getElementById('copy-pattern').addEventListener('click', copyPattern);
+      document.getElementById('export-pattern').addEventListener('click', exportPattern);
+      document.getElementById('generate-tutorial').addEventListener('click', generateTutorial);
+      
+      // Hide tutorial button
+      document.getElementById('hide-tutorial').addEventListener('click', function() {
+        document.getElementById('tutorial-section').style.display = 'none';
+      });
+      
+      // Templates modal
+      document.getElementById('open-templates').addEventListener('click', function() {
+        document.getElementById('templates-modal').classList.add('visible');
+      });
+      
+      document.getElementById('close-templates').addEventListener('click', function() {
+        document.getElementById('templates-modal').classList.remove('visible');
+      });
+      
+      document.getElementById('cancel-template').addEventListener('click', function() {
+        document.getElementById('templates-modal').classList.remove('visible');
+      });
+      
+      // Template selection
+      document.querySelectorAll('.template-item').forEach(item => {
+        item.addEventListener('click', function() {
+          // Update selection
+          selectedTemplate = this.dataset.template;
+          
+          // Update UI
+          document.querySelectorAll('.template-item').forEach(t => {
+            t.style.outline = t === this ? '3px solid var(--primary)' : 'none';
+          });
+        });
+      });
+      
+      document.getElementById('apply-template').addEventListener('click', function() {
+        if (selectedTemplate) {
+          document.getElementById('templates-modal').classList.remove('visible');
+          loadTemplate(selectedTemplate);
+        } else {
+          showToast('error', 'Veuillez sélectionner un modèle');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
