@@ -1470,6 +1470,71 @@
     menuToggle.addEventListener('click', () => {
       menuOverlay.classList.toggle('show');
     });
+    @media (max-width: 1024px) {
+  .wiki-container {
+    grid-template-columns: 1fr;
+  }
+
+  .wiki-sidebar {
+    position: relative;
+    max-height: none;
+    top: unset;
+    margin-top: var(--space-md);
+    order: 2;
+  }
+
+  .wiki-content {
+    order: 1;
+  }
+
+  .commands-container,
+  .feature-cards {
+    grid-template-columns: 1fr !important;
+  }
+
+  .command-syntax {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    word-break: break-word;
+  }
+
+  .tab-button {
+    font-size: 0.9rem;
+    padding: var(--space-sm);
+  }
+
+  header h1 {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  header p {
+    font-size: 1rem;
+    text-align: center;
+    padding: 0 var(--space-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .search-input {
+    padding-left: 40px;
+    font-size: 0.95rem;
+  }
+
+  .command-description,
+  .command-examples {
+    font-size: 0.9rem;
+  }
+
+  .feature-title {
+    font-size: 1rem;
+  }
+
+  .feature-description {
+    font-size: 0.9rem;
+  }
+}
   </script>
 
   <header>
