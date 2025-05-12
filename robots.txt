@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /private/
+
+Allow: /
+
+Sitemap: https://tonsite.com/sitemap.xml
