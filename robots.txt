@@ -4,4 +4,4 @@ Disallow: /private/
 
 Allow: /
 
-Sitemap: https://tonsite.com/sitemap.xml
+Sitemap: https://atlastexture.pages.dev/sitemap.xml
